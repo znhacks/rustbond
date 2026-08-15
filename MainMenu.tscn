@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://u5dfpgbd1tl8"]
+
+[ext_resource type="Script" uid="uid://iglkqxuy3f1s" path="res://MainMenu.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ba5vmfc06edte" path="res://assets/UI/background.jpg" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://cj72sfw3ylv30" path="res://assets/Ashy/ashy_tittle.png" id="3_char"]
+[ext_resource type="FontFile" uid="uid://cua3g8brd3que" path="res://assets/Fonts/Martyric_PersonalUse.ttf" id="4_iwfq2"]
+[ext_resource type="FontFile" uid="uid://dp4gq3kxhj34k" path="res://assets/Fonts/HelpMe.ttf" id="5_font"]
+
+[node name="MainMenu" type="Control" unique_id=1051116489]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1309847819]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Character" type="Sprite2D" parent="." unique_id=1788947236]
+position = Vector2(300, 375)
+scale = Vector2(1.3999982, 1.3999982)
+texture = ExtResource("3_char")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=197315996]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="LeftSpacer" type="Control" parent="HBoxContainer" unique_id=434835073]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightMargin" type="MarginContainer" parent="HBoxContainer" unique_id=899181847]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RightMargin" unique_id=1871797847]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=538661622]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 21.58)
+theme_override_colors/font_color = Color(0.8, 0.1, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_iwfq2")
+theme_override_font_sizes/font_size = 80
+text = "RUSTBOND"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=1489162618]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+text = "When the rusty world bonds with you."
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=1021668699]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=444134349]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 36
+text = "PLAY"
+
+[node name="OptionsButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=989105633]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 36
+text = "OPTIONS"
+
+[node name="ExitButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=633428558]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 36
+text = "EXIT"
+
+[connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
