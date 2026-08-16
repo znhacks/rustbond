@@ -1,18 +1,77 @@
 extends CanvasLayer
 
+signal quit_attempted
+
 @onready var bg = $ColorRect
 @onready var tape1 = $Tape1
 @onready var tape2 = $Tape2
 @onready var tape3 = $Tape3
+@onready var notif_panel = $AntiQuitNotification
+@onready var notif_label = $AntiQuitNotification/Margin/Label
 
 var is_transitioning = false
+var alt_f4_flag = false
+var notif_tween : Tween
+
+var msg_exit = [
+	"Do it again.",
+	"Stop.",
+	"Oh such a bad boy here.",
+	"Why you keep trying?"
+]
+
+var msg_altf4 = [
+	"You're smart, but not smarter than me",
+	"Stooopid~",
+	"Stop trying."
+]
+
 
 func _ready():
+	# Global Anti-Quit
+	get_tree().set_auto_accept_quit(false)
+	
 	bg.modulate.a = 0.0
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	notif_panel.modulate.a = 0.0
 	
 	# Sembunyikan tape di luar layar
 	_reset_tapes()
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		# --- SECRET DEV BACKDOOR ---
+		if event.keycode == KEY_ESCAPE and event.shift_pressed:
+			get_tree().quit()
+		# ---------------------------
+		
+		# --- PAUSE / RETURN TO MENU ---
+		if event.keycode == KEY_ESCAPE and not event.shift_pressed:
+			if get_tree().current_scene and get_tree().current_scene.scene_file_path != "res://MainMenu.tscn":
+				transition_to_scene("res://MainMenu.tscn")
+				
+		if event.keycode == KEY_F4 and event.alt_pressed:
+			alt_f4_flag = true
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if alt_f4_flag:
+			_show_quit_warning(msg_altf4)
+			alt_f4_flag = false
+		else:
+			_show_quit_warning(msg_exit)
+
+func _show_quit_warning(msg_list: Array):
+	emit_signal("quit_attempted")
+	notif_label.text = msg_list[randi() % msg_list.size()]
+	
+	if notif_tween:
+		notif_tween.kill()
+		
+	notif_tween = create_tween()
+	notif_tween.tween_property(notif_panel, "modulate:a", 1.0, 0.2)
+	notif_tween.tween_interval(2.0)
+	notif_tween.tween_property(notif_panel, "modulate:a", 0.0, 0.5)
 
 func _reset_tapes():
 	var screen_size = get_viewport().get_visible_rect().size

@@ -5,7 +5,11 @@ var char_tween : Tween
 var bg_start_pos : Vector2
 var screen_size : Vector2
 
+var tex_angry = preload("res://assets/Ashy/ashy_tittle2.png")
+
 func _ready():
+	TransitionManager.quit_attempted.connect(_scare_player)
+	
 	# 1. Setup Vignette Effect (softer)
 	setup_vignette()
 	
@@ -216,13 +220,23 @@ func _on_btn_unhover(btn: Button):
 	tween.parallel().tween_property(btn, "modulate", orig_btn_colors[btn], 0.3)
 
 func _on_play_button_pressed():
-	TransitionManager.transition_to_scene("res://MainMenu.tscn")
+	TransitionManager.transition_to_scene("res://Beginning.tscn")
 
 func _on_options_button_pressed():
 	print("Options button pressed.")
 
 func _on_exit_button_pressed():
-	get_tree().quit()
+	TransitionManager._show_quit_warning(TransitionManager.msg_exit)
+
+func _scare_player():
+	
+	var char_node = $Character
+	char_node.texture = tex_angry
+	
+	# Memicu glitch ekstrim sesaat
+	var tween = create_tween()
+	tween.tween_method(_set_glitch_intensity, 0.8, 1.8, 0.1)
+	tween.tween_method(_set_glitch_intensity, 1.8, 0.0, 0.4)
 
 func setup_title_effects():
 	var title = $HBoxContainer/RightMargin/VBoxContainer/Title

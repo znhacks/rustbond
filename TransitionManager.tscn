@@ -41,3 +41,28 @@ pivot_offset = Vector2(750, 100)
 texture = ExtResource("4_out")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="AntiQuitNotification" type="PanelContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+mouse_filter = 2
+modulate = Color(1, 1, 1, 0)
+
+[node name="Margin" type="MarginContainer" parent="AntiQuitNotification"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="AntiQuitNotification/Margin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.1, 0.1, 1)
+text = "..."
+horizontal_alignment = 1
