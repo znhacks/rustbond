@@ -4,11 +4,17 @@ extends Control
 @onready var dialogue_box = $CanvasLayer/DialogueBox
 @onready var dialogue_label = $CanvasLayer/DialogueBox/MarginContainer/VBoxContainer/DialogueText
 @onready var name_tag = $CanvasLayer/DialogueBox/MarginContainer/VBoxContainer/NameTag
+@onready var character_sprite = $CanvasLayer/CharacterSprite
 @onready var skip_indicator = $CanvasLayer/SkipMargin
 @onready var tv_bg = $CanvasLayer/ColorRect
 @onready var background = $Background
 
 var tex_tv = preload("res://assets/UI/tv_polos.jpg")
+
+var tex_ashy = preload("res://assets/Ashy/ashy.png")
+var tex_ashy_talk = preload("res://assets/Ashy/ashy_talk.png")
+var tex_ashy_happy = preload("res://assets/Ashy/ashy_happy.png")
+var tex_ashy_angry = preload("res://assets/Ashy/ashy_angry.png")
 
 var full_text = """Official Warning from the Local Government
 
@@ -42,6 +48,7 @@ func _ready():
 	dialogue_label.text = ""
 	tv_bg.color.a = 0.0
 	dialogue_box.hide()
+	character_sprite.hide()
 	
 	# Bikin SkipIndicator kedap-kedip
 	var blink_tween = create_tween().set_loops()
@@ -214,9 +221,49 @@ func _advance_post_tv():
 		_play_dialogue_line("???", "I can hear your thoughts.")
 		post_tv_phase = 11
 	elif post_tv_phase == 11:
-		_play_dialogue_line("System", "(Transitioning to Next Scene...)")
-		post_tv_phase = 99
+		_play_dialogue_line("System", "Not long after, she entered my house. I didn't even know who she was, but she looked very strange.")
+		post_tv_phase = 12
+	elif post_tv_phase == 12:
+		character_sprite.show()
+		_change_character_sprite(tex_ashy_happy)
+		_play_dialogue_line("???", "It's nice of you to let me in.")
+		post_tv_phase = 13
+	elif post_tv_phase == 13:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("System", "I remained silent, confused. Why did she look so strange?")
+		post_tv_phase = 14
+	elif post_tv_phase == 14:
+		_play_dialogue_line("System", "I remembered that some of her features... she might be infected with the virus.")
+		post_tv_phase = 15
+	elif post_tv_phase == 15:
+		_change_character_sprite(tex_ashy_talk)
+		_play_dialogue_line("???", "Hey? Why are you ignoring me?")
+		post_tv_phase = 16
+	elif post_tv_phase == 16:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("Me", "It's nothing, I'm just confused. Who are you?")
+		post_tv_phase = 17
+	elif post_tv_phase == 17:
+		_change_character_sprite(tex_ashy_talk)
+		_play_dialogue_line("Ashy", "I'm Ashy.")
+		post_tv_phase = 18
+	elif post_tv_phase == 18:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("Me", "Cool... uh, why are you here?")
+		post_tv_phase = 19
+	elif post_tv_phase == 19:
+		_change_character_sprite(tex_ashy_talk)
+		_play_dialogue_line("Ashy", "I'm hungry.")
+		post_tv_phase = 20
 	elif post_tv_phase == 20:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("Me", "What's your purpose in coming here if you're hungry?")
+		post_tv_phase = 21
+	elif post_tv_phase == 21:
+		_change_character_sprite(tex_ashy_angry)
+		_play_dialogue_line("Ashy", "What do you think I'm doing here, idiot!")
+		post_tv_phase = 99
+	elif post_tv_phase == 30:
 		_play_dialogue_line("???", "Seems like no one is home...")
 		post_tv_phase = 21
 	elif post_tv_phase == 21:
@@ -263,6 +310,20 @@ func _on_choice_2(idx: int):
 	else:
 		_play_dialogue_line("???", "...")
 		post_tv_phase = 30
+
+func _change_character_sprite(new_texture: Texture2D):
+	if character_sprite.texture == new_texture:
+		return
+		
+	character_sprite.texture = new_texture
+	
+	# Set pivot ke tengah-bawah supaya animasi lompatnya menapak (tidak melayang)
+	character_sprite.pivot_offset = Vector2(character_sprite.size.x / 2.0, character_sprite.size.y)
+	
+	# Animasi nge-bounce/loncat dikit
+	var tween = create_tween()
+	tween.tween_property(character_sprite, "scale", Vector2(1.05, 1.05), 0.08).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(character_sprite, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_SINE)
 
 func _generate_8bit_blip() -> AudioStreamWAV:
 	var wav := AudioStreamWAV.new()
