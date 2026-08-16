@@ -47,9 +47,9 @@ func transition_to_scene(target_scene: String):
 	bg.mouse_filter = Control.MOUSE_FILTER_STOP
 	_reset_tapes()
 	
-	tape1.modulate.a = 1.0
-	tape2.modulate.a = 1.0
-	tape3.modulate.a = 1.0
+	tape1.modulate = Color(0.5, 0.5, 0.5, 1.0)
+	tape2.modulate = Color(0.5, 0.5, 0.5, 1.0)
+	tape3.modulate = Color(0.5, 0.5, 0.5, 1.0)
 	
 	var tween = create_tween().set_parallel(true)
 	# Fade in hitam
@@ -60,9 +60,23 @@ func transition_to_scene(target_scene: String):
 	var t2_target = Vector2((screen_size.x - tape2.size.x) / 2, screen_size.y * 0.5 - tape2.size.y / 2)
 	var t3_target = Vector2((screen_size.x - tape3.size.x) / 2, screen_size.y * 0.75 - tape3.size.y / 2)
 	
+	var flash_color = Color(1.5, 0.2, 0.2, 1.0)
+	var dark_color = Color(0.5, 0.5, 0.5, 1.0)
+	
+	# Tape 1
 	tween.tween_property(tape1, "position", t1_target, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(tape2, "position", t2_target, 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.1)
-	tween.tween_property(tape3, "position", t3_target, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.2)
+	tween.parallel().tween_property(tape1, "modulate", flash_color, 0.1)
+	tween.parallel().tween_property(tape1, "modulate", dark_color, 0.4).set_delay(0.1)
+	
+	# Tape 2
+	tween.parallel().tween_property(tape2, "position", t2_target, 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.1)
+	tween.parallel().tween_property(tape2, "modulate", flash_color, 0.1).set_delay(0.1)
+	tween.parallel().tween_property(tape2, "modulate", dark_color, 0.5).set_delay(0.2)
+	
+	# Tape 3
+	tween.parallel().tween_property(tape3, "position", t3_target, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.2)
+	tween.parallel().tween_property(tape3, "modulate", flash_color, 0.1).set_delay(0.2)
+	tween.parallel().tween_property(tape3, "modulate", dark_color, 0.4).set_delay(0.3)
 	
 	await tween.finished
 	
