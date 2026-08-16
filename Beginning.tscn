@@ -3,6 +3,20 @@
 [ext_resource type="Script" path="res://Beginning.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/UI/playerhome.jpg" id="2_bg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0.08, 0.1, 0.12, 0.85)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8, 0.8, 0.8, 0.4)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 10
+
 [node name="Beginning" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -39,15 +53,12 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 100.0
-offset_top = -250.0
+offset_top = -180.0
 offset_right = -100.0
 offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 0
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/DialogueBox"]
-layout_mode = 2
-color = Color(0.1, 0.1, 0.1, 0.8)
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogueBox"]
 layout_mode = 2
@@ -75,6 +86,7 @@ size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 28
 bbcode_enabled = true
 text = "..."
+fit_content = true
 scroll_active = false
 
 [node name="BroadcastText" type="Label" parent="CanvasLayer"]

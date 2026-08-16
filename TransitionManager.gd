@@ -83,7 +83,7 @@ func _generate_sounds():
 		splash_data.append(int(128 + val * env * 0.8))
 	splash_stream.data = splash_data
 	splash_player.stream = splash_stream
-	splash_player.volume_db = -25.0
+	splash_player.volume_db = -15.0
 	add_child(splash_player)
 	
 	ting_player = AudioStreamPlayer.new()
@@ -98,7 +98,7 @@ func _generate_sounds():
 		ting_data.append(int(128 + val * env * 0.7))
 	ting_stream.data = ting_data
 	ting_player.stream = ting_stream
-	ting_player.volume_db = -22.0
+	ting_player.volume_db = -15.0
 	add_child(ting_player)
 
 func play_splash():
