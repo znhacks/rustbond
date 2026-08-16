@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b5hetneutgc2o"
+path="res://.godot/imported/FMB Ingamever.mp3-eed5e8ea660968a2beae20c7b4f06a2b.mp3str"
+
+[deps]
+
+source_file="res://assets/Audio/FMB Ingamever.mp3"
+dest_files=["res://.godot/imported/FMB Ingamever.mp3-eed5e8ea660968a2beae20c7b4f06a2b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

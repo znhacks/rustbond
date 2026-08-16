@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://18sekqa1n6x6"
+path="res://.godot/imported/Faded Music Box.mp3-c73e5a2dca73aaba00369f9fe8faf1d4.mp3str"
+
+[deps]
+
+source_file="res://assets/Audio/Faded Music Box.mp3"
+dest_files=["res://.godot/imported/Faded Music Box.mp3-c73e5a2dca73aaba00369f9fe8faf1d4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

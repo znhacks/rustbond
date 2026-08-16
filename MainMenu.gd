@@ -10,6 +10,8 @@ var tex_angry = preload("res://assets/Ashy/ashy_tittle2.png")
 func _ready():
 	TransitionManager.quit_attempted.connect(_scare_player)
 	
+	setup_bgm()
+	
 	# 1. Setup Vignette Effect (softer)
 	setup_vignette()
 	
@@ -30,7 +32,7 @@ func _ready():
 	]
 	
 	for btn in buttons:
-		
+		btn.focus_mode = Control.FOCUS_NONE
 		btn.pivot_offset = btn.size / 2.0
 		
 		btn.add_theme_color_override("font_shadow_color", Color(0,0,0, 0.8))
@@ -62,6 +64,15 @@ func _process(delta):
 		# Smoothly lerp towards target position
 		var target_pos = bg_start_pos - offset
 		$Background.position = $Background.position.lerp(target_pos, delta * 4.0)
+
+func setup_bgm():
+	var bgm_player = AudioStreamPlayer.new()
+	var bgm_stream = preload("res://assets/Audio/Faded Music Box.mp3")
+	bgm_player.stream = bgm_stream
+	# Pastikan musik di-loop setelah selesai
+	bgm_player.finished.connect(func(): bgm_player.play())
+	add_child(bgm_player)
+	bgm_player.play()
 
 func setup_vignette():
 	var vignette = ColorRect.new()
@@ -220,12 +231,15 @@ func _on_btn_unhover(btn: Button):
 	tween.parallel().tween_property(btn, "modulate", orig_btn_colors[btn], 0.3)
 
 func _on_play_button_pressed():
+	TransitionManager.play_splash()
 	TransitionManager.transition_to_scene("res://Beginning.tscn")
 
 func _on_options_button_pressed():
+	TransitionManager.play_splash()
 	print("Options button pressed.")
 
 func _on_exit_button_pressed():
+	TransitionManager.play_splash()
 	TransitionManager._show_quit_warning(TransitionManager.msg_exit)
 
 func _scare_player():

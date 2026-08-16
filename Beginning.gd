@@ -42,6 +42,16 @@ func _ready():
 	blink_tween.tween_property(skip_indicator, "modulate:a", 0.3, 1.0).set_trans(Tween.TRANS_SINE)
 	blink_tween.tween_property(skip_indicator, "modulate:a", 1.0, 1.0).set_trans(Tween.TRANS_SINE)
 	
+	# BGM Ingame (dengan efek distorsi/redup lewat pitch & volume)
+	var bgm_player = AudioStreamPlayer.new()
+	var bgm_stream = preload("res://assets/Audio/FMB Ingamever.mp3")
+	bgm_player.stream = bgm_stream
+	bgm_player.pitch_scale = 0.85
+	bgm_player.volume_db = -5.0
+	bgm_player.finished.connect(func(): bgm_player.play())
+	add_child(bgm_player)
+	bgm_player.play()
+	
 	await get_tree().create_timer(1.0).timeout
 	_start_dialogue()
 
