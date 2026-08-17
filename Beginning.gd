@@ -9,6 +9,9 @@ extends Control
 @onready var tv_bg = $CanvasLayer/ColorRect
 @onready var background = $Background
 
+var sanity_bar: ProgressBar
+var rage_bar: ProgressBar
+
 var tex_tv = preload("res://assets/UI/tv_polos.jpg")
 
 var tex_ashy = preload("res://assets/Ashy/ashy.png")
@@ -38,6 +41,7 @@ var current_char = 0
 var type_speed = 0.04
 var type_timer : Timer
 var blip_player : AudioStreamPlayer
+var last_visible_characters = 0
 
 var tv_done_waiting = false
 var post_tv_phase = 0
@@ -61,6 +65,30 @@ func _ready():
 	blip_player.volume_db = -15.0
 	add_child(blip_player)
 	
+	# Setup Meters
+	sanity_bar = ProgressBar.new()
+	sanity_bar.name = "SanityMeter"
+	sanity_bar.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	sanity_bar.position = Vector2(20, 20)
+	sanity_bar.size = Vector2(250, 30)
+	sanity_bar.max_value = 100
+	sanity_bar.value = 100
+	sanity_bar.modulate = Color(0, 1, 0) # Hijau
+	sanity_bar.hide()
+	$CanvasLayer.add_child(sanity_bar)
+	
+	rage_bar = ProgressBar.new()
+	rage_bar.name = "RageMeter"
+	rage_bar.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	# Assuming 1280x720 window, adjust if different
+	rage_bar.position = Vector2(1010, 20) 
+	rage_bar.size = Vector2(250, 30)
+	rage_bar.max_value = 100
+	rage_bar.value = 0
+	rage_bar.modulate = Color(1, 0, 0) # Merah
+	rage_bar.hide()
+	$CanvasLayer.add_child(rage_bar)
+	
 	# BGM Ingame (dengan efek distorsi/redup lewat pitch & volume)
 	var bgm_player = AudioStreamPlayer.new()
 	var bgm_stream = preload("res://assets/Audio/FMB Ingamever.mp3")
@@ -74,14 +102,27 @@ func _ready():
 	await get_tree().create_timer(1.0).timeout
 	_start_dialogue()
 
+func _process(delta):
+	if is_typing_dialogue and dialogue_box.visible:
+		var current_visible = dialogue_label.visible_characters
+		if current_visible > last_visible_characters:
+			if current_visible <= dialogue_label.text.length() and current_visible > 0:
+				var char = dialogue_label.text[current_visible - 1]
+				if char != " " and char != "\n":
+					blip_player.play()
+			last_visible_characters = current_visible
+
 func _start_dialogue():
 	dialogue_box.show()
 	_show_next_dialogue()
 
 func _show_next_dialogue():
 	if current_dialogue_idx < dialogues.size():
+		name_tag.text = "Me"
+		blip_player.pitch_scale = 0.6
 		dialogue_label.text = dialogues[current_dialogue_idx]
 		dialogue_label.visible_characters = 0
+		last_visible_characters = 0
 		is_typing_dialogue = true
 		
 		if dialogue_tween and dialogue_tween.is_valid():
@@ -172,6 +213,7 @@ func _type_next_char():
 		
 		# Putar suara jika bukan spasi atau baris baru
 		if char != " " and char != "\n":
+			blip_player.pitch_scale = 1.0
 			blip_player.play()
 			
 		if char == '.' or char == ',' or char == '\n':
@@ -194,7 +236,16 @@ func _play_dialogue_line(speaker: String, text: String):
 	name_tag.text = speaker
 	dialogue_label.text = text
 	dialogue_label.visible_characters = 0
+	last_visible_characters = 0
 	is_typing_dialogue = true
+	
+	if speaker == "Me":
+		blip_player.pitch_scale = 0.6
+	elif speaker == "Ashy" or speaker == "???":
+		blip_player.pitch_scale = 1.4
+	else:
+		blip_player.pitch_scale = 1.0
+		
 	if dialogue_tween and dialogue_tween.is_valid():
 		dialogue_tween.kill()
 	dialogue_tween = create_tween()
@@ -209,6 +260,7 @@ func _advance_post_tv():
 		_play_dialogue_line("Me", "It was just in the other city yesterday, how did it spread here so fast...")
 		post_tv_phase = 2
 	elif post_tv_phase == 2:
+		background.texture = preload("res://assets/UI/front_door.jpg")
 		_play_dialogue_line("???", "* KNOCK KNOCK *")
 		post_tv_phase = 3
 	elif post_tv_phase == 3:
@@ -224,6 +276,7 @@ func _advance_post_tv():
 		_play_dialogue_line("System", "Not long after, she entered my house. I didn't even know who she was, but she looked very strange.")
 		post_tv_phase = 12
 	elif post_tv_phase == 12:
+		background.texture = preload("res://assets/UI/playerhome.jpg")
 		character_sprite.show()
 		_change_character_sprite(tex_ashy_happy)
 		_play_dialogue_line("???", "It's nice of you to let me in.")
@@ -262,7 +315,39 @@ func _advance_post_tv():
 	elif post_tv_phase == 21:
 		_change_character_sprite(tex_ashy_angry)
 		_play_dialogue_line("Ashy", "What do you think I'm doing here, idiot!")
-		post_tv_phase = 99
+		post_tv_phase = 40
+	elif post_tv_phase == 40:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("Me", "How rude. Alright, sit down over there first.")
+		post_tv_phase = 41
+	elif post_tv_phase == 41:
+		_change_character_sprite(tex_ashy_angry)
+		_play_dialogue_line("Ashy", "Hmph. Humans are indeed insensitive.")
+		post_tv_phase = 42
+	elif post_tv_phase == 42:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("Me", "(Ugh... I don't even know how to talk to girls...)")
+		post_tv_phase = 43
+	elif post_tv_phase == 43:
+		background.texture = preload("res://assets/UI/kitchen.jpg")
+		character_sprite.hide()
+		_play_dialogue_line("System", "I finally went to the kitchen, made some warm chocolate milk, and got some bread.")
+		post_tv_phase = 44
+	elif post_tv_phase == 44:
+		dialogue_box.hide()
+		post_tv_phase = 445 # Cegah klik spasi memunculkan minigame berkali-kali
+		var minigame = preload("res://CookingMinigame.gd").new()
+		add_child(minigame)
+		minigame.minigame_finished.connect(_on_minigame_finished)
+	elif post_tv_phase == 45:
+		_play_dialogue_line("Me", "Wait a minute, did she just say humans are insensitive?")
+		post_tv_phase = 46
+	elif post_tv_phase == 46:
+		_play_dialogue_line("Me", "Then...")
+		post_tv_phase = 47
+	elif post_tv_phase == 47:
+		dialogue_box.hide()
+		_show_choice(["(Ah, maybe it's just my imagination)", "(Is she a ghost? An alien? A monster? A robot?)"], _on_choice_3)
 	elif post_tv_phase == 30:
 		_play_dialogue_line("???", "Seems like no one is home...")
 		post_tv_phase = 21
@@ -310,6 +395,32 @@ func _on_choice_2(idx: int):
 	else:
 		_play_dialogue_line("???", "...")
 		post_tv_phase = 30
+
+func _on_choice_3(idx: int):
+	choice_container.queue_free()
+	
+	# Kembali ke ruang tamu
+	background.texture = preload("res://assets/UI/playerhome.jpg")
+	character_sprite.show()
+	_change_character_sprite(tex_ashy)
+	
+	dialogue_box.show()
+	if idx == 0:
+		_play_dialogue_line("Me", "(Whatever, the important thing is she eats first.)")
+		post_tv_phase = 99
+	else:
+		_play_dialogue_line("Me", "(Or maybe she's something else...)")
+		# Sanity -10
+		sanity_bar.value -= 10
+		post_tv_phase = 99
+
+func _on_minigame_finished():
+	sanity_bar.show()
+	rage_bar.show()
+	
+	dialogue_box.show()
+	_play_dialogue_line("Me", "...")
+	post_tv_phase = 45
 
 func _change_character_sprite(new_texture: Texture2D):
 	if character_sprite.texture == new_texture:
