@@ -9,8 +9,10 @@ extends Control
 @onready var tv_bg = $CanvasLayer/ColorRect
 @onready var background = $Background
 
-var sanity_bar: ProgressBar
+var love_bar: ProgressBar
 var rage_bar: ProgressBar
+var love_container: VBoxContainer
+var rage_container: VBoxContainer
 
 var tex_tv = preload("res://assets/UI/tv_polos.jpg")
 
@@ -45,7 +47,7 @@ var last_visible_characters = 0
 
 var tv_done_waiting = false
 var post_tv_phase = 0
-var choice_container : VBoxContainer
+var choice_container : Control
 
 func _ready():
 	broadcast_label.text = ""
@@ -66,28 +68,43 @@ func _ready():
 	add_child(blip_player)
 	
 	# Setup Meters
-	sanity_bar = ProgressBar.new()
-	sanity_bar.name = "SanityMeter"
-	sanity_bar.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	sanity_bar.position = Vector2(20, 20)
-	sanity_bar.size = Vector2(250, 30)
-	sanity_bar.max_value = 100
-	sanity_bar.value = 100
-	sanity_bar.modulate = Color(0, 1, 0) # Hijau
-	sanity_bar.hide()
-	$CanvasLayer.add_child(sanity_bar)
+	love_container = VBoxContainer.new()
+	love_container.name = "LoveContainer"
+	love_container.position = Vector2(20, 20)
+	
+	var love_label = Label.new()
+	love_label.text = "Love Meter"
+	love_container.add_child(love_label)
+	
+	love_bar = ProgressBar.new()
+	love_bar.name = "LoveMeter"
+	love_bar.custom_minimum_size = Vector2(250, 30)
+	love_bar.max_value = 100
+	love_bar.value = 0
+	love_bar.modulate = Color(1, 0.4, 0.7) # Pink
+	love_container.add_child(love_bar)
+	
+	rage_container = VBoxContainer.new()
+	rage_container.name = "RageContainer"
+	rage_container.position = Vector2(20, 90)
+	
+	var rage_label = Label.new()
+	rage_label.text = "Rage Meter"
+	rage_container.add_child(rage_label)
 	
 	rage_bar = ProgressBar.new()
 	rage_bar.name = "RageMeter"
-	rage_bar.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	# Assuming 1280x720 window, adjust if different
-	rage_bar.position = Vector2(1010, 20) 
-	rage_bar.size = Vector2(250, 30)
+	rage_bar.custom_minimum_size = Vector2(250, 30)
 	rage_bar.max_value = 100
 	rage_bar.value = 0
 	rage_bar.modulate = Color(1, 0, 0) # Merah
-	rage_bar.hide()
-	$CanvasLayer.add_child(rage_bar)
+	rage_container.add_child(rage_bar)
+	
+	love_container.hide()
+	rage_container.hide()
+	
+	$CanvasLayer.add_child(love_container)
+	$CanvasLayer.add_child(rage_container)
 	
 	# BGM Ingame (dengan efek distorsi/redup lewat pitch & volume)
 	var bgm_player = AudioStreamPlayer.new()
@@ -144,6 +161,13 @@ func _input(event):
 	elif event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
 		is_advance_action = true
 		
+	if is_advance_action:
+		# Hide skip indicator on first interaction to keep screen clean
+		if skip_indicator.visible:
+			var tw = create_tween()
+			tw.tween_property(skip_indicator, "modulate:a", 0.0, 0.5)
+			tw.finished.connect(func(): skip_indicator.hide())
+			
 		if post_tv_phase > 0:
 			if is_typing_dialogue:
 				is_typing_dialogue = false
@@ -160,7 +184,6 @@ func _input(event):
 				type_timer.stop()
 				current_char = full_text.length()
 				broadcast_label.text = full_text
-				skip_indicator.show()
 				tv_done_waiting = true
 			elif tv_done_waiting:
 				tv_done_waiting = false
@@ -222,7 +245,6 @@ func _type_next_char():
 			type_timer.start(type_speed)
 	else:
 		type_timer.stop()
-		skip_indicator.show()
 		tv_done_waiting = true
 
 func _start_post_tv():
@@ -278,6 +300,8 @@ func _advance_post_tv():
 	elif post_tv_phase == 12:
 		background.texture = preload("res://assets/UI/playerhome.jpg")
 		character_sprite.show()
+		love_container.show()
+		rage_container.show()
 		_change_character_sprite(tex_ashy_happy)
 		_play_dialogue_line("???", "It's nice of you to let me in.")
 		post_tv_phase = 13
@@ -348,32 +372,49 @@ func _advance_post_tv():
 	elif post_tv_phase == 47:
 		dialogue_box.hide()
 		_show_choice(["(Ah, maybe it's just my imagination)", "(Is she a ghost? An alien? A monster? A robot?)"], _on_choice_3)
-	elif post_tv_phase == 30:
+	elif post_tv_phase == 50:
 		_play_dialogue_line("???", "Seems like no one is home...")
-		post_tv_phase = 21
-	elif post_tv_phase == 21:
+		post_tv_phase = 51
+	elif post_tv_phase == 51:
 		_play_dialogue_line("???", "Hello?")
-		post_tv_phase = 22
-	elif post_tv_phase == 22:
+		post_tv_phase = 52
+	elif post_tv_phase == 52:
 		dialogue_box.hide()
 		_show_choice(["Check from the curtains", "Stay silent"], _on_choice_2)
-	elif post_tv_phase == 30:
+	elif post_tv_phase == 53:
 		_play_dialogue_line("System", "(The mysterious woman leaves. SAFE ENDING)")
-		post_tv_phase = 99
+		post_tv_phase = 1000 # Wait
+	elif post_tv_phase == 99:
+		_change_character_sprite(tex_ashy_happy)
+		_play_dialogue_line("Ashy", "Would you like to play a Q&A game with me?")
+		post_tv_phase = 100
+	elif post_tv_phase == 100:
+		_change_character_sprite(tex_ashy)
+		_play_dialogue_line("Me", "Uh, okay?")
+		post_tv_phase = 101
+	elif post_tv_phase == 101:
+		# Save love/rage meter values before transitioning? We can just pass them globally via an Autoload if needed, or instantiate the next scene. For simplicity, we can use an Autoload, but let's just let TheBond.gd reset or read them. Wait, user wants them to start from 0 for now. So we'll just switch scene.
+		get_tree().change_scene_to_file("res://TheBond.tscn")
 
 func _show_choice(choices: Array, callback: Callable):
 	if choice_container:
 		choice_container.queue_free()
-	choice_container = VBoxContainer.new()
-	choice_container.set_anchors_preset(Control.PRESET_CENTER)
+	
+	choice_container = CenterContainer.new()
+	choice_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+	
+	var vbox = VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 20)
 	
 	for i in range(choices.size()):
 		var btn = Button.new()
 		btn.text = choices[i]
 		btn.custom_minimum_size = Vector2(300, 50)
 		btn.pressed.connect(callback.bind(i))
-		choice_container.add_child(btn)
+		vbox.add_child(btn)
 		
+	choice_container.add_child(vbox)
 	add_child(choice_container)
 
 func _on_choice_1(idx: int):
@@ -384,7 +425,7 @@ func _on_choice_1(idx: int):
 		post_tv_phase = 9  # Sisipkan fase untuk "Me"
 	else:
 		_play_dialogue_line("???", "...")
-		post_tv_phase = 20
+		post_tv_phase = 50
 
 func _on_choice_2(idx: int):
 	choice_container.queue_free()
@@ -394,7 +435,7 @@ func _on_choice_2(idx: int):
 		post_tv_phase = 9
 	else:
 		_play_dialogue_line("???", "...")
-		post_tv_phase = 30
+		post_tv_phase = 53
 
 func _on_choice_3(idx: int):
 	choice_container.queue_free()
@@ -402,6 +443,8 @@ func _on_choice_3(idx: int):
 	# Kembali ke ruang tamu
 	background.texture = preload("res://assets/UI/playerhome.jpg")
 	character_sprite.show()
+	love_container.show()
+	rage_container.show()
 	_change_character_sprite(tex_ashy)
 	
 	dialogue_box.show()
@@ -410,13 +453,13 @@ func _on_choice_3(idx: int):
 		post_tv_phase = 99
 	else:
 		_play_dialogue_line("Me", "(Or maybe she's something else...)")
-		# Sanity -10
-		sanity_bar.value -= 10
+		# Love -10
+		love_bar.value -= 10
 		post_tv_phase = 99
 
 func _on_minigame_finished():
-	sanity_bar.show()
-	rage_bar.show()
+	love_container.show()
+	rage_container.show()
 	
 	dialogue_box.show()
 	_play_dialogue_line("Me", "...")

@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://jumpscare1"]
+
+[ext_resource type="Script" uid="uid://bmdtjsqgp6mqq" path="res://Jumpscare.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://djxxqrpykcs5r" path="res://assets/Ashy/ashy_mad.png" id="2_tex"]
+
+[node name="Jumpscare" type="Control" unique_id=250554237]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1418577802]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_tex")
+expand_mode = 1
+stretch_mode = 5

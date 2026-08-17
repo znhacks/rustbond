@@ -1,0 +1,232 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Do you believe that true love requires sacrifice, even if it means losing a part of yourself?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Yes, sacrifice is the core of love.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Only if they deserve it.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "No, love shouldn't hurt.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "pertanyaan": "If the person you loved turned into a monster... would you run away, or let them devour you?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ashy's eyes lock onto your neck... Choose carefully.",
+    "pilihan": [
+      {
+        "teks": "I would stay by their side, no matter what.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I would try to cure them.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "I would run to save myself.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Why do humans always abandon the things they don't understand?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Fear of the unknown.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Because they are cautious.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Because humans are selfish.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Is it possible to love someone while simultaneously hating everything they have done?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Yes, emotions are complex and contradictory.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Maybe, but it's toxic.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "No, hate destroys love.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "pertanyaan": "If I told you I enjoyed the screams of those scientists... would you judge me?",
+    "is_krusial": true,
+    "peringatan_krusial": "A sinister smile creeps on Ashy's face. She is testing your loyalty.",
+    "pilihan": [
+      {
+        "teks": "They deserved it for what they did to you.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'd prefer not to answer.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Yes, murder is wrong.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Have you ever felt so lonely that you'd accept comfort even from a parasite?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Yes... loneliness makes you desperate.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I've never been that lonely.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "No, I value my dignity.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "pertanyaan": "What matters more in a relationship? Truth... or comforting lies?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "The truth, no matter how much it hurts.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "A balance of both.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Comforting lies.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "pertanyaan": "If I could make you immortal, but you'd have to feel my pain forever... would you accept?",
+    "is_krusial": true,
+    "peringatan_krusial": "She steps closer. Her presence feels suffocating. Do not reject her.",
+    "pilihan": [
+      {
+        "teks": "I'd gladly share your pain.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Only if the pain eventually stops.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "No, immortality is a curse.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Do you think monsters are born, or made by human cruelty?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Cruelty breeds monsters.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "It depends on the person.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Monsters are born that way.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Am I beautiful to you... even with the blood on my hands?",
+    "is_krusial": true,
+    "peringatan_krusial": "Her tone drops. A wrong answer here might be your last.",
+    "pilihan": [
+      {
+        "teks": "Your true beauty lies in your strength.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Blood washes off.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "You are terrifying, not beautiful.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  }
+]
