@@ -318,8 +318,8 @@ func setup_title_effects():
 		
 		// Deteksi apakah ini pass teks, outline, atau shadow berdasarkan warna input (COLOR)
 		if (COLOR.r < 0.6) {
-			// Pass outline/shadow: Pendaran Merah Menyala (Red Glow)
-			COLOR = vec4(1.0, 0.15, 0.15, tex.a * COLOR.a * 0.95);
+			// Pass outline/shadow (gelap/hitam)
+			COLOR = vec4(COLOR.rgb, tex.a * COLOR.a);
 		} else {
 			// Pass teks utama (terang)
 			vec2 n_pos = local_pos / node_size;
