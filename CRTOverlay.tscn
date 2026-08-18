@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://crt_overlay_scene"]
+
+[ext_resource type="Script" path="res://CRTOverlay.gd" id="1_script"]
+
+[node name="CRTOverlay" type="CanvasLayer"]
+layer = 95
+script = ExtResource("1_script")

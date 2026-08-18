@@ -49,7 +49,13 @@ var tv_done_waiting = false
 var post_tv_phase = 0
 var choice_container : Control
 
+var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
+
 func _ready():
+	if dialogue_label: dialogue_label.add_theme_font_override("normal_font", font_vt323)
+	if broadcast_label: broadcast_label.add_theme_font_override("font", font_vt323)
+	if name_tag: name_tag.add_theme_font_override("font", font_vt323)
+	
 	broadcast_label.text = ""
 	dialogue_label.text = ""
 	tv_bg.color.a = 0.0
@@ -74,6 +80,8 @@ func _ready():
 	
 	var love_label = Label.new()
 	love_label.text = "Love Meter"
+	love_label.add_theme_font_override("font", font_vt323)
+	love_label.add_theme_font_size_override("font_size", 22)
 	love_container.add_child(love_label)
 	
 	love_bar = ProgressBar.new()
@@ -82,6 +90,8 @@ func _ready():
 	love_bar.max_value = 100
 	love_bar.value = 0
 	love_bar.modulate = Color(1, 0.4, 0.7) # Pink
+	love_bar.add_theme_font_override("font", font_vt323)
+	love_bar.add_theme_font_size_override("font_size", 20)
 	love_container.add_child(love_bar)
 	
 	rage_container = VBoxContainer.new()
@@ -90,6 +100,8 @@ func _ready():
 	
 	var rage_label = Label.new()
 	rage_label.text = "Rage Meter"
+	rage_label.add_theme_font_override("font", font_vt323)
+	rage_label.add_theme_font_size_override("font_size", 22)
 	rage_container.add_child(rage_label)
 	
 	rage_bar = ProgressBar.new()
@@ -98,7 +110,15 @@ func _ready():
 	rage_bar.max_value = 100
 	rage_bar.value = 0
 	rage_bar.modulate = Color(1, 0, 0) # Merah
+	rage_bar.add_theme_font_override("font", font_vt323)
+	rage_bar.add_theme_font_size_override("font_size", 20)
 	rage_container.add_child(rage_bar)
+	
+	# Skip Indicator font
+	var skip_label = skip_indicator.get_node_or_null("HBoxContainer/SkipIndicator")
+	if skip_label:
+		skip_label.add_theme_font_override("font", font_vt323)
+		skip_label.add_theme_font_size_override("font_size", 22)
 	
 	love_container.hide()
 	rage_container.hide()
@@ -396,6 +416,43 @@ func _advance_post_tv():
 		# Save love/rage meter values before transitioning? We can just pass them globally via an Autoload if needed, or instantiate the next scene. For simplicity, we can use an Autoload, but let's just let TheBond.gd reset or read them. Wait, user wants them to start from 0 for now. So we'll just switch scene.
 		get_tree().change_scene_to_file("res://TheBond.tscn")
 
+func apply_gray_choice_button_style(btn: Button):
+	btn.add_theme_font_override("font", font_vt323)
+	btn.add_theme_font_size_override("font_size", 28)
+	btn.add_theme_color_override("font_color", Color(0.88, 0.88, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+	btn.add_theme_color_override("font_pressed_color", Color(0.7, 0.7, 0.75, 1.0))
+	btn.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.9))
+	btn.add_theme_constant_override("shadow_offset_x", 2)
+	btn.add_theme_constant_override("shadow_offset_y", 2)
+	
+	var sb_normal = StyleBoxFlat.new()
+	sb_normal.bg_color = Color(0.15, 0.15, 0.17, 0.88)
+	sb_normal.border_width_left = 2
+	sb_normal.border_width_top = 2
+	sb_normal.border_width_right = 2
+	sb_normal.border_width_bottom = 2
+	sb_normal.border_color = Color(0.45, 0.45, 0.5, 0.85)
+	sb_normal.corner_radius_top_left = 8
+	sb_normal.corner_radius_top_right = 8
+	sb_normal.corner_radius_bottom_right = 8
+	sb_normal.corner_radius_bottom_left = 8
+	sb_normal.shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+	sb_normal.shadow_size = 4
+	btn.add_theme_stylebox_override("normal", sb_normal)
+	
+	var sb_hover = sb_normal.duplicate()
+	sb_hover.bg_color = Color(0.28, 0.28, 0.32, 0.95)
+	sb_hover.border_color = Color(0.75, 0.75, 0.85, 1.0)
+	sb_hover.shadow_color = Color(0.5, 0.5, 0.6, 0.45)
+	sb_hover.shadow_size = 8
+	btn.add_theme_stylebox_override("hover", sb_hover)
+	
+	var sb_pressed = sb_normal.duplicate()
+	sb_pressed.bg_color = Color(0.38, 0.38, 0.42, 1.0)
+	sb_pressed.border_color = Color(0.9, 0.9, 0.95, 1.0)
+	btn.add_theme_stylebox_override("pressed", sb_pressed)
+
 func _show_choice(choices: Array, callback: Callable):
 	if choice_container:
 		choice_container.queue_free()
@@ -410,7 +467,8 @@ func _show_choice(choices: Array, callback: Callable):
 	for i in range(choices.size()):
 		var btn = Button.new()
 		btn.text = choices[i]
-		btn.custom_minimum_size = Vector2(300, 50)
+		btn.custom_minimum_size = Vector2(320, 55)
+		apply_gray_choice_button_style(btn)
 		btn.pressed.connect(callback.bind(i))
 		vbox.add_child(btn)
 		

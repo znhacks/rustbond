@@ -23,11 +23,18 @@ var dialogue_tween: Tween
 var last_visible_characters = 0
 var last_narration_characters = 0
 
+var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
+
 func _ready():
 	blip_player = AudioStreamPlayer.new()
 	blip_player.stream = _generate_8bit_blip()
 	blip_player.volume_db = -10.0
 	add_child(blip_player)
+	
+	# Apply VT323 to dialogue and narration
+	if dialogue_text: dialogue_text.add_theme_font_override("normal_font", font_vt323)
+	if name_tag: name_tag.add_theme_font_override("font", font_vt323)
+	if narration_label: narration_label.add_theme_font_override("font", font_vt323)
 	
 	var tween = create_tween()
 	tween.tween_property(fade_rect, "modulate:a", 0.0, 2.0)
@@ -98,6 +105,43 @@ func _show_next_line():
 	dialogue_tween.tween_property(dialogue_text, "visible_characters", line["text"].length(), line["text"].length() * 0.05)
 	dialogue_tween.finished.connect(func(): is_typing = false)
 
+func apply_gray_choice_button_style(btn: Button):
+	btn.add_theme_font_override("font", font_vt323)
+	btn.add_theme_font_size_override("font_size", 28)
+	btn.add_theme_color_override("font_color", Color(0.88, 0.88, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+	btn.add_theme_color_override("font_pressed_color", Color(0.7, 0.7, 0.75, 1.0))
+	btn.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.9))
+	btn.add_theme_constant_override("shadow_offset_x", 2)
+	btn.add_theme_constant_override("shadow_offset_y", 2)
+	
+	var sb_normal = StyleBoxFlat.new()
+	sb_normal.bg_color = Color(0.15, 0.15, 0.17, 0.88)
+	sb_normal.border_width_left = 2
+	sb_normal.border_width_top = 2
+	sb_normal.border_width_right = 2
+	sb_normal.border_width_bottom = 2
+	sb_normal.border_color = Color(0.45, 0.45, 0.5, 0.85)
+	sb_normal.corner_radius_top_left = 8
+	sb_normal.corner_radius_top_right = 8
+	sb_normal.corner_radius_bottom_right = 8
+	sb_normal.corner_radius_bottom_left = 8
+	sb_normal.shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+	sb_normal.shadow_size = 4
+	btn.add_theme_stylebox_override("normal", sb_normal)
+	
+	var sb_hover = sb_normal.duplicate()
+	sb_hover.bg_color = Color(0.28, 0.28, 0.32, 0.95)
+	sb_hover.border_color = Color(0.75, 0.75, 0.85, 1.0)
+	sb_hover.shadow_color = Color(0.5, 0.5, 0.6, 0.45)
+	sb_hover.shadow_size = 8
+	btn.add_theme_stylebox_override("hover", sb_hover)
+	
+	var sb_pressed = sb_normal.duplicate()
+	sb_pressed.bg_color = Color(0.38, 0.38, 0.42, 1.0)
+	sb_pressed.border_color = Color(0.9, 0.9, 0.95, 1.0)
+	btn.add_theme_stylebox_override("pressed", sb_pressed)
+
 func _show_choices():
 	phase = 1
 	dialogue_box.hide()
@@ -109,15 +153,15 @@ func _show_choices():
 	
 	var btn_human = Button.new()
 	btn_human.text = "Human"
-	btn_human.add_theme_font_size_override("font_size", 24)
-	btn_human.custom_minimum_size = Vector2(200, 50)
+	btn_human.custom_minimum_size = Vector2(250, 55)
+	apply_gray_choice_button_style(btn_human)
 	btn_human.pressed.connect(_on_human_chosen)
 	vbox.add_child(btn_human)
 	
 	var btn_parasite = Button.new()
 	btn_parasite.text = "Parasite"
-	btn_parasite.add_theme_font_size_override("font_size", 24)
-	btn_parasite.custom_minimum_size = Vector2(200, 50)
+	btn_parasite.custom_minimum_size = Vector2(250, 55)
+	apply_gray_choice_button_style(btn_parasite)
 	btn_parasite.pressed.connect(_on_parasite_chosen)
 	vbox.add_child(btn_parasite)
 

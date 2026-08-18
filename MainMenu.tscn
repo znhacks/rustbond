@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cj72sfw3ylv30" path="res://assets/Ashy/ashy_tittle.png" id="3_char"]
 [ext_resource type="FontFile" uid="uid://cua3g8brd3que" path="res://assets/Fonts/Martyric_PersonalUse.ttf" id="4_iwfq2"]
 [ext_resource type="FontFile" uid="uid://dp4gq3kxhj34k" path="res://assets/Fonts/HelpMe.ttf" id="5_font"]
+[ext_resource type="Texture2D" uid="uid://he7o1ktw508x" path="res://assets/UI/warnline.png" id="6_7r1g0"]
 
 [node name="MainMenu" type="Control" unique_id=1051116489]
 layout_mode = 3
@@ -25,6 +26,76 @@ grow_vertical = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=319226552]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 228.0
+offset_top = -258.0
+offset_right = 1493.0
+offset_bottom = -61.0
+rotation = 0.40317106
+texture = ExtResource("6_7r1g0")
+
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=917812295]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 555.0
+offset_top = -45.000015
+offset_right = 1820.0
+offset_bottom = 151.99998
+rotation = 0.45553094
+texture = ExtResource("6_7r1g0")
+
+[node name="TextureRect4" type="TextureRect" parent="." unique_id=1902056744]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 569.0
+offset_top = 45.999985
+offset_right = 1834.0
+offset_bottom = 242.99998
+rotation = 0.45553094
+texture = ExtResource("6_7r1g0")
+
+[node name="TextureRect5" type="TextureRect" parent="." unique_id=2023036323]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 580.0
+offset_top = 76.0
+offset_right = 1845.0
+offset_bottom = 273.0
+rotation = 0.45553094
+texture = ExtResource("6_7r1g0")
+
+[node name="TextureRect6" type="TextureRect" parent="." unique_id=1229722096]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 605.0
+offset_top = 138.00002
+offset_right = 1870.0
+offset_bottom = 335.0
+rotation = 0.45553094
+texture = ExtResource("6_7r1g0")
+
+[node name="TextureRect7" type="TextureRect" parent="." unique_id=1236358752]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 589.0
+offset_top = 195.00002
+offset_right = 1854.0
+offset_bottom = 392.0
+rotation = 0.45553094
+texture = ExtResource("6_7r1g0")
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=755520117]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 439.0
+offset_top = -323.0
+offset_right = 1704.0
+offset_bottom = -126.0
+rotation = 0.40317106
+texture = ExtResource("6_7r1g0")
 
 [node name="Character" type="Sprite2D" parent="." unique_id=1788947236]
 position = Vector2(300, 375)
@@ -76,7 +147,7 @@ theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 24
-text = "When the rusty world bonds with you."
+text = "why the rust wanted to bonds with you?."
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=1021668699]

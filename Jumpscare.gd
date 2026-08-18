@@ -18,9 +18,9 @@ func _ready():
 	_apply_vignette_blur()
 	
 	blip_player = AudioStreamPlayer.new()
-	blip_player.stream = _generate_8bit_blip()
-	blip_player.volume_db = 8.0
-	blip_player.pitch_scale = 3.0
+	blip_player.stream = _generate_scream_sound()
+	blip_player.volume_db = 10.0
+	blip_player.pitch_scale = 1.0
 	add_child(blip_player)
 	blip_player.play()
 	
@@ -106,21 +106,42 @@ func _process(delta):
 		var offset_y = randf_range(-shake_intensity, shake_intensity)
 		bg.position = Vector2(offset_x, offset_y)
 
-func _generate_8bit_blip() -> AudioStreamWAV:
+func _generate_scream_sound() -> AudioStreamWAV:
 	var wav := AudioStreamWAV.new()
 	wav.format = AudioStreamWAV.FORMAT_8_BITS
 	wav.mix_rate = 22050
 	
-	var tone_duration := 0.1
-	var tone_frequency := 300.0
-	var frame_count := int(wav.mix_rate * tone_duration)
+	var duration := 1.2
+	var frame_count := int(wav.mix_rate * duration)
 	var data := PackedByteArray()
 	data.resize(frame_count)
 	
 	for i in range(frame_count):
-		var time := float(i) / wav.mix_rate
-		var wave := 1.0 if sin(time * tone_frequency * TAU) > 0.0 else -1.0
-		data[i] = int(wave * 40) + 128
+		var t := float(i) / wav.mix_rate
+		
+		# Envelope: sharp attack, exponential decay
+		var env := 1.0
+		if t < 0.05:
+			env = t / 0.05
+		else:
+			env = exp(-(t - 0.05) * 2.5)
+			
+		# Frequency glissando/scream sweep (from 1400 Hz dropping to 450 Hz)
+		var base_freq := 1400.0 - 950.0 * (t / duration)
+		
+		# Vibrato & vocal tract resonance modulation
+		var vibrato := sin(t * 45.0 * PI) * 150.0
+		var freq := base_freq + vibrato
+		
+		# Main vocal wave + noise distortion
+		var wave1 := sin(t * freq * TAU)
+		var wave2 := sin(t * (freq * 1.5) * TAU) * 0.5
+		var noise := (randf() - 0.5) * 0.8
+		
+		var mix_sample := (wave1 * 0.5 + wave2 * 0.3 + noise * 0.4) * env
+		mix_sample = clamp(mix_sample, -1.0, 1.0)
+		
+		data[i] = int(mix_sample * 120.0) + 128
 		
 	wav.data = data
 	return wav

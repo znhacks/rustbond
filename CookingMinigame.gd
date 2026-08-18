@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 signal minigame_finished
 
@@ -17,44 +17,79 @@ var dragged_item = null
 var drag_offset = Vector2.ZERO
 var original_pos = Vector2.ZERO
 
+var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
+
+var instruction_container: MarginContainer
+var instruction_panel: PanelContainer
+var instruction_label: Label
+
 func _ready():
-	# Make it full screen
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	layer = 80
 	
+	# Transparan soft (35% dim) agar latar kitchen di belakangnya TETAP KELIHATAN
 	bg = ColorRect.new()
-	bg.color = Color(0.1, 0.1, 0.1, 0.9)
+	bg.color = Color(0.0, 0.0, 0.0, 0.35)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
 	
-	var label = Label.new()
-	label.text = "Mix the sachet into the water glass, then put the bread and chocolate milk on the plate!"
-	label.position = Vector2(50, 50)
-	label.add_theme_font_size_override("font_size", 24)
-	add_child(label)
-	
 	_create_slots()
 	_create_items()
+	
+	# Panel Instruksi di bagian paling bawah layar
+	instruction_container = MarginContainer.new()
+	instruction_container.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	instruction_container.offset_top = -85
+	instruction_container.offset_bottom = -15
+	instruction_container.add_theme_constant_override("margin_left", 50)
+	instruction_container.add_theme_constant_override("margin_right", 50)
+	instruction_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(instruction_container)
+	
+	instruction_panel = PanelContainer.new()
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.08, 0.08, 0.12, 0.88)
+	sb.border_width_top = 2
+	sb.border_color = Color(0.5, 0.5, 0.6, 0.6)
+	sb.corner_radius_top_left = 8
+	sb.corner_radius_top_right = 8
+	sb.content_margin_top = 10
+	sb.content_margin_bottom = 10
+	instruction_panel.add_theme_stylebox_override("panel", sb)
+	instruction_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	instruction_container.add_child(instruction_panel)
+	
+	instruction_label = Label.new()
+	instruction_label.text = "Mix the sachet into the water glass, then put the bread and chocolate milk on the plate!"
+	instruction_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	instruction_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	instruction_label.add_theme_font_override("font", font_vt323)
+	instruction_label.add_theme_font_size_override("font_size", 28)
+	instruction_label.add_theme_color_override("font_color", Color(0.98, 0.98, 0.98, 1.0))
+	instruction_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.95))
+	instruction_label.add_theme_constant_override("shadow_offset_x", 2)
+	instruction_label.add_theme_constant_override("shadow_offset_y", 2)
+	instruction_panel.add_child(instruction_label)
 
 func _create_slots():
 	plate_slot = TextureRect.new()
 	plate_slot.texture = preload("res://assets/Minigame/plate.jpg")
-	plate_slot.position = Vector2(400, 300)
+	plate_slot.position = Vector2(400, 220)
 	plate_slot.custom_minimum_size = Vector2(200, 200)
 	plate_slot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	add_child(plate_slot)
 	
 	mixing_glass_slot = TextureRect.new()
 	mixing_glass_slot.texture = preload("res://assets/Minigame/water.jpg")
-	mixing_glass_slot.position = Vector2(800, 300)
+	mixing_glass_slot.position = Vector2(800, 220)
 	mixing_glass_slot.custom_minimum_size = Vector2(150, 150)
 	mixing_glass_slot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	add_child(mixing_glass_slot)
 
 func _create_items():
-	bread_item = _spawn_item("res://assets/Minigame/bread.jpg", Vector2(100, 200))
+	bread_item = _spawn_item("res://assets/Minigame/bread.jpg", Vector2(100, 150))
 	bread_item.set_meta("item_id", "bread")
 	
-	sachet_item = _spawn_item("res://assets/Minigame/sachet.jpg", Vector2(100, 400))
+	sachet_item = _spawn_item("res://assets/Minigame/sachet.jpg", Vector2(100, 350))
 	sachet_item.set_meta("item_id", "sachet")
 	
 func _spawn_item(tex_path: String, pos: Vector2) -> TextureRect:
@@ -122,11 +157,22 @@ func _handle_drop(item: TextureRect):
 
 func _check_win():
 	if bread_on_plate and milk_on_plate:
+		# Sembunyikan teks instruksi panduan
+		if instruction_label:
+			instruction_label.hide()
+			
+		# Tampilkan kata "Done!" tepat di panel bagian bawah yang sama
 		var win_label = Label.new()
 		win_label.text = "Done!"
+		win_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		win_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		win_label.add_theme_font_override("font", font_vt323)
 		win_label.add_theme_font_size_override("font_size", 48)
-		win_label.position = Vector2(450, 200)
-		add_child(win_label)
+		win_label.add_theme_color_override("font_color", Color(0.2, 0.95, 0.35, 1.0))
+		win_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.95))
+		win_label.add_theme_constant_override("shadow_offset_x", 2)
+		win_label.add_theme_constant_override("shadow_offset_y", 2)
+		instruction_panel.add_child(win_label)
 		
 		await get_tree().create_timer(1.5).timeout
 		minigame_finished.emit()

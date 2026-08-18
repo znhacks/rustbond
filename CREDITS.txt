@@ -1,0 +1,36 @@
+========================================================================
+                      GAME ASSET ATTRIBUTION & CREDITS
+========================================================================
+
+1. FONTS
+------------------------------------------------------------------------
+- Press Start 2P (PressStart2P-Regular.ttf)
+  Author: CodeMan38
+  License: SIL Open Font License, 1.1 (Free for Commercial & Non-Commercial)
+  Source: https://fonts.google.com/specimen/Press+Start+2P
+
+- VT323 (VT323-Regular.ttf)
+  Author: Peter Hull
+  License: SIL Open Font License, 1.1 (Free for Commercial & Non-Commercial)
+  Source: https://fonts.google.com/specimen/VT323
+
+- Creepster (Creepster-Regular.ttf)
+  Author: Sideshow
+  License: SIL Open Font License, 1.1 (Free for Commercial & Non-Commercial)
+  Source: https://fonts.google.com/specimen/Creepster
+
+- HelpMe (HelpMe.ttf)
+  License: Free for Use / Public Domain / Personal & Game Dev
+
+2. UI & GRAPHICS
+------------------------------------------------------------------------
+- Kenney UI & Input Prompts Assets (Kenney.nl)
+  Author: Kenney (KenneyNL)
+  License: CC0 1.0 Universal (Public Domain - Free for Commercial & Non-Commercial)
+  Source: https://kenney.nl/assets
+
+- OpenGameArt Retro & Horror UI Components
+  License: CC0 1.0 Universal (Public Domain)
+  Source: https://opengameart.org/content/cc0-ui
+
+========================================================================

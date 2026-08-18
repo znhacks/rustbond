@@ -24,7 +24,7 @@ func _ready():
 	# 2. Wait one frame so UI layouts and sizes are calculated
 	await get_tree().process_frame
 	
-	# 3. Setup Elegant Buttons
+	# 3. Setup Horror Buttons (Option B)
 	var buttons = [
 		$HBoxContainer/RightMargin/VBoxContainer/PlayButton,
 		$HBoxContainer/RightMargin/VBoxContainer/OptionsButton,
@@ -35,11 +35,9 @@ func _ready():
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.pivot_offset = btn.size / 2.0
 		
-		btn.add_theme_color_override("font_shadow_color", Color(0,0,0, 0.8))
-		btn.add_theme_constant_override("shadow_offset_x", 2)
-		btn.add_theme_constant_override("shadow_offset_y", 2)
+		apply_horror_button_style(btn)
 		
-		orig_btn_colors[btn] = Color(1, 1, 1, 0.7)
+		orig_btn_colors[btn] = Color(1, 1, 1, 1.0)
 		btn.modulate = orig_btn_colors[btn]
 		
 		btn.mouse_entered.connect(_on_btn_hover.bind(btn))
@@ -220,15 +218,55 @@ func _set_glitch_intensity(val: float):
 	else:
 		char_node.rotation = 0.0
 
+var font_helpme = preload("res://assets/Fonts/HelpMe.ttf")
+var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
+
+func apply_horror_button_style(btn: Button):
+	btn.add_theme_font_override("font", font_helpme)
+	btn.add_theme_font_size_override("font_size", 36)
+	btn.add_theme_color_override("font_color", Color(0.95, 0.25, 0.25, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 0.5, 0.5, 1.0))
+	btn.add_theme_color_override("font_pressed_color", Color(0.7, 0.1, 0.1, 1.0))
+	btn.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.95))
+	btn.add_theme_constant_override("shadow_offset_x", 3)
+	btn.add_theme_constant_override("shadow_offset_y", 3)
+	
+	var sb_normal = StyleBoxFlat.new()
+	sb_normal.bg_color = Color(0.12, 0.02, 0.02, 0.85)
+	sb_normal.border_width_left = 2
+	sb_normal.border_width_top = 2
+	sb_normal.border_width_right = 2
+	sb_normal.border_width_bottom = 2
+	sb_normal.border_color = Color(0.65, 0.12, 0.12, 0.85)
+	sb_normal.corner_radius_top_left = 8
+	sb_normal.corner_radius_top_right = 8
+	sb_normal.corner_radius_bottom_right = 8
+	sb_normal.corner_radius_bottom_left = 8
+	sb_normal.shadow_color = Color(0.5, 0.0, 0.0, 0.35)
+	sb_normal.shadow_size = 6
+	btn.add_theme_stylebox_override("normal", sb_normal)
+	
+	var sb_hover = sb_normal.duplicate()
+	sb_hover.bg_color = Color(0.25, 0.04, 0.04, 0.95)
+	sb_hover.border_color = Color(0.95, 0.18, 0.18, 1.0)
+	sb_hover.shadow_color = Color(0.9, 0.1, 0.1, 0.6)
+	sb_hover.shadow_size = 12
+	btn.add_theme_stylebox_override("hover", sb_hover)
+	
+	var sb_pressed = sb_normal.duplicate()
+	sb_pressed.bg_color = Color(0.35, 0.05, 0.05, 1.0)
+	sb_pressed.border_color = Color(1.0, 0.2, 0.2, 1.0)
+	btn.add_theme_stylebox_override("pressed", sb_pressed)
+
 func _on_btn_hover(btn: Button):
 	var tween = create_tween()
-	tween.tween_property(btn, "scale", Vector2(1.15, 1.15), 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(btn, "modulate", Color(0.8, 0.1, 0.1, 1.0), 0.2)
+	tween.tween_property(btn, "scale", Vector2(1.08, 1.08), 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(btn, "modulate", Color(1.3, 0.8, 0.8, 1.0), 0.2)
 	
 func _on_btn_unhover(btn: Button):
 	var tween = create_tween()
-	tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(btn, "modulate", orig_btn_colors[btn], 0.3)
+	tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(btn, "modulate", orig_btn_colors[btn], 0.25)
 
 func _on_play_button_pressed():
 	TransitionManager.play_splash()
@@ -309,11 +347,14 @@ func setup_title_effects():
 	title.material = mat_title
 	title.resized.connect(func(): mat_title.set_shader_parameter("node_size", title.size))
 	
-	# Material untuk Subtitle (putih/abu-abu gradasinya)
+	# Material untuk Subtitle (mengadopsi warna karat gelap dari judul)
+	subtitle.add_theme_font_override("font", font_vt323)
+	subtitle.add_theme_font_size_override("font_size", 28)
+	
 	var mat_sub = ShaderMaterial.new()
 	mat_sub.shader = shader
-	mat_sub.set_shader_parameter("color_top", Color(1.0, 1.0, 1.0, 1.0))
-	mat_sub.set_shader_parameter("color_bottom", Color(0.6, 0.6, 0.6, 1.0))
+	mat_sub.set_shader_parameter("color_top", Color(0.55, 0.1, 0.1, 1.0))
+	mat_sub.set_shader_parameter("color_bottom", Color(0.25, 0.02, 0.02, 1.0))
 	mat_sub.set_shader_parameter("node_size", subtitle.size)
 	subtitle.material = mat_sub
 	subtitle.resized.connect(func(): mat_sub.set_shader_parameter("node_size", subtitle.size))
