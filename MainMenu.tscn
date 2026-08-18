@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cj72sfw3ylv30" path="res://assets/Ashy/ashy_tittle.png" id="3_char"]
 [ext_resource type="FontFile" uid="uid://cua3g8brd3que" path="res://assets/Fonts/Martyric_PersonalUse.ttf" id="4_iwfq2"]
 [ext_resource type="FontFile" uid="uid://dp4gq3kxhj34k" path="res://assets/Fonts/HelpMe.ttf" id="5_font"]
-[ext_resource type="Texture2D" uid="uid://he7o1ktw508x" path="res://assets/UI/warnline.png" id="6_7r1g0"]
+[ext_resource type="FontFile" path="res://assets/Fonts/VT323-Regular.ttf" id="6_vt323"]
 
 [node name="MainMenu" type="Control" unique_id=1051116489]
 layout_mode = 3
@@ -27,80 +27,19 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=319226552]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-layout_mode = 0
-offset_left = 228.0
-offset_top = -258.0
-offset_right = 1493.0
-offset_bottom = -61.0
-rotation = 0.40317106
-texture = ExtResource("6_7r1g0")
+[node name="Character" type="Sprite2D" parent="." unique_id=1788947236]
+position = Vector2(240, 385)
+scale = Vector2(1.3420314, 1.3420314)
+texture = ExtResource("3_char")
 
-[node name="TextureRect3" type="TextureRect" parent="." unique_id=917812295]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-layout_mode = 0
-offset_left = 555.0
-offset_top = -45.000015
-offset_right = 1820.0
-offset_bottom = 151.99998
-rotation = 0.45553094
-texture = ExtResource("6_7r1g0")
-
-[node name="TextureRect4" type="TextureRect" parent="." unique_id=1902056744]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-layout_mode = 0
-offset_left = 569.0
-offset_top = 45.999985
-offset_right = 1834.0
-offset_bottom = 242.99998
-rotation = 0.45553094
-texture = ExtResource("6_7r1g0")
-
-[node name="TextureRect5" type="TextureRect" parent="." unique_id=2023036323]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+[node name="ColorRect" type="ColorRect" parent="." unique_id=473468169]
 layout_mode = 0
 offset_left = 580.0
-offset_top = 76.0
-offset_right = 1845.0
-offset_bottom = 273.0
-rotation = 0.45553094
-texture = ExtResource("6_7r1g0")
-
-[node name="TextureRect6" type="TextureRect" parent="." unique_id=1229722096]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-layout_mode = 0
-offset_left = 605.0
-offset_top = 138.00002
-offset_right = 1870.0
-offset_bottom = 335.0
-rotation = 0.45553094
-texture = ExtResource("6_7r1g0")
-
-[node name="TextureRect7" type="TextureRect" parent="." unique_id=1236358752]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-layout_mode = 0
-offset_left = 589.0
-offset_top = 195.00002
-offset_right = 1854.0
-offset_bottom = 392.0
-rotation = 0.45553094
-texture = ExtResource("6_7r1g0")
-
-[node name="TextureRect2" type="TextureRect" parent="." unique_id=755520117]
-modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-layout_mode = 0
-offset_left = 439.0
-offset_top = -323.0
-offset_right = 1704.0
-offset_bottom = -126.0
-rotation = 0.40317106
-texture = ExtResource("6_7r1g0")
-
-[node name="Character" type="Sprite2D" parent="." unique_id=1788947236]
-position = Vector2(300, 375)
-scale = Vector2(1.3999982, 1.3999982)
-texture = ExtResource("3_char")
+offset_top = -25.0
+offset_right = 1180.0
+offset_bottom = 675.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=197315996]
 layout_mode = 1
@@ -116,13 +55,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="RightMargin" type="MarginContainer" parent="HBoxContainer" unique_id=899181847]
+custom_minimum_size = Vector2(480, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_right = 100
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RightMargin" unique_id=1871797847]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 20
 
@@ -130,12 +73,12 @@ theme_override_constants/separation = 20
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 21.58)
-theme_override_colors/font_color = Color(0.8, 0.1, 0.1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.3, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 4
-theme_override_constants/shadow_offset_y = 4
-theme_override_constants/outline_size = 8
+theme_override_colors/font_color = Color(0.95, 0.2, 0.2, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.05, 0.05, 0.95)
+theme_override_colors/font_outline_color = Color(0.9, 0.1, 0.1, 0.95)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 14
 theme_override_fonts/font = ExtResource("4_iwfq2")
 theme_override_font_sizes/font_size = 80
 text = "RUSTBOND"
@@ -143,10 +86,14 @@ horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=1489162618]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.1, 0.1, 0.95)
+theme_override_colors/font_outline_color = Color(0.85, 0.08, 0.08, 0.95)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("6_vt323")
+theme_override_font_sizes/font_size = 28
 text = "why the rust wanted to bonds with you?."
 horizontal_alignment = 1
 
@@ -155,21 +102,21 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="PlayButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=444134349]
-custom_minimum_size = Vector2(300, 60)
+custom_minimum_size = Vector2(360, 60)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 36
 text = "PLAY"
 
 [node name="OptionsButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=989105633]
-custom_minimum_size = Vector2(300, 60)
+custom_minimum_size = Vector2(360, 60)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 36
 text = "OPTIONS"
 
 [node name="ExitButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=633428558]
-custom_minimum_size = Vector2(300, 60)
+custom_minimum_size = Vector2(360, 60)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 36

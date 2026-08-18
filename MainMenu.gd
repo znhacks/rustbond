@@ -19,6 +19,8 @@ func _ready():
 	$HBoxContainer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$HBoxContainer/LeftSpacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$HBoxContainer/RightMargin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if has_node("ColorRect"):
+		$ColorRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$HBoxContainer/RightMargin/VBoxContainer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	# 2. Wait one frame so UI layouts and sizes are calculated
@@ -315,9 +317,9 @@ func setup_title_effects():
 		}
 		
 		// Deteksi apakah ini pass teks, outline, atau shadow berdasarkan warna input (COLOR)
-		if (COLOR.r < 0.5) {
-			// Pass outline atau shadow (gelap)
-			COLOR = vec4(COLOR.rgb, tex.a * COLOR.a);
+		if (COLOR.r < 0.6) {
+			// Pass outline/shadow: Pendaran Merah Menyala (Red Glow)
+			COLOR = vec4(1.0, 0.15, 0.15, tex.a * COLOR.a * 0.95);
 		} else {
 			// Pass teks utama (terang)
 			vec2 n_pos = local_pos / node_size;
@@ -347,14 +349,14 @@ func setup_title_effects():
 	title.material = mat_title
 	title.resized.connect(func(): mat_title.set_shader_parameter("node_size", title.size))
 	
-	# Material untuk Subtitle (mengadopsi warna karat gelap dari judul)
+	# Material untuk Subtitle (merah bergradasi dengan pendaran merah)
 	subtitle.add_theme_font_override("font", font_vt323)
 	subtitle.add_theme_font_size_override("font_size", 28)
 	
 	var mat_sub = ShaderMaterial.new()
 	mat_sub.shader = shader
-	mat_sub.set_shader_parameter("color_top", Color(0.55, 0.1, 0.1, 1.0))
-	mat_sub.set_shader_parameter("color_bottom", Color(0.25, 0.02, 0.02, 1.0))
+	mat_sub.set_shader_parameter("color_top", Color(0.88, 0.3, 0.3, 1.0))
+	mat_sub.set_shader_parameter("color_bottom", Color(0.48, 0.08, 0.08, 1.0))
 	mat_sub.set_shader_parameter("node_size", subtitle.size)
 	subtitle.material = mat_sub
 	subtitle.resized.connect(func(): mat_sub.set_shader_parameter("node_size", subtitle.size))
