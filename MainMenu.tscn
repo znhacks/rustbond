@@ -109,6 +109,13 @@ theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 36
 text = "OPTIONS"
 
+[node name="LibraryButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=989105634]
+custom_minimum_size = Vector2(360, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 36
+text = "LIBRARY"
+
 [node name="ExitButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=633428558]
 custom_minimum_size = Vector2(360, 60)
 layout_mode = 2
@@ -118,4 +125,5 @@ text = "EXIT"
 
 [connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/LibraryButton" to="." method="_on_library_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/RightMargin/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

@@ -1,5 +1,10 @@
 extends Control
 
+@export_group("Character Photo Settings")
+@export var photo_offset: Vector2 = Vector2(0, 0) ## Geser posisi foto karakter (X, Y)
+@export var photo_scale: Vector2 = Vector2(1.0, 1.0) ## Ubah skala / zoom foto karakter (X, Y)
+
+@onready var character_photo = $TextureRect
 @onready var fade_rect = $FadeRect
 @onready var dialogue_box = $CanvasLayer/DialogueBox
 @onready var name_tag = $CanvasLayer/DialogueBox/MarginContainer/VBoxContainer/NameTag
@@ -26,6 +31,10 @@ var last_narration_characters = 0
 var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
 
 func _ready():
+	if character_photo:
+		character_photo.position += photo_offset
+		character_photo.scale = photo_scale
+		
 	blip_player = AudioStreamPlayer.new()
 	blip_player.stream = _generate_8bit_blip()
 	blip_player.volume_db = -10.0
@@ -86,6 +95,7 @@ func _advance_dialogue():
 		_show_choices()
 
 func _start_ending_sequence():
+	SaveManager.unlock_ending("true_love")
 	phase = 0
 	current_line = 0
 	dialogue_box.show()

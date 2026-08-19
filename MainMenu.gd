@@ -30,6 +30,7 @@ func _ready():
 	var buttons = [
 		$HBoxContainer/RightMargin/VBoxContainer/PlayButton,
 		$HBoxContainer/RightMargin/VBoxContainer/OptionsButton,
+		$HBoxContainer/RightMargin/VBoxContainer/LibraryButton,
 		$HBoxContainer/RightMargin/VBoxContainer/ExitButton
 	]
 	
@@ -54,6 +55,304 @@ func _ready():
 	
 	# 6. Setup Title Gradient and Glint
 	setup_title_effects()
+
+func _on_play_button_pressed():
+	TransitionManager.play_splash()
+	TransitionManager.transition_to_scene("res://Beginning.tscn")
+
+func _on_options_button_pressed():
+	TransitionManager.play_splash()
+	print("Options button pressed.")
+
+func _on_library_button_pressed():
+	TransitionManager.play_splash()
+	_show_library_ui()
+
+func _on_exit_button_pressed():
+	TransitionManager.play_splash()
+	TransitionManager._show_quit_warning(TransitionManager.msg_exit)
+
+var library_layer: CanvasLayer
+
+func _show_library_ui():
+	if library_layer and is_instance_valid(library_layer):
+		library_layer.queue_free()
+		
+	library_layer = CanvasLayer.new()
+	library_layer.layer = 90
+	add_child(library_layer)
+	
+	var bg_overlay = ColorRect.new()
+	bg_overlay.color = Color(0.04, 0.02, 0.02, 0.94)
+	bg_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	library_layer.add_child(bg_overlay)
+	
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	library_layer.add_child(center)
+	
+	var panel = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(950, 560)
+	
+	var sb_panel = StyleBoxFlat.new()
+	sb_panel.bg_color = Color(0.08, 0.04, 0.04, 0.92)
+	sb_panel.border_width_left = 3
+	sb_panel.border_width_top = 3
+	sb_panel.border_width_right = 3
+	sb_panel.border_width_bottom = 3
+	sb_panel.border_color = Color(0.7, 0.15, 0.15, 0.9)
+	sb_panel.corner_radius_top_left = 12
+	sb_panel.corner_radius_top_right = 12
+	sb_panel.corner_radius_bottom_right = 12
+	sb_panel.corner_radius_bottom_left = 12
+	sb_panel.content_margin_left = 25
+	sb_panel.content_margin_right = 25
+	sb_panel.content_margin_top = 20
+	sb_panel.content_margin_bottom = 20
+	panel.add_theme_stylebox_override("panel", sb_panel)
+	center.add_child(panel)
+	
+	var main_vbox = VBoxContainer.new()
+	main_vbox.add_theme_constant_override("separation", 15)
+	panel.add_child(main_vbox)
+	
+	var title_lbl = Label.new()
+	title_lbl.text = "ENDING GALLERY & LIBRARY"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_override("font", font_helpme)
+	title_lbl.add_theme_font_size_override("font_size", 42)
+	title_lbl.add_theme_color_override("font_color", Color(0.95, 0.25, 0.25, 1.0))
+	main_vbox.add_child(title_lbl)
+	
+	var hsep = HSeparator.new()
+	main_vbox.add_child(hsep)
+	
+	var cards_hbox = HBoxContainer.new()
+	cards_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	cards_hbox.add_theme_constant_override("separation", 30)
+	cards_hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	main_vbox.add_child(cards_hbox)
+	
+	_populate_library_cards(cards_hbox)
+	
+	var bottom_hbox = HBoxContainer.new()
+	bottom_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	bottom_hbox.add_theme_constant_override("separation", 40)
+	main_vbox.add_child(bottom_hbox)
+	
+	var btn_clear = Button.new()
+	btn_clear.text = "Clear Library"
+	btn_clear.custom_minimum_size = Vector2(220, 50)
+	_apply_retro_button_style(btn_clear, Color(0.8, 0.2, 0.2))
+	btn_clear.pressed.connect(func(): _confirm_clear_library(cards_hbox))
+	bottom_hbox.add_child(btn_clear)
+	
+	var btn_back = Button.new()
+	btn_back.text = "Back"
+	btn_back.custom_minimum_size = Vector2(220, 50)
+	_apply_retro_button_style(btn_back, Color(0.5, 0.5, 0.5))
+	btn_back.pressed.connect(func(): library_layer.queue_free())
+	bottom_hbox.add_child(btn_back)
+
+func _populate_library_cards(container: HBoxContainer):
+	for c in container.get_children():
+		c.queue_free()
+		
+	var is_love_unlocked = SaveManager.is_unlocked("true_love")
+	var is_locked_unlocked = SaveManager.is_unlocked("locked_up")
+	
+	# --- PENGATURAN FOTO ENDING 1: TRUE LOVE ---
+	var card1 = _create_ending_card(
+		"1. True Love",
+		"You did it, she's stop the world plague" if is_love_unlocked else "???",
+		preload("res://assets/Ashy/ashy_under.png"),
+		is_love_unlocked,
+		Vector2(0, 0), # Offset posisi foto (X, Y)
+		Vector2(1.0, 1.0) # Skala/zoom foto
+	)
+	container.add_child(card1)
+	
+	# --- PENGATURAN FOTO ENDING 2: LOCKED UP ---
+	var card2 = _create_ending_card(
+		"2. Locked Up",
+		"You did it? Maybe..." if is_locked_unlocked else "???",
+		preload("res://assets/Ashy/ashy_closeup.png"),
+		is_locked_unlocked,
+		Vector2(0, 0), # Offset posisi foto (X, Y)
+		Vector2(1.0, 1.0) # Skala/zoom foto
+	)
+	container.add_child(card2)
+
+func _create_ending_card(title: String, desc: String, texture: Texture2D, unlocked: bool, img_offset: Vector2 = Vector2.ZERO, img_scale: Vector2 = Vector2.ONE) -> Control:
+	var card_panel = PanelContainer.new()
+	card_panel.custom_minimum_size = Vector2(400, 340)
+	
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.05, 0.02, 0.02, 0.88)
+	sb.border_width_left = 2
+	sb.border_width_top = 2
+	sb.border_width_right = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color(0.5, 0.15, 0.15, 0.8) if unlocked else Color(0.25, 0.25, 0.25, 0.6)
+	sb.corner_radius_top_left = 8
+	sb.corner_radius_top_right = 8
+	sb.corner_radius_bottom_right = 8
+	sb.corner_radius_bottom_left = 8
+	sb.content_margin_left = 15
+	sb.content_margin_right = 15
+	sb.content_margin_top = 15
+	sb.content_margin_bottom = 15
+	card_panel.add_theme_stylebox_override("panel", sb)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	card_panel.add_child(vbox)
+	
+	# Bingkai tempat foto ditampilkan (Ukuran default: 370 x 200)
+	var img_container = Control.new()
+	img_container.custom_minimum_size = Vector2(370, 200)
+	img_container.clip_contents = true
+	vbox.add_child(img_container)
+	
+	var img_rect = TextureRect.new()
+	img_rect.position = img_offset
+	img_rect.size = Vector2(370, 200)
+	img_rect.scale = img_scale
+	img_rect.texture = texture
+	img_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	img_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	
+	if not unlocked:
+		img_rect.modulate = Color(0.05, 0.05, 0.05, 0.8)
+	else:
+		img_rect.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		
+	img_container.add_child(img_rect)
+	
+	if not unlocked:
+		var lock_lbl = Label.new()
+		lock_lbl.text = "[ LOCKED ]"
+		lock_lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
+		lock_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lock_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lock_lbl.add_theme_font_override("font", font_vt323)
+		lock_lbl.add_theme_font_size_override("font_size", 32)
+		lock_lbl.add_theme_color_override("font_color", Color(0.7, 0.2, 0.2, 0.9))
+		img_container.add_child(lock_lbl)
+		
+	var title_lbl = Label.new()
+	title_lbl.text = title
+	title_lbl.add_theme_font_override("font", font_vt323)
+	title_lbl.add_theme_font_size_override("font_size", 28)
+	title_lbl.add_theme_color_override("font_color", Color(0.95, 0.35, 0.35, 1.0) if unlocked else Color(0.5, 0.5, 0.5, 1.0))
+	vbox.add_child(title_lbl)
+	
+	var desc_lbl = Label.new()
+	desc_lbl.text = desc
+	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc_lbl.add_theme_font_override("font", font_vt323)
+	desc_lbl.add_theme_font_size_override("font_size", 22)
+	desc_lbl.add_theme_color_override("font_color", Color(0.85, 0.85, 0.85, 1.0) if unlocked else Color(0.4, 0.4, 0.4, 1.0))
+	vbox.add_child(desc_lbl)
+	
+	return card_panel
+
+func _confirm_clear_library(cards_hbox: HBoxContainer):
+	var confirm_layer = CanvasLayer.new()
+	confirm_layer.layer = 100
+	add_child(confirm_layer)
+	
+	var dim = ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.85)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	confirm_layer.add_child(dim)
+	
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	confirm_layer.add_child(center)
+	
+	var panel = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(500, 240)
+	
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.1, 0.02, 0.02, 0.95)
+	sb.border_width_left = 2
+	sb.border_width_top = 2
+	sb.border_width_right = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color(0.9, 0.2, 0.2, 0.9)
+	sb.corner_radius_top_left = 10
+	sb.corner_radius_top_right = 10
+	sb.corner_radius_bottom_right = 10
+	sb.corner_radius_bottom_left = 10
+	sb.content_margin_left = 25
+	sb.content_margin_right = 25
+	sb.content_margin_top = 20
+	sb.content_margin_bottom = 20
+	panel.add_theme_stylebox_override("panel", sb)
+	center.add_child(panel)
+	
+	var vbox = VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 25)
+	panel.add_child(vbox)
+	
+	var msg_lbl = Label.new()
+	msg_lbl.text = "Are you sure? This will delete your ending progress"
+	msg_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	msg_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	msg_lbl.add_theme_font_override("font", font_vt323)
+	msg_lbl.add_theme_font_size_override("font_size", 28)
+	msg_lbl.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95, 1.0))
+	vbox.add_child(msg_lbl)
+	
+	var btn_hbox = HBoxContainer.new()
+	btn_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_hbox.add_theme_constant_override("separation", 30)
+	vbox.add_child(btn_hbox)
+	
+	var btn_yes = Button.new()
+	btn_yes.text = "YES"
+	btn_yes.custom_minimum_size = Vector2(140, 45)
+	_apply_retro_button_style(btn_yes, Color(0.85, 0.15, 0.15))
+	btn_yes.pressed.connect(func():
+		SaveManager.clear_library()
+		_populate_library_cards(cards_hbox)
+		confirm_layer.queue_free()
+	)
+	btn_hbox.add_child(btn_yes)
+	
+	var btn_no = Button.new()
+	btn_no.text = "CANCEL"
+	btn_no.custom_minimum_size = Vector2(140, 45)
+	_apply_retro_button_style(btn_no, Color(0.4, 0.4, 0.4))
+	btn_no.pressed.connect(func(): confirm_layer.queue_free())
+	btn_hbox.add_child(btn_no)
+
+func _apply_retro_button_style(btn: Button, border_col: Color):
+	btn.add_theme_font_override("font", font_vt323)
+	btn.add_theme_font_size_override("font_size", 26)
+	btn.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+	btn.add_theme_color_override("font_pressed_color", Color(0.7, 0.7, 0.7, 1.0))
+	
+	var sb_norm = StyleBoxFlat.new()
+	sb_norm.bg_color = Color(0.12, 0.04, 0.04, 0.88)
+	sb_norm.border_width_left = 2
+	sb_norm.border_width_top = 2
+	sb_norm.border_width_right = 2
+	sb_norm.border_width_bottom = 2
+	sb_norm.border_color = border_col
+	sb_norm.corner_radius_top_left = 6
+	sb_norm.corner_radius_top_right = 6
+	sb_norm.corner_radius_bottom_right = 6
+	sb_norm.corner_radius_bottom_left = 6
+	btn.add_theme_stylebox_override("normal", sb_norm)
+	
+	var sb_hov = sb_norm.duplicate()
+	sb_hov.bg_color = Color(0.22, 0.08, 0.08, 0.95)
+	sb_hov.border_color = border_col.lightened(0.3)
+	btn.add_theme_stylebox_override("hover", sb_hov)
 
 func _process(delta):
 	# Parallax Background Logic
@@ -269,18 +568,6 @@ func _on_btn_unhover(btn: Button):
 	var tween = create_tween()
 	tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(btn, "modulate", orig_btn_colors[btn], 0.25)
-
-func _on_play_button_pressed():
-	TransitionManager.play_splash()
-	TransitionManager.transition_to_scene("res://Beginning.tscn")
-
-func _on_options_button_pressed():
-	TransitionManager.play_splash()
-	print("Options button pressed.")
-
-func _on_exit_button_pressed():
-	TransitionManager.play_splash()
-	TransitionManager._show_quit_warning(TransitionManager.msg_exit)
 
 func _scare_player():
 	
