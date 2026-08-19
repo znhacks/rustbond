@@ -140,7 +140,8 @@ func _setup_dev_tools():
 	$CanvasLayer.add_child(dev_container)
 
 func _load_questions():
-	var file = FileAccess.open("res://data/questions.json", FileAccess.READ)
+	var q_path = "res://data/questions_id.json" if SaveManager.get_language() == "id" else "res://data/questions.json"
+	var file = FileAccess.open(q_path, FileAccess.READ)
 	if file:
 		var json_string = file.get_as_text()
 		file.close()

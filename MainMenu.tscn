@@ -107,7 +107,7 @@ custom_minimum_size = Vector2(360, 60)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 36
-text = "OPTIONS"
+text = "LANGUAGE"
 
 [node name="LibraryButton" type="Button" parent="HBoxContainer/RightMargin/VBoxContainer" unique_id=989105634]
 custom_minimum_size = Vector2(360, 60)

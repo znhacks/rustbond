@@ -95,6 +95,18 @@ func _start_ending_sequence():
 	SaveManager.unlock_ending("locked_up")
 	phase = 0
 	current_line = 0
+	
+	if SaveManager.get_language() == "id":
+		dialogue_lines = [
+			{"name": "Ashy", "text": "Aku mencintaimu... tapi kamu sangat bodoh. Aku akan menguncimu di sini selamanya."},
+			{"name": "Ashy", "text": "Tidak peduli berapa kali kamu berusaha menjawab, kamu akan tetap bersamaku di sini dalam kegelapan."}
+		]
+	else:
+		dialogue_lines = [
+			{"name": "Ashy", "text": "I love you... but you are so stupid. I will lock you here forever."},
+			{"name": "Ashy", "text": "No matter how much you try to answer, you will stay with me here in this darkness."}
+		]
+		
 	dialogue_box.show()
 	_show_next_line()
 
@@ -125,9 +137,14 @@ func _start_epilogue():
 	
 	narration_label.show()
 	
-	await _play_narration("I was locked inside the room, never to see the light of day again.")
-	await _play_narration("She loved me... but her obsession became my eternal cage.")
-	await _play_narration("But unfortunately, I died because of starvation.")
+	if SaveManager.get_language() == "id":
+		await _play_narration("Aku terkunci di dalam ruangan, tidak pernah melihat cahaya siang lagi.")
+		await _play_narration("Dia mencintaiku... tapi obsesinya menjadi sangkar abadiku.")
+		await _play_narration("Namun sayangnya, aku mati karena kelaparan.")
+	else:
+		await _play_narration("I was locked inside the room, never to see the light of day again.")
+		await _play_narration("She loved me... but her obsession became my eternal cage.")
+		await _play_narration("But unfortunately, I died because of starvation.")
 	
 	get_tree().change_scene_to_file("res://MainMenu.tscn")
 

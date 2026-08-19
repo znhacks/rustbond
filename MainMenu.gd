@@ -55,6 +55,29 @@ func _ready():
 	
 	# 6. Setup Title Gradient and Glint
 	setup_title_effects()
+	
+	_update_menu_labels()
+
+func _update_menu_labels():
+	var lang = SaveManager.get_language()
+	var play_btn = $HBoxContainer/RightMargin/VBoxContainer/PlayButton
+	var lang_btn = $HBoxContainer/RightMargin/VBoxContainer/OptionsButton
+	var lib_btn = $HBoxContainer/RightMargin/VBoxContainer/LibraryButton
+	var exit_btn = $HBoxContainer/RightMargin/VBoxContainer/ExitButton
+	var subtitle = $HBoxContainer/RightMargin/VBoxContainer/Subtitle
+	
+	if lang == "id":
+		play_btn.text = "MAIN"
+		lang_btn.text = "BAHASA"
+		lib_btn.text = "GALERI"
+		exit_btn.text = "KELUAR"
+		subtitle.text = "mengapa karat ini ingin bersatu denganmu?."
+	else:
+		play_btn.text = "PLAY"
+		lang_btn.text = "LANGUAGE"
+		lib_btn.text = "LIBRARY"
+		exit_btn.text = "EXIT"
+		subtitle.text = "why the rust wanted to bonds with you?."
 
 func _on_play_button_pressed():
 	TransitionManager.play_splash()
@@ -62,7 +85,7 @@ func _on_play_button_pressed():
 
 func _on_options_button_pressed():
 	TransitionManager.play_splash()
-	print("Options button pressed.")
+	_show_language_ui()
 
 func _on_library_button_pressed():
 	TransitionManager.play_splash()
@@ -71,6 +94,91 @@ func _on_library_button_pressed():
 func _on_exit_button_pressed():
 	TransitionManager.play_splash()
 	TransitionManager._show_quit_warning(TransitionManager.msg_exit)
+
+var lang_layer: CanvasLayer
+
+func _show_language_ui():
+	if lang_layer and is_instance_valid(lang_layer):
+		lang_layer.queue_free()
+		
+	lang_layer = CanvasLayer.new()
+	lang_layer.layer = 95
+	add_child(lang_layer)
+	
+	var dim = ColorRect.new()
+	dim.color = Color(0.04, 0.02, 0.02, 0.94)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	lang_layer.add_child(dim)
+	
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	lang_layer.add_child(center)
+	
+	var panel = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(520, 360)
+	
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.08, 0.04, 0.04, 0.95)
+	sb.border_width_left = 3
+	sb.border_width_top = 3
+	sb.border_width_right = 3
+	sb.border_width_bottom = 3
+	sb.border_color = Color(0.75, 0.15, 0.15, 0.9)
+	sb.corner_radius_top_left = 12
+	sb.corner_radius_top_right = 12
+	sb.corner_radius_bottom_right = 12
+	sb.corner_radius_bottom_left = 12
+	sb.content_margin_left = 25
+	sb.content_margin_right = 25
+	sb.content_margin_top = 20
+	sb.content_margin_bottom = 20
+	panel.add_theme_stylebox_override("panel", sb)
+	center.add_child(panel)
+	
+	var vbox = VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 20)
+	panel.add_child(vbox)
+	
+	var title_lbl = Label.new()
+	title_lbl.text = "SELECT LANGUAGE / PILIH BAHASA"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_override("font", font_helpme)
+	title_lbl.add_theme_font_size_override("font_size", 32)
+	title_lbl.add_theme_color_override("font_color", Color(0.95, 0.25, 0.25, 1.0))
+	vbox.add_child(title_lbl)
+	
+	var hsep = HSeparator.new()
+	vbox.add_child(hsep)
+	
+	var btn_en = Button.new()
+	btn_en.text = "English (Default)  [ Active ]" if SaveManager.get_language() == "en" else "English (Default)"
+	btn_en.custom_minimum_size = Vector2(360, 55)
+	_apply_retro_button_style(btn_en, Color(0.8, 0.2, 0.2) if SaveManager.get_language() == "en" else Color(0.4, 0.4, 0.4))
+	btn_en.pressed.connect(func():
+		SaveManager.set_language("en")
+		_update_menu_labels()
+		lang_layer.queue_free()
+	)
+	vbox.add_child(btn_en)
+	
+	var btn_id = Button.new()
+	btn_id.text = "Bahasa Indonesia  [ Aktif ]" if SaveManager.get_language() == "id" else "Bahasa Indonesia"
+	btn_id.custom_minimum_size = Vector2(360, 55)
+	_apply_retro_button_style(btn_id, Color(0.8, 0.2, 0.2) if SaveManager.get_language() == "id" else Color(0.4, 0.4, 0.4))
+	btn_id.pressed.connect(func():
+		SaveManager.set_language("id")
+		_update_menu_labels()
+		lang_layer.queue_free()
+	)
+	vbox.add_child(btn_id)
+	
+	var btn_back = Button.new()
+	btn_back.text = "Back / Kembali"
+	btn_back.custom_minimum_size = Vector2(360, 45)
+	_apply_retro_button_style(btn_back, Color(0.5, 0.5, 0.5))
+	btn_back.pressed.connect(func(): lang_layer.queue_free())
+	vbox.add_child(btn_back)
 
 var library_layer: CanvasLayer
 
@@ -92,7 +200,7 @@ func _show_library_ui():
 	library_layer.add_child(center)
 	
 	var panel = PanelContainer.new()
-	panel.custom_minimum_size = Vector2(950, 560)
+	panel.custom_minimum_size = Vector2(1050, 560)
 	
 	var sb_panel = StyleBoxFlat.new()
 	sb_panel.bg_color = Color(0.08, 0.04, 0.04, 0.92)
@@ -116,8 +224,9 @@ func _show_library_ui():
 	main_vbox.add_theme_constant_override("separation", 15)
 	panel.add_child(main_vbox)
 	
+	var is_id = SaveManager.get_language() == "id"
 	var title_lbl = Label.new()
-	title_lbl.text = "ENDING GALLERY & LIBRARY"
+	title_lbl.text = "GALERI ENDING" if is_id else "ENDING GALLERY & LIBRARY"
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_lbl.add_theme_font_override("font", font_helpme)
 	title_lbl.add_theme_font_size_override("font_size", 42)
@@ -127,11 +236,18 @@ func _show_library_ui():
 	var hsep = HSeparator.new()
 	main_vbox.add_child(hsep)
 	
+	var scroll = ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(980, 370)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	main_vbox.add_child(scroll)
+	
 	var cards_hbox = HBoxContainer.new()
 	cards_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	cards_hbox.add_theme_constant_override("separation", 30)
+	cards_hbox.add_theme_constant_override("separation", 25)
 	cards_hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	main_vbox.add_child(cards_hbox)
+	cards_hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(cards_hbox)
 	
 	_populate_library_cards(cards_hbox)
 	
@@ -141,14 +257,14 @@ func _show_library_ui():
 	main_vbox.add_child(bottom_hbox)
 	
 	var btn_clear = Button.new()
-	btn_clear.text = "Clear Library"
+	btn_clear.text = "Hapus Galeri" if is_id else "Clear Library"
 	btn_clear.custom_minimum_size = Vector2(220, 50)
 	_apply_retro_button_style(btn_clear, Color(0.8, 0.2, 0.2))
 	btn_clear.pressed.connect(func(): _confirm_clear_library(cards_hbox))
 	bottom_hbox.add_child(btn_clear)
 	
 	var btn_back = Button.new()
-	btn_back.text = "Back"
+	btn_back.text = "Kembali" if is_id else "Back"
 	btn_back.custom_minimum_size = Vector2(220, 50)
 	_apply_retro_button_style(btn_back, Color(0.5, 0.5, 0.5))
 	btn_back.pressed.connect(func(): library_layer.queue_free())
@@ -160,32 +276,51 @@ func _populate_library_cards(container: HBoxContainer):
 		
 	var is_love_unlocked = SaveManager.is_unlocked("true_love")
 	var is_locked_unlocked = SaveManager.is_unlocked("locked_up")
+	var is_safe_unlocked = SaveManager.is_unlocked("safe_ending")
+	var is_id = SaveManager.get_language() == "id"
 	
 	# --- PENGATURAN FOTO ENDING 1: TRUE LOVE ---
+	var t1 = "1. Cinta Sejati" if is_id else "1. True Love"
+	var d1 = "Kamu berhasil, dia menghentikan wabah dunia" if is_id else "You did it, she's stop the world plague"
 	var card1 = _create_ending_card(
-		"1. True Love",
-		"You did it, she's stop the world plague" if is_love_unlocked else "???",
+		t1,
+		d1 if is_love_unlocked else "???",
 		preload("res://assets/Ashy/ashy_under.png"),
 		is_love_unlocked,
-		Vector2(0, 0), # Offset posisi foto (X, Y)
-		Vector2(1.0, 1.0) # Skala/zoom foto
+		Vector2(0, 0),
+		Vector2(1.0, 1.0)
 	)
 	container.add_child(card1)
 	
 	# --- PENGATURAN FOTO ENDING 2: LOCKED UP ---
+	var t2 = "2. Terkunci" if is_id else "2. Locked Up"
+	var d2 = "Kamu berhasil? Mungkin..." if is_id else "You did it? Maybe..."
 	var card2 = _create_ending_card(
-		"2. Locked Up",
-		"You did it? Maybe..." if is_locked_unlocked else "???",
+		t2,
+		d2 if is_locked_unlocked else "???",
 		preload("res://assets/Ashy/ashy_closeup.png"),
 		is_locked_unlocked,
-		Vector2(0, 0), # Offset posisi foto (X, Y)
-		Vector2(1.0, 1.0) # Skala/zoom foto
+		Vector2(0, 0),
+		Vector2(1.0, 1.0)
 	)
 	container.add_child(card2)
 
+	# --- PENGATURAN FOTO ENDING 3: SAFE ENDING ---
+	var t3 = "3. Ending Aman" if is_id else "3. Safe Ending"
+	var d3 = "Selamat, kamu berhasil menghindari mimpi buruk ini!" if is_id else "Congratulations, you avoided the nightmare!"
+	var card3 = _create_ending_card(
+		t3,
+		d3 if is_safe_unlocked else "???",
+		preload("res://assets/UI/front_door.jpg"),
+		is_safe_unlocked,
+		Vector2(0, 0),
+		Vector2(1.0, 1.0)
+	)
+	container.add_child(card3)
+
 func _create_ending_card(title: String, desc: String, texture: Texture2D, unlocked: bool, img_offset: Vector2 = Vector2.ZERO, img_scale: Vector2 = Vector2.ONE) -> Control:
 	var card_panel = PanelContainer.new()
-	card_panel.custom_minimum_size = Vector2(400, 340)
+	card_panel.custom_minimum_size = Vector2(360, 350)
 	
 	var sb = StyleBoxFlat.new()
 	sb.bg_color = Color(0.05, 0.02, 0.02, 0.88)

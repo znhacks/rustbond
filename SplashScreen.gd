@@ -47,6 +47,15 @@ func _ready():
 	warning_text.add_theme_font_size_override("font_size", 28)
 	warning_text.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9, 1.0))
 	
+	if SaveManager.get_language() == "id":
+		warning_title.text = "PERINGATAN KONTEN & DISCLAIMER"
+		warning_text.text = "Game ini mengandung lampu kelap-kelip, efek glitch cepat, jumpscare mendadak, dan efek suara keras.\n\nDISCLAIMER:\nPengembang TIDAK BERTANGGUNG JAWAB atas segala masalah kesehatan, gangguan fisik/mental, atau kerugian yang dialami selama bermain. Anda telah diperingatkan secara jelas.\n\nLanjutkan dengan risiko Anda sendiri."
+		proceed_button.text = "[ SAYA SETUJU & LANJUT ]"
+	else:
+		warning_title.text = "CONTENT WARNING & DISCLAIMER"
+		warning_text.text = "This game contains flashing lights, rapid glitch effects, sudden jumpscares, and loud sound effects.\n\nDISCLAIMER:\nThe developer assumes NO RESPONSIBILITY OR LIABILITY for any health issues, physical or mental distress, or consequences experienced during gameplay. You have been explicitly warned.\n\nProceed at your own risk."
+		proceed_button.text = "[ I AGREE & PROCEED ]"
+		
 	_apply_proceed_button_style(proceed_button)
 	proceed_button.pressed.connect(_on_proceed_pressed)
 	

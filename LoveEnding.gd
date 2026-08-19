@@ -98,6 +98,20 @@ func _start_ending_sequence():
 	SaveManager.unlock_ending("true_love")
 	phase = 0
 	current_line = 0
+	
+	if SaveManager.get_language() == "id":
+		dialogue_lines = [
+			{"name": "Ashy", "text": "Kamu mendapatkan kepercayaanku."},
+			{"name": "Ashy", "text": "Apakah kamu ingin tetap menjadi manusia, atau menjadi bagian dariku?"},
+			{"name": "Ashy", "text": "Tidak perlu berbohong, aku tidak akan menyakitimu."}
+		]
+	else:
+		dialogue_lines = [
+			{"name": "Ashy", "text": "You earned my trust."},
+			{"name": "Ashy", "text": "Do you want to remain a human, or become a part of me?"},
+			{"name": "Ashy", "text": "No need to lie, I won't hurt you."}
+		]
+		
 	dialogue_box.show()
 	_show_next_line()
 
@@ -161,15 +175,16 @@ func _show_choices():
 	vbox.add_theme_constant_override("separation", 20)
 	choice_container.add_child(vbox)
 	
+	var is_id = SaveManager.get_language() == "id"
 	var btn_human = Button.new()
-	btn_human.text = "Human"
+	btn_human.text = "Manusia" if is_id else "Human"
 	btn_human.custom_minimum_size = Vector2(250, 55)
 	apply_gray_choice_button_style(btn_human)
 	btn_human.pressed.connect(_on_human_chosen)
 	vbox.add_child(btn_human)
 	
 	var btn_parasite = Button.new()
-	btn_parasite.text = "Parasite"
+	btn_parasite.text = "Parasit" if is_id else "Parasite"
 	btn_parasite.custom_minimum_size = Vector2(250, 55)
 	apply_gray_choice_button_style(btn_parasite)
 	btn_parasite.pressed.connect(_on_parasite_chosen)
@@ -197,7 +212,8 @@ func _on_human_chosen():
 	dialogue_box.show()
 	phase = 2
 	
-	await _type_response("Ashy", "Very well, if that is your wish.")
+	var resp = "Baiklah, jika itu keinginanmu." if SaveManager.get_language() == "id" else "Very well, if that is your wish."
+	await _type_response("Ashy", resp)
 	await get_tree().create_timer(2.0).timeout
 	_start_epilogue("human")
 
@@ -208,7 +224,8 @@ func _on_parasite_chosen():
 	dialogue_box.show()
 	phase = 2
 	
-	await _type_response("Ashy", "You truly are loyal, aren't you.")
+	var resp = "Kamu sungguh setia, ya." if SaveManager.get_language() == "id" else "You truly are loyal, aren't you."
+	await _type_response("Ashy", resp)
 	await get_tree().create_timer(2.0).timeout
 	_start_epilogue("parasite")
 
@@ -223,14 +240,24 @@ func _start_epilogue(type: String):
 	await tween.finished
 	
 	narration_label.show()
+	var is_id = SaveManager.get_language() == "id"
 	
 	if type == "human":
-		await _play_narration("However, I eventually found myself back at my home. Strangely, everything was not in ruins. People were even going about their business outside.")
-		await _play_narration("So, what exactly happened? Where did the plague go?")
+		if is_id:
+			await _play_narration("Namun, akhirnya aku menemukan diriku kembali di rumahku. Anehnya, semuanya tidak hancur. Orang-orang bahkan beraktivitas di luar.")
+			await _play_narration("Jadi, apa yang sebenarnya terjadi? Ke mana wabah itu pergi?")
+		else:
+			await _play_narration("However, I eventually found myself back at my home. Strangely, everything was not in ruins. People were even going about their business outside.")
+			await _play_narration("So, what exactly happened? Where did the plague go?")
 	else:
-		await _play_narration("She then bit my neck. It felt strange... before I finally perished from this earth.")
-		await _play_narration("And ended up with her in the realm of tranquility.")
-		await _play_narration("So, who was the Ashy I met earlier?")
+		if is_id:
+			await _play_narration("Dia kemudian menggigit leherku. Rasanya aneh... sebelum aku akhirnya lenyap dari bumi ini.")
+			await _play_narration("Dan berakhir bersamanya di alam ketenangan.")
+			await _play_narration("Jadi, siapa Ashy yang kutemui sebelumnya?")
+		else:
+			await _play_narration("She then bit my neck. It felt strange... before I finally perished from this earth.")
+			await _play_narration("And ended up with her in the realm of tranquility.")
+			await _play_narration("So, who was the Ashy I met earlier?")
 	
 	get_tree().change_scene_to_file("res://MainMenu.tscn")
 

@@ -51,7 +51,35 @@ var choice_container : Control
 
 var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
 
+func _t(en_text: String, id_text: String) -> String:
+	return id_text if SaveManager.get_language() == "id" else en_text
+
 func _ready():
+	if SaveManager.get_language() == "id":
+		full_text = """Peringatan Resmi dari Pemerintah Daerah
+
+N.O.S-VID (Necrotic Organ Starvation Virus Infectious Disease) telah menginfeksi banyak warga di kota Malzero, dan tenaga medis kewalahan akibat kekacauan yang disebabkan oleh para penderita.
+
+Warga diizinkan menggunakan perlengkapan pelindung apa pun untuk menghindari korban N.O.S-VID.
+
+Waspadailah lingkungan sekitar Anda, tetap aman, dan berdoa. Semoga kita semua berhasil melewatinya."""
+		dialogues = [
+			"Fuh... hari yang melelahkan di tempat kerja.",
+			"Coba lihat apa yang ada di berita."
+		]
+	else:
+		full_text = """Official Warning from the Local Government
+
+N.O.S-VID (Necrotic Organ Starvation Virus Infectious Disease) has infected many people in the city of Malzero, and medical personnel have been overwhelmed due to the chaos caused by infected patients.
+
+Residents are allowed to use any protective gear to avoid N.O.S-VID victims.
+
+Be aware of your surroundings, stay safe, and pray. Hopefully, we all make it through."""
+		dialogues = [
+			"Phew... what a tiring day at work.",
+			"Let's see what's on the news."
+		]
+
 	if dialogue_label: dialogue_label.add_theme_font_override("normal_font", font_vt323)
 	if broadcast_label: broadcast_label.add_theme_font_override("font", font_vt323)
 	if name_tag: name_tag.add_theme_font_override("font", font_vt323)
@@ -260,7 +288,7 @@ func _start_post_tv():
 	broadcast_label.hide()
 	dialogue_box.show()
 	post_tv_phase = 1
-	_play_dialogue_line("Me", "Ugh, I had a bad feeling about this.")
+	_play_dialogue_line("Me", _t("Ugh, I had a bad feeling about this.", "Ugh, aku punya firasat buruk tentang ini."))
 
 func _play_dialogue_line(speaker: String, text: String):
 	name_tag.text = speaker
@@ -287,7 +315,7 @@ func _advance_post_tv():
 		return # Menunggu player milih
 		
 	if post_tv_phase == 1:
-		_play_dialogue_line("Me", "It was just in the other city yesterday, how did it spread here so fast...")
+		_play_dialogue_line("Me", _t("It was just in the other city yesterday, how did it spread here so fast...", "Kemarin baru saja ada di kota sebelah, bagaimana bisa menyebar ke sini secepat ini..."))
 		post_tv_phase = 2
 	elif post_tv_phase == 2:
 		background.texture = preload("res://assets/UI/front_door.jpg")
@@ -295,15 +323,15 @@ func _advance_post_tv():
 		post_tv_phase = 3
 	elif post_tv_phase == 3:
 		dialogue_box.hide()
-		_show_choice(["Check the door", "Ignore"], _on_choice_1)
+		_show_choice([_t("Check the door", "Periksa pintu"), _t("Ignore", "Abaikan")], _on_choice_1)
 	elif post_tv_phase == 9:
-		_play_dialogue_line("Me", "(Huh? How did she know I was here without me telling her...)")
+		_play_dialogue_line("Me", _t("(Huh? How did she know I was here without me telling her...)", "(Loh? Bagaimana dia tahu aku di sini padahal aku belum memberitahunya...)"))
 		post_tv_phase = 10
 	elif post_tv_phase == 10:
-		_play_dialogue_line("???", "I can hear your thoughts.")
+		_play_dialogue_line("???", _t("I can hear your thoughts.", "Aku bisa mendengar pikiranmu."))
 		post_tv_phase = 11
 	elif post_tv_phase == 11:
-		_play_dialogue_line("System", "Not long after, she entered my house. I didn't even know who she was, but she looked very strange.")
+		_play_dialogue_line("System", _t("Not long after, she entered my house. I didn't even know who she was, but she looked very strange.", "Tidak lama kemudian, dia masuk ke rumahku. Aku bahkan tidak tahu siapa dia, tapi dia terlihat sangat aneh."))
 		post_tv_phase = 12
 	elif post_tv_phase == 12:
 		background.texture = preload("res://assets/UI/playerhome.jpg")
@@ -311,59 +339,59 @@ func _advance_post_tv():
 		love_container.show()
 		rage_container.show()
 		_change_character_sprite(tex_ashy_happy)
-		_play_dialogue_line("???", "It's nice of you to let me in.")
+		_play_dialogue_line("???", _t("It's nice of you to let me in.", "Senang sekali kamu mengizinkanku masuk."))
 		post_tv_phase = 13
 	elif post_tv_phase == 13:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("System", "I remained silent, confused. Why did she look so strange?")
+		_play_dialogue_line("System", _t("I remained silent, confused. Why did she look so strange?", "Aku tetap diam, bingung. Mengapa dia terlihat begitu aneh?"))
 		post_tv_phase = 14
 	elif post_tv_phase == 14:
-		_play_dialogue_line("System", "I remembered that some of her features... she might be infected with the virus.")
+		_play_dialogue_line("System", _t("I remembered that some of her features... she might be infected with the virus.", "Aku teringat beberapa cirinya... dia mungkin terinfeksi virus itu."))
 		post_tv_phase = 15
 	elif post_tv_phase == 15:
 		_change_character_sprite(tex_ashy_talk)
-		_play_dialogue_line("???", "Hey? Why are you ignoring me?")
+		_play_dialogue_line("???", _t("Hey? Why are you ignoring me?", "Hei? Mengapa kamu mengabaikanku?"))
 		post_tv_phase = 16
 	elif post_tv_phase == 16:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Me", "It's nothing, I'm just confused. Who are you?")
+		_play_dialogue_line("Me", _t("It's nothing, I'm just confused. Who are you?", "Tidak apa-apa, aku hanya bingung. Siapa kamu?"))
 		post_tv_phase = 17
 	elif post_tv_phase == 17:
 		_change_character_sprite(tex_ashy_talk)
-		_play_dialogue_line("Ashy", "I'm Ashy.")
+		_play_dialogue_line("Ashy", _t("I'm Ashy.", "Aku Ashy."))
 		post_tv_phase = 18
 	elif post_tv_phase == 18:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Me", "Cool... uh, why are you here?")
+		_play_dialogue_line("Me", _t("Cool... uh, why are you here?", "Keren... uh, mengapa kamu di sini?"))
 		post_tv_phase = 19
 	elif post_tv_phase == 19:
 		_change_character_sprite(tex_ashy_talk)
-		_play_dialogue_line("Ashy", "I'm hungry.")
+		_play_dialogue_line("Ashy", _t("I'm hungry.", "Aku lapar."))
 		post_tv_phase = 20
 	elif post_tv_phase == 20:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Me", "What's your purpose in coming here if you're hungry?")
+		_play_dialogue_line("Me", _t("What's your purpose in coming here if you're hungry?", "Apa tujuanmu datang ke sini kalau kamu lapar?"))
 		post_tv_phase = 21
 	elif post_tv_phase == 21:
 		_change_character_sprite(tex_ashy_angry)
-		_play_dialogue_line("Ashy", "What do you think I'm doing here, idiot!")
+		_play_dialogue_line("Ashy", _t("What do you think I'm doing here, idiot!", "Menurutmu apa yang aku lakukan di sini, bodoh!"))
 		post_tv_phase = 40
 	elif post_tv_phase == 40:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Me", "How rude. Alright, sit down over there first.")
+		_play_dialogue_line("Me", _t("How rude. Alright, sit down over there first.", "Kasar sekali. Baiklah, duduklah di sana dulu."))
 		post_tv_phase = 41
 	elif post_tv_phase == 41:
 		_change_character_sprite(tex_ashy_angry)
-		_play_dialogue_line("Ashy", "Hmph. Humans are indeed insensitive.")
+		_play_dialogue_line("Ashy", _t("Hmph. Humans are indeed insensitive.", "Hmph. Manusia memang tidak peka."))
 		post_tv_phase = 42
 	elif post_tv_phase == 42:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Me", "(Ugh... I don't even know how to talk to girls...)")
+		_play_dialogue_line("Me", _t("(Ugh... I don't even know how to talk to girls...)", "(Ugh... aku bahkan tidak tahu cara bicara dengan perempuan...)"))
 		post_tv_phase = 43
 	elif post_tv_phase == 43:
 		background.texture = preload("res://assets/UI/kitchen.jpg")
 		character_sprite.hide()
-		_play_dialogue_line("System", "I finally went to the kitchen, made some warm chocolate milk, and got some bread.")
+		_play_dialogue_line("System", _t("I finally went to the kitchen, made some warm chocolate milk, and got some bread.", "Aku akhirnya pergi ke dapur, membuat susu cokelat hangat, dan mengambil roti."))
 		post_tv_phase = 44
 	elif post_tv_phase == 44:
 		dialogue_box.hide()
@@ -372,36 +400,96 @@ func _advance_post_tv():
 		add_child(minigame)
 		minigame.minigame_finished.connect(_on_minigame_finished)
 	elif post_tv_phase == 45:
-		_play_dialogue_line("Me", "Wait a minute, did she just say humans are insensitive?")
+		_play_dialogue_line("Me", _t("Wait a minute, did she just say humans are insensitive?", "Tunggu sebentar, apakah dia baru saja bilang manusia tidak peka?"))
 		post_tv_phase = 46
 	elif post_tv_phase == 46:
-		_play_dialogue_line("Me", "Then...")
+		_play_dialogue_line("Me", _t("Then...", "Lalu..."))
 		post_tv_phase = 47
 	elif post_tv_phase == 47:
 		dialogue_box.hide()
-		_show_choice(["(Ah, maybe it's just my imagination)", "(Is she a ghost? An alien? A monster? A robot?)"], _on_choice_3)
+		_show_choice([_t("(Ah, maybe it's just my imagination)", "(Ah, mungkin hanya imajinasiku)"), _t("(Is she a ghost? An alien? A monster? A robot?)", "(Apakah dia hantu? Alien? Monster? Robot?)")], _on_choice_3)
 	elif post_tv_phase == 50:
-		_play_dialogue_line("???", "Seems like no one is home...")
+		_play_dialogue_line("???", _t("Seems like no one is home...", "Sepertinya tidak ada orang di rumah..."))
 		post_tv_phase = 51
 	elif post_tv_phase == 51:
-		_play_dialogue_line("???", "Hello?")
+		_play_dialogue_line("???", _t("Hello?", "Halo?"))
 		post_tv_phase = 52
 	elif post_tv_phase == 52:
 		dialogue_box.hide()
-		_show_choice(["Check from the curtains", "Stay silent"], _on_choice_2)
+		_show_choice([_t("Check from the curtains", "Periksa dari tirai"), _t("Stay silent", "Tetap diam")], _on_choice_2)
 	elif post_tv_phase == 53:
-		_play_dialogue_line("System", "(The mysterious woman leaves. SAFE ENDING)")
-		post_tv_phase = 1000 # Wait
+		post_tv_phase = 9999 # Handled by epilogue
+		_play_safe_ending_epilogue()
 	elif post_tv_phase == 99:
 		_change_character_sprite(tex_ashy_happy)
-		_play_dialogue_line("Ashy", "Would you like to play a Q&A game with me?")
+		_play_dialogue_line("Ashy", _t("Would you like to play a Q&A game with me?", "Maukah kamu bermain game tanya jawab denganku?"))
 		post_tv_phase = 100
 	elif post_tv_phase == 100:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Me", "Uh, okay?")
+		_play_dialogue_line("Me", _t("Uh, okay?", "Uh, baiklah?"))
 		post_tv_phase = 101
 	elif post_tv_phase == 101:
 		TransitionManager.play_glitch_teleport_transition("res://TheBond.tscn")
+
+func _play_safe_ending_epilogue():
+	SaveManager.unlock_ending("safe_ending")
+	dialogue_box.hide()
+	
+	# Fullscreen black screen overlay
+	var black_overlay = ColorRect.new()
+	black_overlay.color = Color(0, 0, 0, 1)
+	black_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	black_overlay.modulate.a = 0.0
+	$CanvasLayer.add_child(black_overlay)
+	
+	var tw_black = create_tween()
+	tw_black.tween_property(black_overlay, "modulate:a", 1.0, 2.0)
+	await tw_black.finished
+	
+	# Centered narration label for blank black screen
+	var narr_label = Label.new()
+	narr_label.set_anchors_preset(Control.PRESET_FULL_RECT)
+	narr_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	narr_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	narr_label.add_theme_font_override("font", font_vt323)
+	narr_label.add_theme_font_size_override("font_size", 34)
+	narr_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.95, 1.0))
+	narr_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.95))
+	narr_label.add_theme_constant_override("shadow_offset_x", 2)
+	narr_label.add_theme_constant_override("shadow_offset_y", 2)
+	narr_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	narr_label.custom_minimum_size = Vector2(800, 300)
+	$CanvasLayer.add_child(narr_label)
+	
+	var is_id = SaveManager.get_language() == "id"
+	
+	if is_id:
+		await _play_fullscreen_narration(narr_label, "Wanita misterius itu berbalik dan berjalan pergi menembus kegelapan.")
+		await _play_fullscreen_narration(narr_label, "Kamu tetap aman di dalam kamarmu, selamat dari malam yang aneh ini.")
+		await _play_fullscreen_narration(narr_label, "Mungkin coba bicara lain kali.")
+	else:
+		await _play_fullscreen_narration(narr_label, "The mysterious woman turned around and walked away into the darkness.")
+		await _play_fullscreen_narration(narr_label, "You remained safe inside your room, surviving the strange night.")
+		await _play_fullscreen_narration(narr_label, "Maybe try to talk.")
+		
+	TransitionManager.transition_to_scene("res://MainMenu.tscn")
+
+func _play_fullscreen_narration(label_node: Label, text: String):
+	label_node.text = text
+	label_node.modulate.a = 1.0
+	label_node.visible_characters = 0
+	
+	for i in range(text.length() + 1):
+		label_node.visible_characters = i
+		if i > 0 and text[i-1] != " " and text[i-1] != "\n":
+			blip_player.pitch_scale = 0.4
+			blip_player.play()
+		await get_tree().create_timer(0.04).timeout
+		
+	await get_tree().create_timer(2.5).timeout
+	var t2 = create_tween()
+	t2.tween_property(label_node, "modulate:a", 0.0, 1.5)
+	await t2.finished
 
 func apply_gray_choice_button_style(btn: Button):
 	btn.add_theme_font_override("font", font_vt323)
@@ -466,7 +554,7 @@ func _on_choice_1(idx: int):
 	choice_container.queue_free()
 	dialogue_box.show()
 	if idx == 0:
-		_play_dialogue_line("???", "Oh, so there is someone here.")
+		_play_dialogue_line("???", _t("Oh, so there is someone here.", "Oh, jadi ada orang di sini."))
 		post_tv_phase = 9  # Sisipkan fase untuk "Me"
 	else:
 		_play_dialogue_line("???", "...")
@@ -476,7 +564,7 @@ func _on_choice_2(idx: int):
 	choice_container.queue_free()
 	dialogue_box.show()
 	if idx == 0:
-		_play_dialogue_line("???", "Oh, so there is someone here.")
+		_play_dialogue_line("???", _t("Oh, so there is someone here.", "Oh, jadi ada orang di sini."))
 		post_tv_phase = 9
 	else:
 		_play_dialogue_line("???", "...")
@@ -494,10 +582,10 @@ func _on_choice_3(idx: int):
 	
 	dialogue_box.show()
 	if idx == 0:
-		_play_dialogue_line("Me", "(Whatever, the important thing is she eats first.)")
+		_play_dialogue_line("Me", _t("(Whatever, the important thing is she eats first.)", "(Sudahlah, yang penting dia makan dulu.)"))
 		post_tv_phase = 99
 	else:
-		_play_dialogue_line("Me", "(Or maybe she's something else...)")
+		_play_dialogue_line("Me", _t("(Or maybe she's something else...)", "(Atau mungkin dia adalah sesuatu yang lain...)"))
 		# Love -10
 		love_bar.value -= 10
 		post_tv_phase = 99

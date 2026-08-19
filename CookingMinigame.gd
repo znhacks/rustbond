@@ -59,7 +59,7 @@ func _ready():
 	instruction_container.add_child(instruction_panel)
 	
 	instruction_label = Label.new()
-	instruction_label.text = "Mix the sachet into the water glass, then put the bread and chocolate milk on the plate!"
+	instruction_label.text = "Campurkan sachet ke dalam gelas, lalu taruh roti dan susu cokelat di atas piring!" if SaveManager.get_language() == "id" else "Mix the sachet into the water glass, then put the bread and chocolate milk on the plate!"
 	instruction_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	instruction_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	instruction_label.add_theme_font_override("font", font_vt323)
@@ -163,7 +163,7 @@ func _check_win():
 			
 		# Tampilkan kata "Done!" tepat di panel bagian bawah yang sama
 		var win_label = Label.new()
-		win_label.text = "Done!"
+		win_label.text = "Selesai!" if SaveManager.get_language() == "id" else "Done!"
 		win_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		win_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		win_label.add_theme_font_override("font", font_vt323)

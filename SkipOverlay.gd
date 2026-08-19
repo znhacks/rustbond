@@ -33,7 +33,7 @@ func _create_ui():
 	
 	# Skip label text
 	label = Label.new()
-	label.text = "Skip [ Space ]"
+	label.text = "Skip [ Space ]" if SaveManager.get_language() == "en" else "Lompati [ Space ]"
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_override("font", font_vt323)
 	label.add_theme_font_size_override("font_size", 24)

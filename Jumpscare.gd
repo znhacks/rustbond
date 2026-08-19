@@ -50,8 +50,11 @@ func _ready():
 	label.add_theme_color_override("font_color", Color(0.85, 0.15, 0.15, 1.0))
 	container.add_child(label)
 	
-	# Monolog Bahasa Inggris sesuai permintaan
+	# Monolog Bahasa Inggris / Indonesia sesuai bahasa terpilih
 	var lines = [
+		"Kamu sangat mengecewakan.",
+		"Padahal aku sudah memberimu kesempatan."
+	] if SaveManager.get_language() == "id" else [
 		"You are so disappointing.",
 		"And I even gave you a chance."
 	]
@@ -131,7 +134,7 @@ func _show_restart_button():
 	btn_layer.add_child(container)
 	
 	var restart_btn = Button.new()
-	restart_btn.text = "  [ Restart? ]  "
+	restart_btn.text = "  [ Coba Lagi? ]  " if SaveManager.get_language() == "id" else "  [ Restart? ]  "
 	restart_btn.custom_minimum_size = Vector2(260, 64)
 	
 	# Styling retro VT323
