@@ -142,7 +142,7 @@ func _setup_dev_tools():
 	btn_rage.pressed.connect(func():
 		rage_bar.value += 20
 		if rage_bar.value >= 100:
-			_trigger_jumpscare()
+			_check_rage_or_jumpscare()
 	)
 	dev_container.add_child(btn_rage)
 	
@@ -253,7 +253,7 @@ func _on_question_answered(idx: int):
 	
 	if ans["efek"] == "INSTANT_RAGE":
 		rage_bar.value = 100
-		_trigger_jumpscare()
+		_check_rage_or_jumpscare()
 		return
 		
 	elif ans["efek"] == "NORMAL_WRONG":
@@ -262,11 +262,7 @@ func _on_question_answered(idx: int):
 		_change_character_sprite(tex_ashy_angry)
 		
 		if rage_bar.value >= 100:
-			if love_bar.value >= 80:
-				_play_dialogue_line("Ashy", "I love you... but you are so stupid. I will lock you here forever.")
-				phase = 99
-			else:
-				_trigger_jumpscare()
+			_check_rage_or_jumpscare()
 			return
 		else:
 			_play_dialogue_line("Ashy", "Hmph. Wrong.")
@@ -278,7 +274,7 @@ func _on_question_answered(idx: int):
 		_change_character_sprite(tex_ashy)
 		
 		if rage_bar.value >= 100:
-			_trigger_jumpscare()
+			_check_rage_or_jumpscare()
 			return
 		else:
 			_play_dialogue_line("Ashy", "I guess that's an okay answer.")
@@ -341,8 +337,17 @@ func _handle_input_advance_override2():
 	else:
 		_advance_phase()
 
+func _check_rage_or_jumpscare():
+	if love_bar.value >= 80:
+		_locked_up_ending()
+	else:
+		_trigger_jumpscare()
+
 func _trigger_jumpscare():
 	get_tree().change_scene_to_file("res://Jumpscare.tscn")
+
+func _locked_up_ending():
+	get_tree().change_scene_to_file("res://LockedUpEnding.tscn")
 
 func _good_ending():
 	get_tree().change_scene_to_file("res://LoveEnding.tscn")
