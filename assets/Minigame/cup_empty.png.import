@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c20486u36l6u7"
-path="res://.godot/imported/bread.jpg-986c7d72f36cfff31eab1087cdc95376.ctex"
+uid="uid://cpqwejvtn7hq0"
+path="res://.godot/imported/cup_empty.png-645074f927db7bd1458a22419a3a3377.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Minigame/bread.jpg"
-dest_files=["res://.godot/imported/bread.jpg-986c7d72f36cfff31eab1087cdc95376.ctex"]
+source_file="res://assets/Minigame/cup_empty.png"
+dest_files=["res://.godot/imported/cup_empty.png-645074f927db7bd1458a22419a3a3377.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci4dhup6b2k70"
-path="res://.godot/imported/choco_milk.jpg-1bf4a659b0e7cb4e1a4c2c36de08304f.ctex"
+uid="uid://bsqv02qp8w4fy"
+path="res://.godot/imported/plate.png-d19d0aa56347b5dd1f70e01cd1f32883.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Minigame/choco_milk.jpg"
-dest_files=["res://.godot/imported/choco_milk.jpg-1bf4a659b0e7cb4e1a4c2c36de08304f.ctex"]
+source_file="res://assets/Minigame/plate.png"
+dest_files=["res://.godot/imported/plate.png-d19d0aa56347b5dd1f70e01cd1f32883.ctex"]
 
 [params]
 

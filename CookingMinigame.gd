@@ -72,24 +72,24 @@ func _ready():
 
 func _create_slots():
 	plate_slot = TextureRect.new()
-	plate_slot.texture = preload("res://assets/Minigame/plate.jpg")
+	plate_slot.texture = preload("res://assets/Minigame/plate.png")
 	plate_slot.position = Vector2(400, 220)
 	plate_slot.custom_minimum_size = Vector2(200, 200)
 	plate_slot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	add_child(plate_slot)
 	
 	mixing_glass_slot = TextureRect.new()
-	mixing_glass_slot.texture = preload("res://assets/Minigame/water.jpg")
+	mixing_glass_slot.texture = preload("res://assets/Minigame/cup_empty.png")
 	mixing_glass_slot.position = Vector2(800, 220)
 	mixing_glass_slot.custom_minimum_size = Vector2(150, 150)
 	mixing_glass_slot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	add_child(mixing_glass_slot)
 
 func _create_items():
-	bread_item = _spawn_item("res://assets/Minigame/bread.jpg", Vector2(100, 150))
+	bread_item = _spawn_item("res://assets/Minigame/bread.png", Vector2(100, 150))
 	bread_item.set_meta("item_id", "bread")
 	
-	sachet_item = _spawn_item("res://assets/Minigame/sachet.jpg", Vector2(100, 350))
+	sachet_item = _spawn_item("res://assets/Minigame/choco.png", Vector2(100, 350))
 	sachet_item.set_meta("item_id", "sachet")
 	
 func _spawn_item(tex_path: String, pos: Vector2) -> TextureRect:
@@ -128,7 +128,7 @@ func _handle_drop(item: TextureRect):
 	if item_id == "sachet" and item_rect.intersects(mixing_rect) and not choco_mixed:
 		# Mix sachet with water
 		choco_mixed = true
-		mixing_glass_slot.texture = preload("res://assets/Minigame/choco_milk.jpg")
+		mixing_glass_slot.texture = preload("res://assets/Minigame/choco_milk.png")
 		item.queue_free() # Remove sachet
 		
 		# Now the mixing glass becomes draggable as choco_milk

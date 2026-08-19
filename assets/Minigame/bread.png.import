@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg6frjjd0b0i3"
-path="res://.godot/imported/sachet.jpg-70fc79f8570f29dc1e8159b028dcbe7a.ctex"
+uid="uid://ckiu1ycb70yjv"
+path="res://.godot/imported/bread.png-a113ee0c1e3f1e28a7127bff7ac8cd8d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Minigame/sachet.jpg"
-dest_files=["res://.godot/imported/sachet.jpg-70fc79f8570f29dc1e8159b028dcbe7a.ctex"]
+source_file="res://assets/Minigame/bread.png"
+dest_files=["res://.godot/imported/bread.png-a113ee0c1e3f1e28a7127bff7ac8cd8d.ctex"]
 
 [params]
 

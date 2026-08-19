@@ -228,5 +228,235 @@
         "efek": "INSTANT_RAGE"
       }
     ]
+  },
+  {
+    "id": 11,
+    "pertanyaan": "If society condemned me as a villain... would you stand beside me or join the crowd?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ashy tilts her head, scrutinizing your every movement.",
+    "pilihan": [
+      {
+        "teks": "I'd stand beside you against the entire world.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'd stay silent and watch.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "I would side with society.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "pertanyaan": "When you look into my eyes, what do you see first?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "A soul crying out for understanding.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "A mysterious darkness.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "A cold-blooded killer.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Do you think revenge brings peace to those who suffered?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Yes, justice must be served no matter what.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "It brings temporary relief.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "No, revenge only causes more misery.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "pertanyaan": "If I lost control and hurt you right now... would you forgive me?",
+    "is_krusial": true,
+    "peringatan_krusial": "Her veins pulse with infected black blood. Answer with extreme caution.",
+    "pilihan": [
+      {
+        "teks": "I know you wouldn't mean to hurt me.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'd try to calm you down first.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Never. Violence is unforgivable.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "pertanyaan": "What is worse... dying alone, or living trapped with someone who scares you?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Dying alone... isolation is true torture.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Both sound horrible.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Living trapped with a nightmare.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Do you believe humanity deserves a second chance after ruining everything?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Only a select few deserve redemption.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Maybe, if they truly change.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Yes, everyone deserves forgiveness.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "pertanyaan": "If we were the last two survivors on earth... what would you do with me?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ashy steps closer, staring deeply into your eyes...",
+    "pilihan": [
+      {
+        "teks": "I'd spend every remaining day making you happy.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "We would look for other survivors.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "I'd lock myself away from you.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Do memories define who we are, or can we erase our dark past?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "We can build a new future together.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Past memories never fade completely.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "The past defines us forever.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "pertanyaan": "Would you drink my blood if it meant we would be bonded forever?",
+    "is_krusial": true,
+    "peringatan_krusial": "Her voice whispers right beside your ear...",
+    "pilihan": [
+      {
+        "teks": "I'd gladly drink it to be with you.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Is there any other way?",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Gross! Get away from me!",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "pertanyaan": "If this whole night was just a nightmare... would you want to wake up?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Not if it means losing you.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'm not sure anymore.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Yes, I want to wake up right now!",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
   }
 ]

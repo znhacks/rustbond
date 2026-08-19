@@ -413,8 +413,7 @@ func _advance_post_tv():
 		_play_dialogue_line("Me", "Uh, okay?")
 		post_tv_phase = 101
 	elif post_tv_phase == 101:
-		# Save love/rage meter values before transitioning? We can just pass them globally via an Autoload if needed, or instantiate the next scene. For simplicity, we can use an Autoload, but let's just let TheBond.gd reset or read them. Wait, user wants them to start from 0 for now. So we'll just switch scene.
-		get_tree().change_scene_to_file("res://TheBond.tscn")
+		TransitionManager.play_glitch_teleport_transition("res://TheBond.tscn")
 
 func apply_gray_choice_button_style(btn: Button):
 	btn.add_theme_font_override("font", font_vt323)

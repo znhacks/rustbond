@@ -75,8 +75,6 @@ func _ready():
 	add_child(bgm_player)
 	bgm_player.play()
 	
-	_setup_dev_tools()
-	
 	await get_tree().create_timer(1.0).timeout
 	_start_intro()
 
@@ -292,8 +290,13 @@ func _on_question_answered(idx: int):
 		
 		if consecutive_correct >= 3:
 			consecutive_correct = 0
-			_play_dialogue_line("System", "You answered 3 correctly in a row. You can try to get closer to her.")
-			phase = 250
+			love_bar.value += 20
+			if love_bar.value >= 100:
+				_good_ending()
+				return
+			else:
+				_play_dialogue_line("Ashy", "Wh-what a sweet answer... I can feel we are getting closer!")
+				phase = 200
 		else:
 			_play_dialogue_line("Ashy", "Good answer.")
 			phase = 200

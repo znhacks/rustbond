@@ -234,4 +234,109 @@ func transition_to_scene(target_scene: String):
 	
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_reset_tapes()
+func play_glitch_teleport_transition(target_scene: String):
+	is_transitioning = true
+	
+	# Fullscreen Glitch Material Rect
+	var glitch_overlay = ColorRect.new()
+	glitch_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	glitch_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	var shader = Shader.new()
+	shader.code = """
+	shader_type canvas_item;
+	uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
+	uniform float glitch_intensity : hint_range(0.0, 1.0) = 0.0;
+	uniform float blackout : hint_range(0.0, 1.0) = 0.0;
+	
+	float rand(vec2 co) {
+		return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+	}
+	
+	void fragment() {
+		vec2 uv = SCREEN_UV;
+		float time = TIME;
+		
+		if (glitch_intensity > 0.0) {
+			// Slicing horizontal pixel & error offset
+			float slice_y = floor(uv.y * (25.0 + glitch_intensity * 35.0));
+			float r = rand(vec2(time * 8.0, slice_y));
+			if (r > 0.35) {
+				uv.x += (rand(vec2(time * 12.0, slice_y)) - 0.5) * 0.45 * glitch_intensity;
+			}
+			if (rand(vec2(time * 4.0, uv.x)) > 0.75) {
+				uv.y += (rand(vec2(time * 6.0, uv.x)) - 0.5) * 0.25 * glitch_intensity;
+			}
+		}
+		
+		// RGB Split (Channel Offset Error)
+		float shift = 0.03 * glitch_intensity;
+		vec4 col_r = texture(screen_texture, vec2(uv.x + shift, uv.y));
+		vec4 col_g = texture(screen_texture, uv);
+		vec4 col_b = texture(screen_texture, vec2(uv.x - shift, uv.y));
+		
+		vec4 tex = vec4(col_r.r, col_g.g, col_b.b, 1.0);
+		
+		// Noise merah & garis piksel mati
+		if (glitch_intensity > 0.0) {
+			float noise_red = rand(vec2(time * 5.0, uv.x));
+			float noise_black = rand(vec2(time * 3.0, uv.y));
+			
+			if (noise_red > 0.65) {
+				tex.rgb = mix(tex.rgb, vec3(0.8, 0.0, 0.0), 0.95 * glitch_intensity);
+			} else if (noise_black > 0.55) {
+				tex.rgb = mix(tex.rgb, vec3(0.0, 0.0, 0.0), 1.0 * glitch_intensity);
+			}
+		}
+		
+		// Blackout transition fade
+		tex.rgb = mix(tex.rgb, vec3(0.0, 0.0, 0.0), blackout);
+		COLOR = tex;
+	}
+	"""
+	
+	var mat = ShaderMaterial.new()
+	mat.shader = shader
+	mat.set_shader_parameter("glitch_intensity", 0.0)
+	mat.set_shader_parameter("blackout", 0.0)
+	glitch_overlay.material = mat
+	add_child(glitch_overlay)
+	
+	# Static SFX
+	var glitch_sfx = AudioStreamPlayer.new()
+	var wav = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_8_BITS
+	wav.mix_rate = 22050
+	var data = PackedByteArray()
+	data.resize(22050 * 2)
+	for i in range(data.size()):
+		var noise = (randi() % 256) - 128
+		data[i] = int(128 + noise * 0.8)
+	wav.data = data
+	glitch_sfx.stream = wav
+	glitch_sfx.volume_db = 6.0
+	add_child(glitch_sfx)
+	glitch_sfx.play()
+	
+	# Animasi Glitch Error Piksel bertahap & Blackout
+	var tw = create_tween()
+	tw.tween_method(func(v: float): mat.set_shader_parameter("glitch_intensity", v), 0.0, 1.0, 0.5).set_trans(Tween.TRANS_BOUNCE)
+	tw.parallel().tween_method(func(v: float): mat.set_shader_parameter("blackout", v), 0.0, 1.0, 0.6)
+	
+	await tw.finished
+	
+	# Pindah scene saat screen terdistorsi & blackout total
+	get_tree().change_scene_to_file(target_scene)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	# Recover dari glitch di scene baru
+	var tw_out = create_tween()
+	tw_out.tween_method(func(v: float): mat.set_shader_parameter("blackout", v), 1.0, 0.0, 0.4)
+	tw_out.parallel().tween_method(func(v: float): mat.set_shader_parameter("glitch_intensity", v), 1.0, 0.0, 0.4)
+	
+	await tw_out.finished
+	
+	glitch_sfx.queue_free()
+	glitch_overlay.queue_free()
 	is_transitioning = false

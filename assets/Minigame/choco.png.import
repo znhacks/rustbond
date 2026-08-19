@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://k7ejla2mjmnj"
-path="res://.godot/imported/water.jpg-646f2f60d136a5b60bfdd131493a172f.ctex"
+uid="uid://k1381psd5eo0"
+path="res://.godot/imported/choco.png-fc7f2fdbe9a3b65b2200e0d1abd0624b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Minigame/water.jpg"
-dest_files=["res://.godot/imported/water.jpg-646f2f60d136a5b60bfdd131493a172f.ctex"]
+source_file="res://assets/Minigame/choco.png"
+dest_files=["res://.godot/imported/choco.png-fc7f2fdbe9a3b65b2200e0d1abd0624b.ctex"]
 
 [params]
 
