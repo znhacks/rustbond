@@ -234,6 +234,8 @@ func transition_to_scene(target_scene: String):
 	
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_reset_tapes()
+	is_transitioning = false
+
 func play_glitch_teleport_transition(target_scene: String):
 	is_transitioning = true
 	

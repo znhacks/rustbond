@@ -11,15 +11,17 @@ config_version=5
 [application]
 
 config/name="rustbond"
-run/main_scene="res://MainMenu.tscn"
+run/main_scene="res://SplashScreen.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/UI/ico.jpg"
 
 [autoload]
 
 SaveManager="*res://SaveManager.gd"
+BGMManager="*res://BGMManager.gd"
 TransitionManager="*res://TransitionManager.tscn"
 CRTOverlay="*res://CRTOverlay.tscn"
+SkipOverlay="*res://SkipOverlay.gd"
 
 [display]
 

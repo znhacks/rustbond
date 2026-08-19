@@ -43,10 +43,9 @@ func _ready():
 	broadcast_label.hide()
 	dialogue_box.hide()
 	
-	# Blink SkipIndicator
-	var blink_tween = create_tween().set_loops()
-	blink_tween.tween_property(skip_indicator, "modulate:a", 0.3, 1.0).set_trans(Tween.TRANS_SINE)
-	blink_tween.tween_property(skip_indicator, "modulate:a", 1.0, 1.0).set_trans(Tween.TRANS_SINE)
+	# Local SkipIndicator hidden in favor of global SkipOverlay
+	if skip_indicator:
+		skip_indicator.hide()
 	
 	# Setup audio
 	blip_player = AudioStreamPlayer.new()
@@ -65,15 +64,7 @@ func _ready():
 	var fade_in = create_tween()
 	fade_in.tween_property(character_sprite, "modulate:a", 1.0, 1.5)
 	
-	# BGM
-	var bgm_player = AudioStreamPlayer.new()
-	var bgm_stream = preload("res://assets/Audio/FMB Ingamever.mp3")
-	bgm_player.stream = bgm_stream
-	bgm_player.pitch_scale = 0.7
-	bgm_player.volume_db = -5.0
-	bgm_player.finished.connect(func(): bgm_player.play())
-	add_child(bgm_player)
-	bgm_player.play()
+	# BGM Ingame dikelola secara otomatis oleh global BGMManager
 	
 	await get_tree().create_timer(1.0).timeout
 	_start_intro()

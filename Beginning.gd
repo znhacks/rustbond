@@ -62,10 +62,9 @@ func _ready():
 	dialogue_box.hide()
 	character_sprite.hide()
 	
-	# Bikin SkipIndicator kedap-kedip
-	var blink_tween = create_tween().set_loops()
-	blink_tween.tween_property(skip_indicator, "modulate:a", 0.3, 1.0).set_trans(Tween.TRANS_SINE)
-	blink_tween.tween_property(skip_indicator, "modulate:a", 1.0, 1.0).set_trans(Tween.TRANS_SINE)
+	# Local SkipIndicator hidden in favor of global SkipOverlay
+	if skip_indicator:
+		skip_indicator.hide()
 	
 	# Setup suara blip 8-bit
 	blip_player = AudioStreamPlayer.new()
@@ -126,15 +125,7 @@ func _ready():
 	$CanvasLayer.add_child(love_container)
 	$CanvasLayer.add_child(rage_container)
 	
-	# BGM Ingame (dengan efek distorsi/redup lewat pitch & volume)
-	var bgm_player = AudioStreamPlayer.new()
-	var bgm_stream = preload("res://assets/Audio/FMB Ingamever.mp3")
-	bgm_player.stream = bgm_stream
-	bgm_player.pitch_scale = 0.85
-	bgm_player.volume_db = -5.0
-	bgm_player.finished.connect(func(): bgm_player.play())
-	add_child(bgm_player)
-	bgm_player.play()
+	# BGM Ingame dikelola secara otomatis oleh global BGMManager
 	
 	await get_tree().create_timer(1.0).timeout
 	_start_dialogue()
@@ -182,11 +173,8 @@ func _input(event):
 		is_advance_action = true
 		
 	if is_advance_action:
-		# Hide skip indicator on first interaction to keep screen clean
-		if skip_indicator.visible:
-			var tw = create_tween()
-			tw.tween_property(skip_indicator, "modulate:a", 0.0, 0.5)
-			tw.finished.connect(func(): skip_indicator.hide())
+		if has_node("CanvasLayer/SkipMargin"):
+			$CanvasLayer/SkipMargin.hide()
 			
 		if post_tv_phase > 0:
 			if is_typing_dialogue:
