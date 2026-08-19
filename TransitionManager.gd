@@ -45,6 +45,17 @@ func _ready():
 	_reset_tapes()
 	
 	_generate_sounds()
+	
+	# Global click sound listener for ALL buttons across the entire game
+	get_tree().node_added.connect(_on_node_added)
+
+func _on_node_added(node: Node):
+	if node is Button:
+		if not node.pressed.is_connected(_on_button_pressed):
+			node.pressed.connect(_on_button_pressed)
+
+func _on_button_pressed():
+	play_splash()
 
 func _setup_blur():
 	blur_rect = ColorRect.new()
@@ -72,18 +83,8 @@ func _set_blur(val: float):
 
 func _generate_sounds():
 	splash_player = AudioStreamPlayer.new()
-	var splash_stream = AudioStreamWAV.new()
-	splash_stream.format = AudioStreamWAV.FORMAT_8_BITS
-	splash_stream.mix_rate = 22050
-	var splash_data = PackedByteArray()
-	for i in range(11025): # 0.5s
-		var t = float(i) / 22050.0
-		var env = exp(-t * 10.0) if t > 0.05 else (t / 0.05)
-		var val = (randi() % 256) - 128
-		splash_data.append(int(128 + val * env * 0.8))
-	splash_stream.data = splash_data
-	splash_player.stream = splash_stream
-	splash_player.volume_db = -15.0
+	splash_player.stream = preload("res://assets/Audio/click.mp3")
+	splash_player.volume_db = 0.0
 	add_child(splash_player)
 	
 	ting_player = AudioStreamPlayer.new()
@@ -313,10 +314,10 @@ func play_glitch_teleport_transition(target_scene: String):
 	data.resize(22050 * 2)
 	for i in range(data.size()):
 		var noise = (randi() % 256) - 128
-		data[i] = int(128 + noise * 0.8)
+		data[i] = int(128 + noise * 0.3)
 	wav.data = data
 	glitch_sfx.stream = wav
-	glitch_sfx.volume_db = 6.0
+	glitch_sfx.volume_db = -18.0
 	add_child(glitch_sfx)
 	glitch_sfx.play()
 	
