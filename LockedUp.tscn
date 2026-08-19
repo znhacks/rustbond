@@ -1,7 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ym22ee7heo3f"]
 
-[ext_resource type="Script" path="res://LockedUpEnding.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/Ashy/ashy_closeup.png" id="2_tex"]
+[ext_resource type="Script" uid="uid://dhyju0bh4td5o" path="res://LockedUpEnding.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d05dr1hu26d81" path="res://assets/UI/abandoned_lab.jpg" id="2_n6e36"]
+[ext_resource type="Texture2D" uid="uid://7857krdd0uuc" path="res://assets/Ashy/ashy_closeup.png" id="2_tex"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
 bg_color = Color(0, 0, 0, 0.705882)
@@ -15,7 +16,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="LockedUp" type="Control"]
+[node name="LockedUp" type="Control" unique_id=641887681]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +25,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=2091803149]
+self_modulate = Color(0.25774884, 0.25774884, 0.25774884, 1)
+layout_mode = 0
+offset_left = -55.0
+offset_top = -43.0
+offset_right = 1225.0
+offset_bottom = 671.0
+texture = ExtResource("2_n6e36")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=737153854]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,7 +45,7 @@ texture = ExtResource("2_tex")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="FadeRect" type="ColorRect" parent="."]
+[node name="FadeRect" type="ColorRect" parent="." unique_id=1453005696]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,9 +54,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1090829928]
 
-[node name="DialogueBox" type="PanelContainer" parent="CanvasLayer"]
+[node name="DialogueBox" type="PanelContainer" parent="CanvasLayer" unique_id=1975135806]
 visible = false
 anchors_preset = 12
 anchor_top = 1.0
@@ -60,27 +70,27 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogueBox"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogueBox" unique_id=916925664]
 layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogueBox/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogueBox/MarginContainer" unique_id=1680459787]
 layout_mode = 2
 
-[node name="NameTag" type="Label" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer"]
+[node name="NameTag" type="Label" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer" unique_id=625736287]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 32
 text = "Ashy"
 
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer" unique_id=488251685]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="DialogueText" type="RichTextLabel" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer"]
+[node name="DialogueText" type="RichTextLabel" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer" unique_id=1706983373]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 28
@@ -89,7 +99,7 @@ text = "..."
 fit_content = true
 scroll_active = false
 
-[node name="BlackScreen" type="ColorRect" parent="CanvasLayer"]
+[node name="BlackScreen" type="ColorRect" parent="CanvasLayer" unique_id=479216350]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,7 +108,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="NarrationLabel" type="Label" parent="CanvasLayer"]
+[node name="NarrationLabel" type="Label" parent="CanvasLayer" unique_id=482121761]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
