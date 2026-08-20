@@ -31,6 +31,7 @@ func _ready():
 		$HBoxContainer/RightMargin/VBoxContainer/PlayButton,
 		$HBoxContainer/RightMargin/VBoxContainer/OptionsButton,
 		$HBoxContainer/RightMargin/VBoxContainer/LibraryButton,
+		$HBoxContainer/RightMargin/VBoxContainer/CreditsButton,
 		$HBoxContainer/RightMargin/VBoxContainer/ExitButton
 	]
 	
@@ -63,6 +64,7 @@ func _update_menu_labels():
 	var play_btn = $HBoxContainer/RightMargin/VBoxContainer/PlayButton
 	var lang_btn = $HBoxContainer/RightMargin/VBoxContainer/OptionsButton
 	var lib_btn = $HBoxContainer/RightMargin/VBoxContainer/LibraryButton
+	var credits_btn = $HBoxContainer/RightMargin/VBoxContainer/CreditsButton
 	var exit_btn = $HBoxContainer/RightMargin/VBoxContainer/ExitButton
 	var subtitle = $HBoxContainer/RightMargin/VBoxContainer/Subtitle
 	
@@ -70,12 +72,14 @@ func _update_menu_labels():
 		play_btn.text = "MAIN"
 		lang_btn.text = "BAHASA"
 		lib_btn.text = "GALERI"
+		credits_btn.text = "KREDIT"
 		exit_btn.text = "KELUAR"
 		subtitle.text = "mengapa karat ini ingin bersatu denganmu?."
 	else:
 		play_btn.text = "PLAY"
 		lang_btn.text = "LANGUAGE"
 		lib_btn.text = "LIBRARY"
+		credits_btn.text = "CREDITS"
 		exit_btn.text = "EXIT"
 		subtitle.text = "why the rust wanted to bonds with you?."
 
@@ -90,6 +94,10 @@ func _on_options_button_pressed():
 func _on_library_button_pressed():
 	TransitionManager.play_splash()
 	_show_library_ui()
+
+func _on_credits_button_pressed():
+	TransitionManager.play_splash()
+	_show_credits_ui()
 
 func _on_exit_button_pressed():
 	TransitionManager.play_splash()
@@ -141,7 +149,7 @@ func _show_language_ui():
 	panel.add_child(vbox)
 	
 	var title_lbl = Label.new()
-	title_lbl.text = "SELECT LANGUAGE / PILIH BAHASA"
+	title_lbl.text = "SELECT LANGUAGE"
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_lbl.add_theme_font_override("font", font_helpme)
 	title_lbl.add_theme_font_size_override("font_size", 32)
@@ -174,7 +182,7 @@ func _show_language_ui():
 	vbox.add_child(btn_id)
 	
 	var btn_back = Button.new()
-	btn_back.text = "Back / Kembali"
+	btn_back.text = "Back"
 	btn_back.custom_minimum_size = Vector2(360, 45)
 	_apply_retro_button_style(btn_back, Color(0.5, 0.5, 0.5))
 	btn_back.pressed.connect(func(): lang_layer.queue_free())
@@ -277,6 +285,7 @@ func _populate_library_cards(container: HBoxContainer):
 	var is_love_unlocked = SaveManager.is_unlocked("true_love")
 	var is_locked_unlocked = SaveManager.is_unlocked("locked_up")
 	var is_safe_unlocked = SaveManager.is_unlocked("safe_ending")
+	var is_reality_unlocked = SaveManager.is_unlocked("reality_ending")
 	var is_id = SaveManager.get_language() == "id"
 	
 	# --- PENGATURAN FOTO ENDING 1: TRUE LOVE ---
@@ -317,6 +326,19 @@ func _populate_library_cards(container: HBoxContainer):
 		Vector2(1.0, 1.0)
 	)
 	container.add_child(card3)
+
+	# --- PENGATURAN FOTO ENDING 4: REALITY ENDING ---
+	var t4 = "4. Realita" if is_id else "4. Reality"
+	var d4 = "Kamu tidak membuat satupun kesalahan... Tapi ini sangat menyedihkan" if is_id else "You made zero mistakes... But this is very sad"
+	var card4 = _create_ending_card(
+		t4,
+		d4 if is_reality_unlocked else "???",
+		preload("res://assets/UI/mimi_angel.jpg"),
+		is_reality_unlocked,
+		Vector2(0, 0),
+		Vector2(1.0, 1.0)
+	)
+	container.add_child(card4)
 
 func _create_ending_card(title: String, desc: String, texture: Texture2D, unlocked: bool, img_offset: Vector2 = Vector2.ZERO, img_scale: Vector2 = Vector2.ONE) -> Control:
 	var card_panel = PanelContainer.new()
@@ -463,6 +485,97 @@ func _confirm_clear_library(cards_hbox: HBoxContainer):
 	_apply_retro_button_style(btn_no, Color(0.4, 0.4, 0.4))
 	btn_no.pressed.connect(func(): confirm_layer.queue_free())
 	btn_hbox.add_child(btn_no)
+
+var credits_layer: CanvasLayer
+
+func _show_credits_ui():
+	if credits_layer and is_instance_valid(credits_layer):
+		credits_layer.queue_free()
+		
+	credits_layer = CanvasLayer.new()
+	credits_layer.layer = 92
+	add_child(credits_layer)
+	
+	var bg_overlay = ColorRect.new()
+	bg_overlay.color = Color(0.04, 0.02, 0.02, 0.94)
+	bg_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	credits_layer.add_child(bg_overlay)
+	
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	credits_layer.add_child(center)
+	
+	var panel = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(850, 560)
+	
+	var sb_panel = StyleBoxFlat.new()
+	sb_panel.bg_color = Color(0.08, 0.04, 0.04, 0.92)
+	sb_panel.border_width_left = 3
+	sb_panel.border_width_top = 3
+	sb_panel.border_width_right = 3
+	sb_panel.border_width_bottom = 3
+	sb_panel.border_color = Color(0.7, 0.15, 0.15, 0.9)
+	sb_panel.corner_radius_top_left = 12
+	sb_panel.corner_radius_top_right = 12
+	sb_panel.corner_radius_bottom_right = 12
+	sb_panel.corner_radius_bottom_left = 12
+	sb_panel.content_margin_left = 25
+	sb_panel.content_margin_right = 25
+	sb_panel.content_margin_top = 20
+	sb_panel.content_margin_bottom = 20
+	panel.add_theme_stylebox_override("panel", sb_panel)
+	center.add_child(panel)
+	
+	var main_vbox = VBoxContainer.new()
+	main_vbox.add_theme_constant_override("separation", 15)
+	panel.add_child(main_vbox)
+	
+	var is_id = SaveManager.get_language() == "id"
+	var title_lbl = Label.new()
+	title_lbl.text = "KREDIT GAME" if is_id else "GAME CREDITS"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_override("font", font_helpme)
+	title_lbl.add_theme_font_size_override("font_size", 42)
+	title_lbl.add_theme_color_override("font_color", Color(0.95, 0.25, 0.25, 1.0))
+	main_vbox.add_child(title_lbl)
+	
+	var hsep = HSeparator.new()
+	main_vbox.add_child(hsep)
+	
+	var scroll = ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(790, 370)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	main_vbox.add_child(scroll)
+	
+	var credits_lbl = RichTextLabel.new()
+	credits_lbl.custom_minimum_size = Vector2(770, 360)
+	credits_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	credits_lbl.bbcode_enabled = true
+	credits_lbl.add_theme_font_override("normal_font", font_vt323)
+	credits_lbl.add_theme_font_size_override("normal_font_size", 24)
+	credits_lbl.add_theme_color_override("default_color", Color(0.9, 0.9, 0.9, 1.0))
+	
+	var text_content = ""
+	if FileAccess.file_exists("res://CREDITS.txt"):
+		text_content = FileAccess.get_file_as_string("res://CREDITS.txt")
+	else:
+		text_content = "RUSTBOND - Visual Novel Horror Game"
+		
+	credits_lbl.text = text_content
+	scroll.add_child(credits_lbl)
+	
+	var bottom_hbox = HBoxContainer.new()
+	bottom_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	bottom_hbox.add_theme_constant_override("separation", 40)
+	main_vbox.add_child(bottom_hbox)
+	
+	var btn_back = Button.new()
+	btn_back.text = "Kembali" if is_id else "Back"
+	btn_back.custom_minimum_size = Vector2(220, 50)
+	_apply_retro_button_style(btn_back, Color(0.5, 0.5, 0.5))
+	btn_back.pressed.connect(func(): credits_layer.queue_free())
+	bottom_hbox.add_child(btn_back)
 
 func _apply_retro_button_style(btn: Button, border_col: Color):
 	btn.add_theme_font_override("font", font_vt323)
@@ -659,7 +772,7 @@ var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
 
 func apply_horror_button_style(btn: Button):
 	btn.add_theme_font_override("font", font_helpme)
-	btn.add_theme_font_size_override("font_size", 36)
+	btn.add_theme_font_size_override("font_size", 26)
 	btn.add_theme_color_override("font_color", Color(0.95, 0.25, 0.25, 1.0))
 	btn.add_theme_color_override("font_hover_color", Color(1.0, 0.5, 0.5, 1.0))
 	btn.add_theme_color_override("font_pressed_color", Color(0.7, 0.1, 0.1, 1.0))

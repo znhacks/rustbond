@@ -1,23 +1,17 @@
 extends Control
 
-@export_group("Character Photo Settings")
-@export var photo_offset: Vector2 = Vector2(0, 0) ## Geser posisi foto karakter (X, Y)
-@export var photo_scale: Vector2 = Vector2(1.0, 1.0) ## Ubah skala / zoom foto karakter (X, Y)
-
-@onready var character_photo = $TextureRect
 @onready var fade_rect = $FadeRect
 @onready var dialogue_box = $CanvasLayer/DialogueBox
 @onready var name_tag = $CanvasLayer/DialogueBox/MarginContainer/VBoxContainer/NameTag
 @onready var dialogue_text = $CanvasLayer/DialogueBox/MarginContainer/VBoxContainer/DialogueText
 @onready var narration_label = $CanvasLayer/NarrationLabel
 @onready var black_screen = $CanvasLayer/BlackScreen
+@onready var background = $TextureRect2
+@onready var character_photo = $TextureRect
 
 var phase = -1
 var current_line = 0
-var dialogue_lines = [
-	{"name": "Ashy", "text": "I love you... but you are so stupid. I will lock you here forever."},
-	{"name": "Ashy", "text": "No matter how much you try to answer, you will stay with me here in this darkness."}
-]
+var dialogue_lines = []
 
 var blip_player: AudioStreamPlayer
 var is_typing = false
@@ -29,10 +23,6 @@ var last_narration_characters = 0
 var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
 
 func _ready():
-	if character_photo:
-		character_photo.position += photo_offset
-		character_photo.scale = photo_scale
-		
 	blip_player = AudioStreamPlayer.new()
 	blip_player.stream = _generate_8bit_blip()
 	blip_player.volume_db = -10.0
@@ -46,6 +36,7 @@ func _ready():
 	tween.tween_property(fade_rect, "modulate:a", 0.0, 2.0)
 	await tween.finished
 	
+	character_photo.show()
 	_start_ending_sequence()
 
 func _process(_delta):
@@ -92,19 +83,35 @@ func _advance_dialogue():
 		_start_epilogue()
 
 func _start_ending_sequence():
-	SaveManager.unlock_ending("locked_up")
+	SaveManager.unlock_ending("reality_ending")
 	phase = 0
 	current_line = 0
 	
 	if SaveManager.get_language() == "id":
 		dialogue_lines = [
-			{"name": "Ashy", "text": "Aku mencintaimu... tapi kamu sangat bodoh. Aku akan menguncimu di sini selamanya."},
-			{"name": "Ashy", "text": "Tidak peduli berapa kali kamu berusaha menjawab, kamu akan tetap bersamaku di sini dalam kegelapan."}
+			{"name": "Ashy", "text": "Kamu..."},
+			{"name": "Me", "text": "???"},
+			{"name": "Ashy", "text": "Aku minta maaf ya."},
+			{"name": "Ashy", "text": "Seharusnya aku berada dirumah"},
+			{"name": "Ashy", "text": "Seharusnya aku mendengarkanmu"},
+			{"name": "Me", "text": "?!"},
+			{"name": "Ashy", "text": "Sepertinya kamu sudah tau"},
+			{"name": "Ashy", "text": "Aku terbakar... Hangus... Dan menjadi abu"},
+			{"name": "Me", "text": "Mi...."},
+			{"name": "Ashy", "text": "Ya aku Mimi..."}
 		]
 	else:
 		dialogue_lines = [
-			{"name": "Ashy", "text": "I love you... but you are so stupid. I will lock you here forever."},
-			{"name": "Ashy", "text": "No matter how much you try to answer, you will stay with me here in this darkness."}
+			{"name": "Ashy", "text": "You..."},
+			{"name": "Me", "text": "???"},
+			{"name": "Ashy", "text": "I'm sorry."},
+			{"name": "Ashy", "text": "I should have stayed home."},
+			{"name": "Ashy", "text": "I should have listened to you."},
+			{"name": "Me", "text": "?!"},
+			{"name": "Ashy", "text": "It seems you already know."},
+			{"name": "Ashy", "text": "I burned... Charred... And turned to ash."},
+			{"name": "Me", "text": "Mi...."},
+			{"name": "Ashy", "text": "Yes, I am Mimi..."}
 		]
 		
 	_show_dialogue_box()
@@ -136,17 +143,24 @@ func _start_epilogue():
 	await tween.finished
 	
 	narration_label.show()
+	var is_id = SaveManager.get_language() == "id"
 	
-	if SaveManager.get_language() == "id":
-		await _play_narration("Aku terkunci di dalam ruangan, tidak pernah melihat cahaya siang lagi.")
-		await _play_narration("Dia mencintaiku... tapi obsesinya menjadi sangkar abadiku.")
-		await _play_narration("Namun sayangnya, aku mati karena kelaparan.")
+	if is_id:
+		await _play_narration("Ashy adalah Mimi. Wanita yang tewas dikarenakan kehancuran lab")
+		await _play_narration("Api, Keributan, Kebencian. dan Parasit yang menjangkit tubuhnya perlahan hilang begitu saja...")
 	else:
-		await _play_narration("I was locked inside the room, never to see the light of day again.")
-		await _play_narration("She loved me... but her obsession became my eternal cage.")
-		await _play_narration("But unfortunately, I died because of starvation.")
+		await _play_narration("Ashy is Mimi. The woman who died due to the laboratory's destruction.")
+		await _play_narration("Fire, Chaos, Hatred. And the Parasite infecting her body slowly faded away...")
 	
-	get_tree().change_scene_to_file("res://MainMenu.tscn")
+	background.texture = preload("res://assets/UI/mimi_angel.jpg")
+	character_photo.hide()
+	var reveal_tw = create_tween()
+	reveal_tw.tween_property(black_screen, "modulate:a", 0.0, 2.0)
+	await reveal_tw.finished
+	
+	await get_tree().create_timer(3.0).timeout
+	
+	TransitionManager.transition_to_scene("res://MainMenu.tscn")
 
 func _play_narration(text: String):
 	narration_label.text = text

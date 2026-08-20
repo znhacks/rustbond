@@ -7,7 +7,8 @@ var current_language: String = "en" # Default: English ("en" or "id")
 var unlocked_endings = {
 	"true_love": false,
 	"locked_up": false,
-	"safe_ending": false
+	"safe_ending": false,
+	"reality_ending": false
 }
 
 signal language_changed(new_lang: String)
@@ -70,4 +71,5 @@ func clear_library():
 	unlocked_endings["true_love"] = false
 	unlocked_endings["locked_up"] = false
 	unlocked_endings["safe_ending"] = false
+	unlocked_endings["reality_ending"] = false
 	save_data()

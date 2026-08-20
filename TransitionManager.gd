@@ -12,6 +12,7 @@ signal quit_attempted
 var is_transitioning = false
 var alt_f4_flag = false
 var notif_tween : Tween
+var pause_layer: CanvasLayer
 
 var splash_player : AudioStreamPlayer
 var ting_player : AudioStreamPlayer
@@ -21,17 +22,29 @@ var msg_exit = [
 	"Do it again.",
 	"Stop.",
 	"Oh such a bad boy here.",
-	"Why you keep trying?"
+	"Why you keep trying?",
+	"There is NO exit"
 ]
 
 var msg_altf4 = [
 	"You're smart, but not smarter than me",
 	"Stooopid~",
-	"Stop trying."
+	"Stop trying.",
+	"Alt + F4 is useless"
 ]
+
+var msg_window_close = [
+	"X wont work",
+	"X is weak",
+	"You cant close it",
+	"X is useless"
+]
+
+var shown_priorities = {}
 
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	# Global Anti-Quit
 	get_tree().set_auto_accept_quit(false)
 	
@@ -46,16 +59,136 @@ func _ready():
 	
 	_generate_sounds()
 	
-	# Global click sound listener for ALL buttons across the entire game
-	get_tree().node_added.connect(_on_node_added)
+	# Global click sound listener for ALL buttons across the entire game	
+	# Skip the first node which is the script itself (root scene) if we're iterating tree
+	var root = get_tree().root
+	for node in root.get_children():
+		_attach_button_sounds(node)
 
-func _on_node_added(node: Node):
+func _attach_button_sounds(node: Node):
 	if node is Button:
-		if not node.pressed.is_connected(_on_button_pressed):
-			node.pressed.connect(_on_button_pressed)
+		if not node.pressed.is_connected(_play_global_click_sound):
+			node.pressed.connect(_play_global_click_sound)
+		
+	# Recursively search children
+	for child in node.get_children():
+		_attach_button_sounds(child)
 
-func _on_button_pressed():
+func _play_global_click_sound():
 	play_splash()
+
+func _show_pause_menu():
+	if pause_layer and is_instance_valid(pause_layer): return
+	
+	get_tree().paused = true
+	
+	pause_layer = CanvasLayer.new()
+	pause_layer.layer = 100
+	pause_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(pause_layer)
+	
+	var dim = ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.85)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pause_layer.add_child(dim)
+	
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pause_layer.add_child(center)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 25)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	center.add_child(vbox)
+	
+	var is_id = false
+	if ResourceLoader.exists("res://SaveManager.gd"):
+		is_id = get_node("/root/SaveManager").get_language() == "id"
+	
+	var lbl = Label.new()
+	lbl.text = "PAUSED" if not is_id else "JEDA"
+	var font = preload("res://assets/Fonts/VT323-Regular.ttf")
+	if font: lbl.add_theme_font_override("font", font)
+	lbl.add_theme_font_size_override("font_size", 54)
+	lbl.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(lbl)
+	
+	var hsep = HSeparator.new()
+	vbox.add_child(hsep)
+	
+	var btn_resume = Button.new()
+	btn_resume.text = "Resume" if not is_id else "Lanjutkan"
+	btn_resume.custom_minimum_size = Vector2(280, 55)
+	_apply_pause_btn_style(btn_resume)
+	btn_resume.pressed.connect(_on_resume_pressed)
+	vbox.add_child(btn_resume)
+	
+	var btn_quit = Button.new()
+	btn_quit.text = "Main Menu" if not is_id else "Menu Utama"
+	btn_quit.custom_minimum_size = Vector2(280, 55)
+	_apply_pause_btn_style(btn_quit)
+	btn_quit.pressed.connect(_on_quit_to_menu_pressed)
+	vbox.add_child(btn_quit)
+	
+	# Initial fade in for smoothness
+	pause_layer.get_child(0).modulate.a = 0.0
+	pause_layer.get_child(1).modulate.a = 0.0
+	var tw = create_tween()
+	tw.tween_property(pause_layer.get_child(0), "modulate:a", 1.0, 0.15)
+	tw.parallel().tween_property(pause_layer.get_child(1), "modulate:a", 1.0, 0.15)
+
+func _apply_pause_btn_style(btn: Button):
+	var font = preload("res://assets/Fonts/VT323-Regular.ttf")
+	if font: btn.add_theme_font_override("font", font)
+	btn.add_theme_font_size_override("font_size", 28)
+	btn.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))
+	btn.add_theme_color_override("font_pressed_color", Color(0.6, 0.6, 0.6))
+	
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.12, 0.12, 0.14, 0.95)
+	sb.border_width_left = 2
+	sb.border_width_top = 2
+	sb.border_width_right = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color(0.4, 0.4, 0.45)
+	sb.corner_radius_top_left = 6
+	sb.corner_radius_top_right = 6
+	sb.corner_radius_bottom_right = 6
+	sb.corner_radius_bottom_left = 6
+	btn.add_theme_stylebox_override("normal", sb)
+	
+	var sb_hov = sb.duplicate()
+	sb_hov.bg_color = Color(0.25, 0.25, 0.28, 1.0)
+	sb_hov.border_color = Color(0.7, 0.7, 0.75)
+	btn.add_theme_stylebox_override("hover", sb_hov)
+	
+	var sb_prs = sb.duplicate()
+	sb_prs.bg_color = Color(0.08, 0.08, 0.1, 1.0)
+	sb_prs.border_color = Color(0.3, 0.3, 0.3)
+	btn.add_theme_stylebox_override("pressed", sb_prs)
+
+func _on_resume_pressed():
+	if pause_layer and is_instance_valid(pause_layer):
+		var tw = create_tween()
+		tw.tween_property(pause_layer.get_child(0), "modulate:a", 0.0, 0.15)
+		tw.parallel().tween_property(pause_layer.get_child(1), "modulate:a", 0.0, 0.15)
+		tw.tween_callback(func():
+			pause_layer.queue_free()
+			pause_layer = null
+			get_tree().paused = false
+		)
+	else:
+		get_tree().paused = false
+
+func _on_quit_to_menu_pressed():
+	get_tree().paused = false
+	if pause_layer and is_instance_valid(pause_layer):
+		pause_layer.queue_free()
+		pause_layer = null
+	play_splash()
+	transition_to_scene("res://MainMenu.tscn")
 
 func _setup_blur():
 	blur_rect = ColorRect.new()
@@ -118,7 +251,10 @@ func _input(event):
 		# --- PAUSE / RETURN TO MENU ---
 		if event.keycode == KEY_ESCAPE and not event.shift_pressed:
 			if get_tree().current_scene and get_tree().current_scene.scene_file_path != "res://MainMenu.tscn":
-				transition_to_scene("res://MainMenu.tscn")
+				if pause_layer and is_instance_valid(pause_layer):
+					_on_resume_pressed()
+				else:
+					_show_pause_menu()
 				
 		if event.keycode == KEY_F4 and event.alt_pressed:
 			alt_f4_flag = true
@@ -129,15 +265,31 @@ func _notification(what):
 			_show_quit_warning(msg_altf4)
 			alt_f4_flag = false
 		else:
-			_show_quit_warning(msg_exit)
+			_show_quit_warning(msg_window_close)
 	elif what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
 		# Reset the flag if the window loses focus (e.g. Alt+Tab)
 		alt_f4_flag = false
 
-func _show_quit_warning(msg_list: Array):
+func _show_quit_warning(msg_list: Array, priority_msg: String = ""):
 	play_ting()
 	emit_signal("quit_attempted")
-	notif_label.text = msg_list[randi() % msg_list.size()]
+	
+	if priority_msg == "":
+		if msg_list == msg_exit:
+			priority_msg = "There is NO exit"
+		elif msg_list == msg_altf4:
+			priority_msg = "Alt + F4 is useless"
+		elif msg_list == msg_window_close:
+			priority_msg = "X wont work"
+			
+	var chosen_msg = ""
+	if priority_msg != "" and not shown_priorities.has(priority_msg):
+		shown_priorities[priority_msg] = true
+		chosen_msg = priority_msg
+	else:
+		chosen_msg = msg_list[randi() % msg_list.size()]
+		
+	notif_label.text = chosen_msg
 	
 	if notif_tween:
 		notif_tween.kill()

@@ -1,5 +1,5 @@
 ========================================================================
-                      GAME ASSET ATTRIBUTION & CREDITS
+					  GAME ASSET ATTRIBUTION & CREDITS
 ========================================================================
 
 1. FONTS
@@ -14,13 +14,12 @@
   License: SIL Open Font License, 1.1 (Free for Commercial & Non-Commercial)
   Source: https://fonts.google.com/specimen/VT323
 
-- Creepster (Creepster-Regular.ttf)
-  Author: Sideshow
-  License: SIL Open Font License, 1.1 (Free for Commercial & Non-Commercial)
-  Source: https://fonts.google.com/specimen/Creepster
-
 - HelpMe (HelpMe.ttf)
   License: Free for Use / Public Domain / Personal & Game Dev
+
+- Martyric (Martyric_PersonalUse.ttf)
+  Author: Mans Greback
+  License: Free for Personal & Game Dev Use
 
 2. UI & GRAPHICS
 ------------------------------------------------------------------------
@@ -32,5 +31,13 @@
 - OpenGameArt Retro & Horror UI Components
   License: CC0 1.0 Universal (Public Domain)
   Source: https://opengameart.org/content/cc0-ui
+
+3. AUDIO & MUSIC
+------------------------------------------------------------------------
+- Main Menu BGM: Faded Music Box
+  License: Free for Game Dev / Public Domain
+
+- Sound Effects: 8-Bit Retro Blips & UI Clicks
+  Generated / Public Domain
 
 ========================================================================

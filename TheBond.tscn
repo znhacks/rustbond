@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://b_beginning"]
+[gd_scene format=3 uid="uid://boplnorbvfxjs"]
 
-[ext_resource type="Script" path="res://TheBond.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/UI/playerhome.jpg" id="2_bg"]
+[ext_resource type="Script" uid="uid://b342rpmc1xjxp" path="res://TheBond.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b73k0frn23wql" path="res://assets/UI/playerhome.jpg" id="2_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
 bg_color = Color(0.08, 0.1, 0.12, 0.85)
@@ -17,7 +17,7 @@ corner_radius_bottom_left = 24
 shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 10
 
-[node name="Beginning" type="Control"]
+[node name="Beginning" type="Control" unique_id=72942216]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,8 +25,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
+enable_dev_tools = true
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=628752403]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,9 +38,9 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=692317258]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1941991552]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -47,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="CharacterSprite" type="TextureRect" parent="CanvasLayer"]
+[node name="CharacterSprite" type="TextureRect" parent="CanvasLayer" unique_id=981568318]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -62,7 +63,7 @@ grow_vertical = 0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="DialogueBox" type="PanelContainer" parent="CanvasLayer"]
+[node name="DialogueBox" type="PanelContainer" parent="CanvasLayer" unique_id=1766090064]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -75,27 +76,27 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogueBox"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogueBox" unique_id=434179031]
 layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogueBox/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogueBox/MarginContainer" unique_id=1640348796]
 layout_mode = 2
 
-[node name="NameTag" type="Label" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer"]
+[node name="NameTag" type="Label" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer" unique_id=542833655]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 32
 text = "Me"
 
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer" unique_id=2110341786]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="DialogueText" type="RichTextLabel" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer"]
+[node name="DialogueText" type="RichTextLabel" parent="CanvasLayer/DialogueBox/MarginContainer/VBoxContainer" unique_id=1517087304]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 28
@@ -104,7 +105,7 @@ text = "..."
 fit_content = true
 scroll_active = false
 
-[node name="BroadcastText" type="Label" parent="CanvasLayer"]
+[node name="BroadcastText" type="Label" parent="CanvasLayer" unique_id=680167007]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -126,7 +127,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="SkipMargin" type="MarginContainer" parent="CanvasLayer"]
+[node name="SkipMargin" type="MarginContainer" parent="CanvasLayer" unique_id=487188783]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -139,18 +140,18 @@ grow_vertical = 0
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SkipMargin"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SkipMargin" unique_id=1913232943]
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 2
 
-[node name="Dot" type="ColorRect" parent="CanvasLayer/SkipMargin/HBoxContainer"]
+[node name="Dot" type="ColorRect" parent="CanvasLayer/SkipMargin/HBoxContainer" unique_id=126995367]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 color = Color(0.8, 0.8, 0.8, 1)
 
-[node name="SkipIndicator" type="Label" parent="CanvasLayer/SkipMargin/HBoxContainer"]
+[node name="SkipIndicator" type="Label" parent="CanvasLayer/SkipMargin/HBoxContainer" unique_id=1661417302]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 24

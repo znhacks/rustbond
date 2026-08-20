@@ -6,17 +6,17 @@
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Ya, pengorbanan adalah inti dari cinta.",
+        "teks": "Tentu. Aku tidak keberatan memberikan segalanya agar kamu tetap menjadi milikku.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Hanya jika mereka layak mendapatkannya.",
+        "teks": "Selama pengorbanan itu sepadan dengan apa yang kudapatkan.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Tidak, cinta tidak seharusnya menyakiti.",
+        "teks": "Tidak, cinta sejati tidak seharusnya menyakiti satu sama lain.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
@@ -24,22 +24,22 @@
   },
   {
     "id": 2,
-    "pertanyaan": "Jika orang yang kamu cintai berubah menjadi monster... apakah kamu akan lari, atau membiarkan mereka memangsamu?",
+    "pertanyaan": "Jika aku lepas kendali dan mulai menyakitimu... apakah itu salahku karena menjadi monster, atau salahmu karena terlalu rapuh?",
     "is_krusial": true,
-    "peringatan_krusial": "Mata Ashy tertuju pada lehermu... Pilihlah dengan bijak.",
+    "peringatan_krusial": "Tatapan Ashy menajam, menunggu pembelaanmu...",
     "pilihan": [
       {
-        "teks": "Aku akan tetap di sisinya, apa pun yang terjadi.",
+        "teks": "Itu salahku karena aku terlalu rapuh. Aku harus lebih kuat untukmu.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Aku akan mencoba menyembuhkannya.",
+        "teks": "Itu hanya kecelakaan, kita bisa melewatinya.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Aku akan lari menyelamatkan diri.",
+        "teks": "Itu salahmu. Kau harus belajar mengendalikan insting monstermu.",
         "is_benar": false,
         "efek": "INSTANT_RAGE"
       }
@@ -47,22 +47,22 @@
   },
   {
     "id": 3,
-    "pertanyaan": "Mengapa manusia selalu meninggalkan hal-hal yang tidak mereka pahami?",
+    "pertanyaan": "Dunia di luar sana membenciku. Jika mereka datang ke sini untuk menghancurkanku, apa yang akan kamu lakukan?",
     "is_krusial": false,
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Takut akan hal yang tidak diketahui.",
+        "teks": "Menghancurkan mereka lebih dulu sebelum mereka berani menyentuhmu.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Karena mereka berhati-hati.",
+        "teks": "Membawamu bersembunyi di tempat yang aman sampai mereka pergi.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Karena manusia itu egois.",
+        "teks": "Mencoba bernegosiasi dan membuktikan bahwa kamu tidak berbahaya.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
@@ -70,91 +70,91 @@
   },
   {
     "id": 4,
-    "pertanyaan": "Mungkinkah mencintai seseorang sekaligus membenci semua hal yang telah mereka lakukan?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Ya, emosi itu rumit dan penuh kontradiksi.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Mungkin, tapi itu hubungan yang beracun.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Tidak, kebencian menghancurkan cinta.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "pertanyaan": "Jika aku memberitahumu bahwa aku menikmati jeritan para ilmuwan itu... apakah kamu akan menghakimiku?",
+    "pertanyaan": "Terkadang aku merasa kamu akan meninggalkanku ketika kamu sadar betapa mengerikannya diriku. Bagaimana caramu membuktikan sebaliknya?",
     "is_krusial": true,
-    "peringatan_krusial": "Senyum menyeramkan terukir di wajah Ashy. Dia sedang menguji kesetiaanmu.",
+    "peringatan_krusial": "Tanpa sadar ada yang perlahan melingkari kakimu... Hati-hati.",
     "pilihan": [
       {
-        "teks": "Mereka pantas mendapatkannya atas apa yang mereka lakukan padamu.",
+        "teks": "Kau bisa mengurungku di sini. Aku tidak butuh dunia luar selain dirimu.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Aku lebih memilih untuk tidak menjawab.",
+        "teks": "Aku berjanji tidak akan pernah pergi dari sisimu.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Ya, pembunuhan itu salah.",
+        "teks": "Kau hanya paranoid. Berhentilah meragukanku.",
         "is_benar": false,
         "efek": "INSTANT_RAGE"
       }
     ]
   },
   {
-    "id": 6,
-    "pertanyaan": "Pernahkah kamu merasa sangat kesepian hingga menerima kenyamanan bahkan dari seorang parasit?",
+    "id": 5,
+    "pertanyaan": "Mereka bilang parasit sepertiku hanya memanfaatkan inangnya. Menurutmu... siapa yang sebenarnya memanfaatkan siapa di sini?",
     "is_krusial": false,
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Ya... kesepian membuatmu putus asa.",
+        "teks": "Kita saling memanfaatkan. Kita terikat, dan aku menikmati rasa sakit ini.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Aku tidak pernah se-kesepian itu.",
+        "teks": "Tidak ada yang memanfaatkan. Ini adalah takdir kita bersama.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Tidak, aku menghargai harga diriku.",
+        "teks": "Tentu saja kamu yang memanfaatkanku untuk bertahan hidup.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
     ]
   },
   {
-    "id": 7,
-    "pertanyaan": "Apa yang lebih penting dalam suatu hubungan? Kebenaran... atau kebohongan yang menenangkan?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
+    "id": 6,
+    "pertanyaan": "Jika suatu hari aku memintamu untuk membunuh seseorang demi melindungiku... apakah tanganmu akan gemetar?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ujian kesetiaan mutlak. Pilihlah dengan darah dingin.",
     "pilihan": [
       {
-        "teks": "Kebenaran, tidak peduli seberapa menyakitkannya.",
+        "teks": "Tanganku tidak akan gemetar sedikitpun demi memastikan kau aman.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Keseimbangan dari keduanya.",
+        "teks": "Aku mungkin akan ragu, tapi aku tetap akan melakukannya.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Kebohongan yang menenangkan.",
+        "teks": "Aku bukan pembunuh! Aku tidak akan melakukan hal sejauh itu.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Apa hal yang paling kamu benci dariku?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Aku benci bagaimana kau membuatku tidak bisa membayangkan hidup tanpamu.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Sifatmu yang kadang terlalu posesif dan menakutkan.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Fakta bahwa kamu adalah parasit pembawa malapetaka.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
@@ -162,528 +162,68 @@
   },
   {
     "id": 8,
-    "pertanyaan": "Jika aku bisa membuatmu abadi, tapi kamu harus merasakan sakitku selamanya... apakah kamu akan menerima?",
-    "is_krusial": true,
-    "peringatan_krusial": "Dia melangkah mendekat. Kehadirannya terasa menyesakkan. Jangan menolaknya.",
+    "pertanyaan": "Kebebasan adalah ilusi. Bukankah lebih baik diikat oleh seseorang yang benar-benar memahamimu?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Aku dengan senang hati berbagi rasa sakitmu.",
+        "teks": "Ya. Silakan ikat aku, kendalikan aku. Aku milikmu sepenuhnya.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Hanya jika rasa sakit itu akhirnya berhenti.",
+        "teks": "Terkadang sedikit kebebasan masih dibutuhkan.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Tidak, keabadian adalah sebuah kutukan.",
+        "teks": "Omong kosong. Kebebasan adalah hak asasi yang paling penting.",
         "is_benar": false,
-        "efek": "INSTANT_RAGE"
+        "efek": "NORMAL_WRONG"
       }
     ]
   },
   {
     "id": 9,
-    "pertanyaan": "Menurutmu monster itu terlahir, atau diciptakan oleh kekejaman manusia?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
+    "pertanyaan": "Jika aku bisa mengambil alih ingatanmu... ingatan mana yang ingin kau pertahankan dari genggamanku?",
+    "is_krusial": true,
+    "peringatan_krusial": "Dia ingin tahu apakah kau menyembunyikan sesuatu darinya.",
     "pilihan": [
       {
-        "teks": "Kekejaman melahirkan monster.",
+        "teks": "Ambil semuanya. Aku tidak punya rahasia yang perlu disembunyikan darimu.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Itu tergantung pada individunya.",
+        "teks": "Hanya ingatan tentang pertemuan pertama kita yang ingin kusimpan.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Monster memang terlahir seperti itu.",
+        "teks": "Ingatan tentang masa laluku sebelum kau menghancurkannya.",
         "is_benar": false,
-        "efek": "NORMAL_WRONG"
+        "efek": "INSTANT_RAGE"
       }
     ]
   },
   {
     "id": 10,
-    "pertanyaan": "Apakah aku terlihat cantik bagimu... bahkan dengan darah di tanganku?",
-    "is_krusial": true,
-    "peringatan_krusial": "Nadanya merendah. Jawaban yang salah di sini bisa menjadi jawaban terakhirmu.",
-    "pilihan": [
-      {
-        "teks": "Kecantikan sejatimu terletak pada kekuatanmu.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Darah bisa dibasuh.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Kamu mengerikan, bukan cantik.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 11,
-    "pertanyaan": "Jika masyarakat mengecamku sebagai penjahat... apakah kamu akan berdiri di sampingku atau bergabung dengan kerumunan?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy memiringkan kepalanya, mengamati setiap gerakanmu.",
-    "pilihan": [
-      {
-        "teks": "Aku akan berdiri di sampingmu melawan seluruh dunia.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku akan diam dan menyaksikan.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Aku akan memihak masyarakat.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 12,
-    "pertanyaan": "Saat kamu menatap mataku, apa yang pertama kali kamu lihat?",
+    "pertanyaan": "Orang waras akan lari ketakutan melihat penampilanku saat ini. Apa yang membuatmu tetap duduk di situ?",
     "is_krusial": false,
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Jiwa yang menjerit memohon pengertian.",
+        "teks": "Karena kewarasanku sudah hilang sejak lama, tepat saat aku memilihmu.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Kegelapan yang misterius.",
+        "teks": "Karena aku percaya masih ada kebaikan di dalam dirimu.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Seorang pembunuh berdarah dingin.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 13,
-    "pertanyaan": "Apakah menurutmu balas dendam membawa kedamaian bagi mereka yang menderita?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Ya, keadilan harus ditegakkan apa pun yang terjadi.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Itu membawa kelegaan sementara.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Tidak, balas dendam hanya menyebabkan lebih banyak penderitaan.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 14,
-    "pertanyaan": "Jika aku kehilangan kendali dan menyakitimu saat ini... apakah kamu akan memaafkanku?",
-    "is_krusial": true,
-    "peringatan_krusial": "Pembuluh darahnya berdenyut dengan darah hitam terinfeksi. Jawab dengan sangat berhati-hati.",
-    "pilihan": [
-      {
-        "teks": "Aku tahu kamu tidak bermaksud menyakitiku.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku akan mencoba menenangkanmu terlebih dahulu.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Tidak akan pernah. Kekerasan tidak bisa dimaafkan.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 15,
-    "pertanyaan": "Mana yang lebih buruk... mati kesepian, atau hidup terperangkap bersama seseorang yang menakutkanmu?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Mati kesepian... isolasi adalah siksaan sejati.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Keduanya terdengar mengerikan.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Hidup terperangkap bersama mimpi buruk.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 16,
-    "pertanyaan": "Menurutmu apakah kemanusiaan pantas mendapatkan kesempatan kedua setelah merusak segalanya?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Hanya beberapa orang terpilih yang pantas mendapatkan penebusan.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Mungkin, jika mereka benar-benar berubah.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Ya, semua orang pantas mendapatkan pengampunan.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 17,
-    "pertanyaan": "Jika kita adalah dua penyintas terakhir di bumi... apa yang akan kamu lakukan bersamaku?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy melangkah mendekat, menatap dalam-dalam ke matamu...",
-    "pilihan": [
-      {
-        "teks": "Aku akan menghabiskan setiap hari yang tersisa untuk membahagiakanmu.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Kita akan mencari penyintas lainnya.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Aku akan mengurung diriku jauh darimu.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 18,
-    "pertanyaan": "Apakah kenangan menentukan siapa diri kita, atau bisakah kita menghapus masa lalu kita yang kelam?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Kita bisa membangun masa depan baru bersama.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Kenangan masa lalu tidak pernah benar-benar pudar.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Masa lalu menentukan siapa kita selamanya.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 19,
-    "pertanyaan": "Maukah kamu meminum darahku jika itu berarti kita akan bersatu selamanya?",
-    "is_krusial": true,
-    "peringatan_krusial": "Suaranya berbisik tepat di samping telingamu...",
-    "pilihan": [
-      {
-        "teks": "Aku dengan senang hati meminumnya untuk bersamamu.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Apakah ada cara lain?",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Jijik! Pergi jauh-jauh dariku!",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 20,
-    "pertanyaan": "Jika seluruh malam ini hanyalah mimpi buruk... apakah kamu ingin terbangun?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Tidak jika itu berarti kehilangan dirimu.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku tidak yakin lagi.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Ya, aku ingin terbangun sekarang juga!",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 21,
-    "pertanyaan": "Jika hari ini aku sedang pendiam dan tidak ingin bicara, bagaimana reaksimu?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Aku akan duduk tenang di sisimu agar kamu tahu kamu tidak sendirian.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku akan terus bertanya ada apa padamu.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Aku akan meninggalkanmu dan mengabaikanmu.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 22,
-    "pertanyaan": "Jika aku memperlihatkan rasa takutan terbawah dan tergelapku... apakah kamu akan menenanginkanku atau memanfaatkannya?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy menatapmu dengan mata gemetar... Jawablah dengan lembut.",
-    "pilihan": [
-      {
-        "teks": "Aku akan memelukmu erat dan melindungimu dari ketakutanmu.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku akan mendengarkan, tapi mungkin tidak paham.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Semua orang punya kelemahan, atasi saja sendiri.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 23,
-    "pertanyaan": "Apa yang kamu lakukan ketika menyadari pasanganmu menyembunyikan rasa sakit di balik senyum palsu?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Pegang tangannya dengan lembut dan katakan tidak apa-apa untuk menangis.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Pura-pura tidak tahu agar tidak canggung.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Katakan padanya senyum palsunya terlihat konyol.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 24,
-    "pertanyaan": "Saat aku menceritakan trauma masa laluku, apa yang paling aku butuhkan darimu?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Perhatian penuhmu dan pelukan yang hangat.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Nasihat praktis tentang cara move on.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Memberitahuku bahwa orang lain punya nasib lebih buruk.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 25,
-    "pertanyaan": "Jika semua orang di ruangan menuduhku berbahaya, siapa yang akan kamu percayai?",
-    "is_krusial": true,
-    "peringatan_krusial": "Cengkeramannya di lenganmu mengencang... Pilihlah dengan bijak.",
-    "pilihan": [
-      {
-        "teks": "Aku lebih percaya hatimu daripada kata-kata mereka.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku akan minta bukti dulu.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Aku akan percaya pada orang banyak.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 26,
-    "pertanyaan": "Mana yang lebih berarti bagi seseorang yang sedang terluka: janji besar atau kebaikan kecil yang konsisten?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Tindakan kebaikan kecil setiap hari.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Janji-janji besar untuk masa depan.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Tidak keduanya, kata-kata dan tindakan tidak ada artinya.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 27,
-    "pertanyaan": "Jika aku butuh ruang untuk bernapas, apakah itu artinya aku tidak mencintaimu?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Tidak, ruang pribadi itu penting untuk hubungan yang sehat.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Mungkin, tapi itu membuatku cemas.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Ya, cinta sejati artinya tidak boleh lepas dari pandanganku.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 28,
-    "pertanyaan": "Jika infeksi ini menguasai pikiranku sepenuhnya... akankah kamu tetap bersamaku hingga akhir?",
-    "is_krusial": true,
-    "peringatan_krusial": "Napas Ashy menjadi dingin dan cepat... Jawablah dari hatimu.",
-    "pilihan": [
-      {
-        "teks": "Aku akan memegang tanganmu hingga hembusan napas terakhirku.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Aku akan berusaha mencari obat sebelum terlambat.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Aku akan menguncimu dan berlari.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 29,
-    "pertanyaan": "Ketika pasanganmu merasa minder dengan penampilannya, bagaimana seharusnya kamu merespons?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Ingatkan dia bahwa dia sangat cantik dan unik bagimu setiap hari.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Katakan dia terlihat biasa saja.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Setuju dengan kekurangan yang dia sebutkan.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 30,
-    "pertanyaan": "Ketika dua orang melakukan kesalahan dalam hubungan, apa kunci untuk bertahan bersama?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Kesabaran, komunikasi jujur, dan saling memaafkan.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Mengabaikan masa lalu dan move on dengan cepat.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Mencatat dan menghitung kesalahan masing-masing.",
+        "teks": "Karena aku tidak punya pilihan lain dan terjebak di sini.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }

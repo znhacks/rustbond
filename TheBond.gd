@@ -1,5 +1,7 @@
 extends Control
 
+@export var enable_dev_tools: bool = false # Centang kotak ini di Godot Inspector untuk menyalakan tombol DEV
+var dev_highlight_answers: bool = false
 @onready var broadcast_label = $CanvasLayer/BroadcastText
 @onready var dialogue_box = $CanvasLayer/DialogueBox
 @onready var dialogue_label = $CanvasLayer/DialogueBox/MarginContainer/VBoxContainer/DialogueText
@@ -42,6 +44,7 @@ var current_question_idx = 0
 var phase = 0
 
 var consecutive_correct = 0
+var flawless_run = true
 
 var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
 
@@ -70,8 +73,45 @@ func _apply_rage_penalty(amount: int) -> bool:
 	if rage_immunity_turns > 0:
 		# Player is immune to Rage penalty!
 		return false
-	rage_bar.value += amount
+	_set_bar(rage_bar, rage_bar.value + amount)
+	_flash_red_vignette()
 	return true
+
+func _flash_red_vignette():
+	var flash = ColorRect.new()
+	flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	flash.z_index = 100
+	
+	var mat = ShaderMaterial.new()
+	var shader = Shader.new()
+	shader.code = """
+shader_type canvas_item;
+void fragment() {
+	float dist = distance(UV, vec2(0.5, 0.5));
+	float vignette = smoothstep(0.3, 0.8, dist);
+	// Kalikan dengan COLOR agar modulate:a dari tween berfungsi
+	COLOR = vec4(0.8, 0.0, 0.0, vignette * 0.8) * COLOR;
+}
+"""
+	mat.shader = shader
+	flash.material = mat
+	
+	$CanvasLayer.add_child(flash)
+	flash.modulate.a = 0.0
+	
+	var tween = create_tween()
+	# Cepat menyala seperti flash, dengan kurva yang lembut
+	tween.tween_property(flash, "modulate:a", 1.0, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	# Langsung meredup perlahan, tanpa jeda diam, agar tidak kaku
+	tween.tween_property(flash, "modulate:a", 0.0, 0.7).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_callback(flash.queue_free)
+
+# Animasi smooth saat nilai bar berubah (seperti mengisi/menguras)
+func _set_bar(bar: ProgressBar, target: float, duration: float = 0.5):
+	var clamped = clamp(target, bar.min_value, bar.max_value)
+	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(bar, "value", clamped, duration)
 
 func _ready():
 	if dialogue_label: dialogue_label.add_theme_font_override("normal_font", font_vt323)
@@ -80,7 +120,7 @@ func _ready():
 	
 	tv_bg.hide()
 	broadcast_label.hide()
-	dialogue_box.hide()
+	_hide_dialogue_box()
 	
 	# Local SkipIndicator hidden in favor of global SkipOverlay
 	if skip_indicator:
@@ -94,6 +134,9 @@ func _ready():
 	
 	_setup_meters()
 	_load_questions()
+	
+	if enable_dev_tools:
+		_setup_dev_tools()
 	
 	background.texture = preload("res://assets/UI/abandoned_lab.jpg")
 	character_sprite.show()
@@ -178,7 +221,7 @@ func _update_act_ui():
 	if rage_immunity_turns > 0:
 		txt += " [KEBAL: " + str(rage_immunity_turns) + "]" if is_id else " [IMMUNE: " + str(rage_immunity_turns) + "]"
 	act_label.text = txt
-	act_button.text = "ACT / TINDAKAN" if is_id else "ACT / ACTION"
+	act_button.text = "ACT" if is_id else "ACT"
 
 func _apply_act_button_style(btn: Button):
 	btn.add_theme_font_override("font", font_vt323)
@@ -199,30 +242,96 @@ func _apply_act_button_style(btn: Button):
 	btn.add_theme_stylebox_override("normal", sb)
 
 func _setup_dev_tools():
-	var dev_container = HBoxContainer.new()
-	dev_container.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	dev_container.alignment = BoxContainer.ALIGNMENT_CENTER
-	dev_container.position = Vector2(0, 10)
+	var dev_main = VBoxContainer.new()
+	dev_main.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	dev_main.position = Vector2(0, 10)
+	dev_main.add_theme_constant_override("separation", 10)
 	
+	var btn_toggle = Button.new()
+	btn_toggle.text = "[ DEV TOOLS ]"
+	btn_toggle.custom_minimum_size = Vector2(200, 35)
+	btn_toggle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	btn_toggle.focus_mode = Control.FOCUS_NONE
+	dev_main.add_child(btn_toggle)
+	
+	var dev_container = VBoxContainer.new()
+	dev_container.alignment = BoxContainer.ALIGNMENT_CENTER
+	dev_container.add_theme_constant_override("separation", 10)
+	dev_container.hide() # Hidden by default
+	dev_main.add_child(dev_container)
+	
+	btn_toggle.pressed.connect(func():
+		dev_container.visible = !dev_container.visible
+	)
+	
+	# === LOVE ===
+	var love_box = HBoxContainer.new()
+	love_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	var spin_love = SpinBox.new()
+	spin_love.max_value = 100
+	spin_love.value = love_bar.value if love_bar else 0
 	var btn_love = Button.new()
-	btn_love.text = "DEV: +Love"
+	btn_love.text = "Set Love"
+	btn_love.focus_mode = Control.FOCUS_NONE
 	btn_love.pressed.connect(func():
-		love_bar.value += 20
-		if love_bar.value >= 100:
+		_set_bar(love_bar, spin_love.value)
+		if spin_love.value >= 100:
 			_good_ending()
 	)
-	dev_container.add_child(btn_love)
+	love_box.add_child(spin_love)
+	love_box.add_child(btn_love)
+	dev_container.add_child(love_box)
 	
+	# === RAGE ===
+	var rage_box = HBoxContainer.new()
+	rage_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	var spin_rage = SpinBox.new()
+	spin_rage.max_value = 100
+	spin_rage.value = rage_bar.value if rage_bar else 0
 	var btn_rage = Button.new()
-	btn_rage.text = "DEV: +Rage"
+	btn_rage.text = "Set Rage"
+	btn_rage.focus_mode = Control.FOCUS_NONE
 	btn_rage.pressed.connect(func():
-		rage_bar.value += 20
-		if rage_bar.value >= 100:
+		_set_bar(rage_bar, spin_rage.value)
+		if spin_rage.value >= 100:
 			_check_rage_or_jumpscare()
 	)
-	dev_container.add_child(btn_rage)
+	rage_box.add_child(spin_rage)
+	rage_box.add_child(btn_rage)
+	dev_container.add_child(rage_box)
 	
-	$CanvasLayer.add_child(dev_container)
+	# === ACT POINTS ===
+	var ap_box = HBoxContainer.new()
+	ap_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	var spin_ap = SpinBox.new()
+	spin_ap.max_value = 5
+	spin_ap.value = act_points
+	var btn_ap = Button.new()
+	btn_ap.text = "Set AP"
+	btn_ap.focus_mode = Control.FOCUS_NONE
+	btn_ap.pressed.connect(func():
+		act_points = int(spin_ap.value)
+		_update_act_ui()
+	)
+	ap_box.add_child(spin_ap)
+	ap_box.add_child(btn_ap)
+	dev_container.add_child(ap_box)
+	
+	# === HIGHLIGHT ANSWERS ===
+	var hl_box = HBoxContainer.new()
+	hl_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	var chk_hl = CheckButton.new()
+	chk_hl.text = "Highlight Answers"
+	chk_hl.button_pressed = dev_highlight_answers
+	chk_hl.focus_mode = Control.FOCUS_NONE
+	chk_hl.toggled.connect(func(toggled_on):
+		dev_highlight_answers = toggled_on
+		_update_dev_highlight()
+	)
+	hl_box.add_child(chk_hl)
+	dev_container.add_child(hl_box)
+	
+	$CanvasLayer.add_child(dev_main)
 
 func _load_questions():
 	var q_path = "res://data/questions_id.json" if SaveManager.get_language() == "id" else "res://data/questions.json"
@@ -233,6 +342,9 @@ func _load_questions():
 		var json = JSON.new()
 		if json.parse(json_string) == OK:
 			questions = json.data
+			for q in questions:
+				if "pilihan" in q:
+					q["pilihan"].shuffle()
 			questions.shuffle()
 		else:
 			print("JSON Parse Error: ", json.get_error_message())
@@ -254,31 +366,31 @@ func _unhandled_input(event):
 		_handle_input_advance_override2()
 
 func _start_intro():
-	dialogue_box.show()
+	_show_dialogue_box()
 	phase = 1
-	_play_dialogue_line("Ashy", "This is my home. My final home.")
+	_play_dialogue_line("Ashy", _t("This is my home. My final home.", "Ini adalah rumahku. Rumah terakhirku."))
 
 func _advance_phase():
 	if phase == 1:
-		_play_dialogue_line("Ashy", "The place where I was hated, enslaved, and died miserably.")
+		_play_dialogue_line("Ashy", _t("The place where I was hated, enslaved, and died miserably.", "Tempat di mana aku dibenci, diperbudak, dan mati mengenaskan."))
 		phase = 2
 	elif phase == 2:
 		_play_dialogue_line("Me", "...!?")
 		phase = 3
 	elif phase == 3:
-		dialogue_box.hide()
-		_show_choice(["I'm sorry to hear that.", "The you right now is..."], _on_intro_choice)
+		_hide_dialogue_box()
+		_show_choice([_t("I'm sorry to hear that.", "Aku turut sedih mendengarnya."), _t("The you right now is...", "Kamu yang sekarang adalah...")], _on_intro_choice)
 	elif phase == 4:
 		_change_character_sprite(tex_ashy_happy)
-		_play_dialogue_line("Ashy", "You're kind. Good thing I didn't infect you from the start.")
+		_play_dialogue_line("Ashy", _t("You're kind. Good thing I didn't infect you from the start.", "Kamu baik hati. Untung saja aku tidak menginfeksimu sejak awal."))
 		phase = 6
 	elif phase == 5:
 		_change_character_sprite(tex_ashy_angry)
-		_play_dialogue_line("Ashy", "Yes, it's me. I AM THE ONE WHO SPREAD THIS VIRUS.")
+		_play_dialogue_line("Ashy", _t("Yes, it's me. I AM THE ONE WHO SPREAD THIS VIRUS.", "Ya, itu aku. AKU ADALAH ORANG YANG MENYEBARKAN VIRUS INI."))
 		phase = 6
 	elif phase == 6:
 		_change_character_sprite(tex_ashy)
-		_play_dialogue_line("Ashy", "Never mind... let's continue with the Q&A.")
+		_play_dialogue_line("Ashy", _t("Never mind... let's continue with the Q&A.", "Sudahlah... ayo kita lanjutkan sesinya."))
 		phase = 7
 	elif phase == 7:
 		_ask_question()
@@ -287,8 +399,8 @@ func _advance_phase():
 		pass
 
 func _on_intro_choice(idx: int):
-	choice_container.queue_free()
-	dialogue_box.show()
+	_close_choice_container()
+	_show_dialogue_box()
 	if idx == 0:
 		phase = 4
 		_advance_phase()
@@ -313,16 +425,44 @@ func _ask_question():
 
 func _advance_phase_from_question():
 	if phase == 100:
-		dialogue_box.hide()
+		_hide_dialogue_box()
 		var q = questions[current_question_idx]
 		var choices = []
 		for c in q["pilihan"]:
 			choices.append(c["teks"])
 		_show_choice(choices, _on_question_answered)
+		
+		# Dev Tools: Highlight Answers
+		_update_dev_highlight()
+
+func _update_dev_highlight():
+	if not (choice_container and is_instance_valid(choice_container) and choice_container.get_child_count() > 0):
+		return
+	if phase != 100:
+		return
+		
+	var vbox = choice_container.get_child(0)
+	var q = questions[current_question_idx]
+	for i in range(vbox.get_child_count()):
+		var btn = vbox.get_child(i)
+		if dev_highlight_answers:
+			var efek = q["pilihan"][i]["efek"]
+			if efek == "NORMAL_CORRECT":
+				btn.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3)) # Hijau
+				btn.add_theme_color_override("font_hover_color", Color(0.5, 1.0, 0.5))
+			elif efek == "NORMAL_HALF":
+				btn.add_theme_color_override("font_color", Color(1.0, 1.0, 0.3)) # Kuning
+				btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 0.5))
+			else: # WRONG / INSTANT_RAGE
+				btn.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3)) # Merah
+				btn.add_theme_color_override("font_hover_color", Color(1.0, 0.5, 0.5))
+		else:
+			btn.add_theme_color_override("font_color", Color(0.88, 0.88, 0.9, 1.0))
+			btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
 
 func _on_question_answered(idx: int):
-	choice_container.queue_free()
-	dialogue_box.show()
+	_close_choice_container()
+	_show_dialogue_box()
 	
 	var q = questions[current_question_idx]
 	var ans = q["pilihan"][idx]
@@ -335,15 +475,17 @@ func _on_question_answered(idx: int):
 			_play_dialogue_line("Ashy", imm_msg)
 			phase = 200
 		else:
-			rage_bar.value = 100
+			_set_bar(rage_bar, 100, 0.8)
+			_flash_red_vignette()
 			_check_rage_or_jumpscare()
 			return
 		
 	elif ans["efek"] == "NORMAL_WRONG":
 		consecutive_correct = 0
+		flawless_run = false
 		var took_rage = _apply_rage_penalty(20)
 		if love_bar.value > 0:
-			love_bar.value = max(0, love_bar.value - 10)
+			_set_bar(love_bar, max(0, love_bar.value - 10))
 		_change_character_sprite(tex_ashy_angry)
 		
 		if rage_bar.value >= 100:
@@ -370,9 +512,10 @@ func _on_question_answered(idx: int):
 			
 	elif ans["efek"] == "NORMAL_HALF":
 		consecutive_correct = 0
+		flawless_run = false
 		var took_rage = _apply_rage_penalty(10)
 		if love_bar.value > 0:
-			love_bar.value = max(0, love_bar.value - 5)
+			_set_bar(love_bar, max(0, love_bar.value - 5))
 		_change_character_sprite(tex_ashy_angry)
 		
 		if rage_bar.value >= 100:
@@ -398,41 +541,40 @@ func _on_question_answered(idx: int):
 			phase = 200
 			
 	elif ans["efek"] == "NORMAL_CORRECT":
-		consecutive_correct += 1
 		add_act_points(1)
 		_change_character_sprite(tex_ashy_happy)
 		
-		if consecutive_correct >= 3:
-			consecutive_correct = 0
-			love_bar.value += 20
-			if love_bar.value >= 100:
-				_good_ending()
-				return
-			else:
-				var sweet_msg = _t("Wh-what a sweet answer... I can feel we are getting closer! (+1 Act Point)", "A-apa... manis sekali jawabanmu... aku merasa kita semakin dekat! (+1 Poin Tindakan)")
-				_play_dialogue_line("Ashy", sweet_msg)
-				phase = 200
+		# Langsung tambah Love tanpa perlu benar 3x berturut-turut
+		_set_bar(love_bar, love_bar.value + 10)
+		if love_bar.value + 10 >= 100:
+			_good_ending()
+			return
 		else:
-			var good_msg = _t("Good answer. (+1 Act Point)", "Jawaban yang bagus. (+1 Poin Tindakan)")
+			var good_msg = _t("Good answer... (+1 Act Point, Love +10)", "Jawaban yang bagus... (+1 Poin Tindakan, Love +10)")
 			_play_dialogue_line("Ashy", good_msg)
 			phase = 200
 
 func _on_act_button_pressed():
 	if act_layer and is_instance_valid(act_layer):
-		act_layer.queue_free()
+		_close_act_layer()
 		
 	act_layer = CanvasLayer.new()
 	act_layer.layer = 95
 	add_child(act_layer)
 	
+	var act_root = Control.new()
+	act_root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	act_root.modulate.a = 0.0
+	act_layer.add_child(act_root)
+	
 	var bg_overlay = ColorRect.new()
 	bg_overlay.color = Color(0, 0, 0, 0.85)
 	bg_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	act_layer.add_child(bg_overlay)
+	act_root.add_child(bg_overlay)
 	
 	var center = CenterContainer.new()
 	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	act_layer.add_child(center)
+	act_root.add_child(center)
 	
 	var panel = PanelContainer.new()
 	panel.custom_minimum_size = Vector2(540, 460)
@@ -454,6 +596,9 @@ func _on_act_button_pressed():
 	panel.add_theme_stylebox_override("panel", sb_p)
 	center.add_child(panel)
 	
+	var tween = create_tween()
+	tween.tween_property(act_root, "modulate:a", 1.0, 0.25)
+	
 	var vbox = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 12)
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -462,7 +607,7 @@ func _on_act_button_pressed():
 	var is_id = SaveManager.get_language() == "id"
 	
 	var title = Label.new()
-	title.text = "MENU TINDAKAN / ACT" if is_id else "ACTION MENU / ACT"
+	title.text = "MENU TINDAKAN" if is_id else "ACTION MENU"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_override("font", font_vt323)
 	title.add_theme_font_size_override("font_size", 30)
@@ -485,7 +630,7 @@ func _on_act_button_pressed():
 	# Action 1: Pujian (1 AP, CD 0, Rage -5)
 	var can1 = act_points >= 1
 	var btn1 = Button.new()
-	btn1.text = "1. Pujian / Praise (1 AP -> Rage -5)" if is_id else "1. Praise (1 AP -> Rage -5)"
+	btn1.text = _t("1. Praise (1 AP → Rage -5)", "1. Pujian (1 AP → Rage -5)")
 	btn1.custom_minimum_size = Vector2(480, 44)
 	_apply_act_option_style(btn1, can1)
 	btn1.pressed.connect(func(): _execute_act_action(1))
@@ -493,9 +638,9 @@ func _on_act_button_pressed():
 	
 	# Action 2: Pat Pat (2 AP, CD 1 turn, Rage -10)
 	var can2 = act_points >= 2 and cd_pat == 0
-	var btn2_txt = "2. Pat Pat / Head Pat (2 AP -> Rage -10)" if is_id else "2. Head Pat (2 AP -> Rage -10)"
+	var btn2_txt = _t("2. Head Pat (2 AP → Rage -10)", "2. Pat Pat (2 AP → Rage -10)")
 	if cd_pat > 0:
-		btn2_txt += " [CD: " + str(cd_pat) + " Soal]" if is_id else " [CD: " + str(cd_pat) + " Turn]"
+		btn2_txt += " [CD: " + str(cd_pat) + (" Soal]" if is_id else " Turn]")
 	var btn2 = Button.new()
 	btn2.text = btn2_txt
 	btn2.custom_minimum_size = Vector2(480, 44)
@@ -505,9 +650,9 @@ func _on_act_button_pressed():
 	
 	# Action 3: Physical (3 AP, CD 2 turns, Rage -15)
 	var can3 = act_points >= 3 and cd_physical == 0
-	var btn3_txt = "3. Sentuhan Fisik / Physical (3 AP -> Rage -15)" if is_id else "3. Physical Affection (3 AP -> Rage -15)"
+	var btn3_txt = _t("3. Physical Affection (3 AP → Rage -15)", "3. Sentuhan Fisik (3 AP → Rage -15)")
 	if cd_physical > 0:
-		btn3_txt += " [CD: " + str(cd_physical) + " Soal]" if is_id else " [CD: " + str(cd_physical) + " Turns]"
+		btn3_txt += " [CD: " + str(cd_physical) + (" Soal]" if is_id else " Turns]")
 	var btn3 = Button.new()
 	btn3.text = btn3_txt
 	btn3.custom_minimum_size = Vector2(480, 44)
@@ -515,9 +660,12 @@ func _on_act_button_pressed():
 	btn3.pressed.connect(func(): _execute_act_action(3))
 	vbox.add_child(btn3)
 	
-	# Action 4: Ultimate COMFORT (5 AP, comfort_uses_left > 0, rage > 50, love >= 30) -> Kebal Rage 3 Soal
-	var can_comfort = (comfort_uses_left > 0) and (act_points >= 5) and (rage_bar.value > 50) and (love_bar.value >= 30)
-	var btn4_txt = "★ COMFORT Ultimate (5 AP -> Kebal Rage 3 Soal) [Sisa: " + str(comfort_uses_left) + "]" if is_id else "★ COMFORT Ultimate (5 AP -> Rage Immune 3 Turns) [Left: " + str(comfort_uses_left) + "]"
+	# Action 4: Ultimate COMFORT (5 AP, comfort_uses_left > 0, rage >= 20, love >= 10) -> Kebal Rage 3 Soal
+	var can_comfort = (comfort_uses_left > 0) and (act_points >= 5) and (rage_bar.value >= 20) and (love_bar.value >= 10)
+	var btn4_txt = _t(
+		"★ COMFORT Ultimate (5 AP → Rage Immune 3 Turns) [Left: " + str(comfort_uses_left) + "]",
+		"★ COMFORT Ultimate (5 AP → Kebal Rage 3 Soal) [Sisa: " + str(comfort_uses_left) + "]"
+	)
 	var btn4 = Button.new()
 	btn4.text = btn4_txt
 	btn4.custom_minimum_size = Vector2(480, 46)
@@ -529,7 +677,7 @@ func _on_act_button_pressed():
 	btn_back.text = "Kembali" if is_id else "Back"
 	btn_back.custom_minimum_size = Vector2(480, 38)
 	_apply_act_option_style(btn_back, true)
-	btn_back.pressed.connect(func(): act_layer.queue_free())
+	btn_back.pressed.connect(func(): _close_act_layer())
 	vbox.add_child(btn_back)
 
 func _apply_act_option_style(btn: Button, available: bool):
@@ -573,106 +721,101 @@ func _execute_act_action(action_id: int):
 	
 	if action_id == 1: # Pujian / Praise (1 AP, CD 0, Rage -5)
 		if act_points < 1:
-			_play_dialogue_line("System", "Poin Tindakan tidak cukup! (Butuh 1 AP)" if is_id else "Not enough Act Points! (Needs 1 AP)")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Poin Tindakan tidak cukup! (Butuh 1 AP)" if is_id else "Not enough Act Points! (Needs 1 AP)")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 		act_points -= 1
-		rage_bar.value = max(0, rage_bar.value - 5)
+		_set_bar(rage_bar, max(0, rage_bar.value - 5))
 		_update_act_ui()
-		if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+		if act_layer and is_instance_valid(act_layer): _close_act_layer()
 		
-		dialogue_box.show()
 		_change_character_sprite(tex_ashy_talk)
-		var msg1 = _t("Ashy blushes upon hearing your compliment... (Rage -5)", "Ashy tersipu malu mendengarkan pujianmu... (Rage -5)")
-		_play_dialogue_line("System", msg1)
+		_show_toast(_t("Ashy blushes upon hearing your compliment... (Rage -5)", "Ashy tersipu malu mendengarkan pujianmu... (Rage -5)"))
 		
 	elif action_id == 2: # Pat Pat (2 AP, CD 1 turn, Rage -10)
 		if act_points < 2:
-			_play_dialogue_line("System", "Poin Tindakan tidak cukup! (Butuh 2 AP)" if is_id else "Not enough Act Points! (Needs 2 AP)")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Poin Tindakan tidak cukup! (Butuh 2 AP)" if is_id else "Not enough Act Points! (Needs 2 AP)")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 		if cd_pat > 0:
-			_play_dialogue_line("System", "Pat Pat sedang Cooldown! (Sisa " + str(cd_pat) + " Soal)" if is_id else "Pat Pat is on Cooldown! (" + str(cd_pat) + " Turn left)")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Pat Pat sedang Cooldown! (Sisa " + str(cd_pat) + " Soal)" if is_id else "Pat Pat is on Cooldown! (" + str(cd_pat) + " Turn left)")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 		act_points -= 2
 		cd_pat = 1 # Cooldown 1 turn
-		rage_bar.value = max(0, rage_bar.value - 10)
+		_set_bar(rage_bar, max(0, rage_bar.value - 10))
 		_update_act_ui()
-		if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+		if act_layer and is_instance_valid(act_layer): _close_act_layer()
 		
-		dialogue_box.show()
 		_change_character_sprite(tex_ashy_happy)
-		var msg2 = _t("Ashy closes her eyes, enjoying the head pats... (Rage -10)", "Ashy memejamkan mata menikmati usapan di kepalanya... (Rage -10)")
-		_play_dialogue_line("System", msg2)
+		_show_toast(_t("Ashy closes her eyes, enjoying the head pats... (Rage -10)", "Ashy memejamkan mata menikmati usapan di kepalanya... (Rage -10)"))
 		
 	elif action_id == 3: # Physical (3 AP, CD 2 turns, Rage -15)
 		if act_points < 3:
-			_play_dialogue_line("System", "Poin Tindakan tidak cukup! (Butuh 3 AP)" if is_id else "Not enough Act Points! (Needs 3 AP)")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Poin Tindakan tidak cukup! (Butuh 3 AP)" if is_id else "Not enough Act Points! (Needs 3 AP)")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 		if cd_physical > 0:
-			_play_dialogue_line("System", "Sentuhan Fisik sedang Cooldown! (Sisa " + str(cd_physical) + " Soal)" if is_id else "Physical is on Cooldown! (" + str(cd_physical) + " Turns left)")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Sentuhan Fisik sedang Cooldown! (Sisa " + str(cd_physical) + " Soal)" if is_id else "Physical is on Cooldown! (" + str(cd_physical) + " Turns left)")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 		act_points -= 3
 		cd_physical = 2 # Cooldown 2 turns
-		rage_bar.value = max(0, rage_bar.value - 15)
+		_set_bar(rage_bar, max(0, rage_bar.value - 15))
 		_update_act_ui()
-		if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+		if act_layer and is_instance_valid(act_layer): _close_act_layer()
 		
-		dialogue_box.show()
 		_change_character_sprite(tex_ashy_happy)
-		var msg3 = _t("Your warm physical touch gently calms Ashy's rage away... (Rage -15)", "Sentuhan hangatmu membuat kemarahan Ashy perlahan mereda... (Rage -15)")
-		_play_dialogue_line("System", msg3)
+		_show_toast(_t("Your warm physical touch gently calms Ashy's rage away... (Rage -15)", "Sentuhan hangatmu membuat kemarahan Ashy perlahan mereda... (Rage -15)"))
 		
 	elif action_id == 4: # COMFORT Ultimate
 		if comfort_uses_left <= 0:
-			_play_dialogue_line("System", "Penggunaan COMFORT sudah habis!" if is_id else "COMFORT uses exhausted!")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Penggunaan COMFORT sudah habis!" if is_id else "COMFORT uses exhausted!")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 		if act_points < 5:
-			_play_dialogue_line("System", "Butuh 5 AP untuk menggunakan COMFORT!" if is_id else "Needs 5 AP to use COMFORT!")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+			_show_toast("Butuh 5 AP untuk menggunakan COMFORT!" if is_id else "Needs 5 AP to use COMFORT!")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
-		if rage_bar.value <= 50:
-			_play_dialogue_line("System", "COMFORT hanya bisa aktif saat Rage > 50%!" if is_id else "COMFORT requires Rage > 50%!")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+		if rage_bar.value < 20:
+			_show_toast("COMFORT hanya bisa aktif saat Rage >= 20%!" if is_id else "COMFORT requires Rage >= 20%!")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
-		if love_bar.value < 30:
-			_play_dialogue_line("System", "COMFORT hanya bisa aktif saat Love >= 30%!" if is_id else "COMFORT requires Love >= 30%!")
-			if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+		if love_bar.value < 10:
+			_show_toast("COMFORT hanya bisa aktif saat Love >= 10%!" if is_id else "COMFORT requires Love >= 10%!")
+			if act_layer and is_instance_valid(act_layer): _close_act_layer()
 			return
 			
 		act_points -= 5
 		comfort_uses_left -= 1
 		rage_immunity_turns = 3 # Kebal penalti Rage selama 3 soal ke depan!
 		_update_act_ui()
-		if act_layer and is_instance_valid(act_layer): act_layer.queue_free()
+		if act_layer and is_instance_valid(act_layer): _close_act_layer()
 		
-		dialogue_box.show()
 		_change_character_sprite(tex_ashy_happy)
-		var msg4 = _t("You embrace Ashy with profound comfort... Ashy gains Rage Immunity for 3 questions! (Rage Immunity Active)", "Kamu memberikan kenyamanan mendalam kepada Ashy... Ashy menjadi kebal amarah selama 3 soal ke depan! (Kebal Rage Aktif)")
-		_play_dialogue_line("System", msg4)
+		_show_toast(_t(
+			"You embrace Ashy warmly... Rage Immunity for the next 3 questions — regardless of what happens. Use it wisely!",
+			"Kamu memeluk Ashy dengan hangat... Kekebalan Rage untuk 3 soal ke depan — ada atau tidak ada amarah. Gunakan dengan bijak!"
+		), 4.0)
 
 func _process_phase_250_input():
 	if phase == 250:
-		dialogue_box.hide()
-		_show_choice(["Gently hold her hand.", "Do nothing."], _on_love_choice)
+		_hide_dialogue_box()
+		_show_choice([_t("Gently hold her hand.", "Genggam tangannya dengan lembut."), _t("Do nothing.", "Tidak melakukan apa-apa.")], _on_love_choice)
 		
 func _on_love_choice(idx: int):
-	choice_container.queue_free()
-	dialogue_box.show()
+	_close_choice_container()
+	_show_dialogue_box()
 	
 	if idx == 0:
-		love_bar.value += 20
-		if love_bar.value >= 100:
+		_set_bar(love_bar, love_bar.value + 20)
+		if love_bar.value + 20 >= 100:
 			_good_ending()
 		else:
-			_play_dialogue_line("Ashy", "*blushes* Wh-what are you doing... let's just continue.")
+			_play_dialogue_line("Ashy", _t("*blushes* Wh-what are you doing... let's just continue.", "*tersipu malu* A-apa yang kamu lakukan... ayo kita lanjutkan saja."))
 			phase = 300
 	else:
-		_play_dialogue_line("Ashy", "Let's continue the game.")
+		_play_dialogue_line("Ashy", _t("Let's continue the game.", "Ayo lanjutkan permainannya."))
 		phase = 300
 
 func _handle_input_advance_override2():
@@ -698,7 +841,7 @@ func _handle_input_advance_override2():
 		_advance_phase()
 
 func _check_rage_or_jumpscare():
-	if love_bar.value >= 80:
+	if love_bar.value >= 60:
 		_locked_up_ending()
 	else:
 		_trigger_jumpscare()
@@ -710,12 +853,16 @@ func _locked_up_ending():
 	get_tree().change_scene_to_file("res://LockedUpEnding.tscn")
 
 func _good_ending():
-	get_tree().change_scene_to_file("res://LoveEnding.tscn")
+	if flawless_run and rage_bar.value == 0:
+		get_tree().change_scene_to_file("res://RealityEnding.tscn")
+	else:
+		get_tree().change_scene_to_file("res://LoveEnding.tscn")
 
 func _reset_game():
 	rage_bar.value = 0
 	love_bar.value = 0
 	consecutive_correct = 0
+	flawless_run = true
 	current_question_idx = 0
 	questions.shuffle()
 	
@@ -726,8 +873,8 @@ func _reset_game():
 	background.texture = preload("res://assets/UI/abandoned_lab.jpg")
 	_change_character_sprite(tex_ashy)
 	
-	dialogue_box.show()
-	_play_dialogue_line("Ashy", "Let's try that again...")
+	_show_dialogue_box()
+	_play_dialogue_line("Ashy", _t("Let's try that again...", "Ayo kita coba lagi..."))
 	phase = 7
 
 func apply_gray_choice_button_style(btn: Button):
@@ -769,11 +916,15 @@ func apply_gray_choice_button_style(btn: Button):
 
 func _show_choice(choices: Array, callback: Callable):
 	if choice_container:
-		choice_container.queue_free()
+		_close_choice_container()
 	
 	choice_container = CenterContainer.new()
 	choice_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	choice_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+	choice_container.modulate.a = 0.0
+	
+	var tween = create_tween()
+	tween.tween_property(choice_container, "modulate:a", 1.0, 0.3)
 	
 	var vbox = VBoxContainer.new()
 	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -812,6 +963,86 @@ func _play_dialogue_line(speaker: String, text: String):
 	dialogue_tween = create_tween()
 	dialogue_tween.tween_property(dialogue_label, "visible_characters", text.length(), text.length() * 0.05)
 	dialogue_tween.finished.connect(func(): is_typing_dialogue = false)
+
+func _show_dialogue_box():
+	if dialogue_box.visible and dialogue_box.modulate.a >= 1.0: return
+	dialogue_box.show()
+	var tw = create_tween()
+	tw.tween_property(dialogue_box, "modulate:a", 1.0, 0.25)
+
+func _hide_dialogue_box():
+	if not dialogue_box.visible: return
+	var tw = create_tween()
+	tw.tween_property(dialogue_box, "modulate:a", 0.0, 0.25)
+	tw.tween_callback(dialogue_box.hide)
+
+func _close_choice_container():
+	if choice_container and is_instance_valid(choice_container):
+		var target = choice_container
+		choice_container = null # prevent double queue_free
+		var tw = create_tween()
+		tw.tween_property(target, "modulate:a", 0.0, 0.2)
+		tw.tween_callback(target.queue_free)
+
+func _close_act_layer():
+	if act_layer and is_instance_valid(act_layer):
+		var target = act_layer
+		act_layer = null
+		# Find the act_root we created (child 0 is usually act_root)
+		if target.get_child_count() > 0:
+			var root = target.get_child(0)
+			var tw = create_tween()
+			tw.tween_property(root, "modulate:a", 0.0, 0.2)
+			tw.tween_callback(target.queue_free)
+		else:
+			target.queue_free()
+
+func _show_toast(msg: String, duration: float = 2.5):
+	# Notifikasi floating yang tidak mengganggu dialogue/pilihan
+	var toast_layer = CanvasLayer.new()
+	toast_layer.layer = 95
+	add_child(toast_layer)
+	
+	var panel = PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	panel.position.y = -90
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.06, 0.02, 0.02, 0.88)
+	sb.border_width_left = 2
+	sb.border_width_top = 2
+	sb.border_width_right = 2
+	sb.border_width_bottom = 2
+	sb.border_color = Color(0.7, 0.15, 0.15, 0.9)
+	sb.corner_radius_top_left = 8
+	sb.corner_radius_top_right = 8
+	sb.corner_radius_bottom_left = 8
+	sb.corner_radius_bottom_right = 8
+	sb.content_margin_left = 20
+	sb.content_margin_right = 20
+	sb.content_margin_top = 10
+	sb.content_margin_bottom = 10
+	panel.add_theme_stylebox_override("panel", sb)
+	toast_layer.add_child(panel)
+	
+	var lbl = Label.new()
+	lbl.text = msg
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl.add_theme_font_override("font", font_vt323)
+	lbl.add_theme_font_size_override("font_size", 26)
+	lbl.add_theme_color_override("font_color", Color(0.95, 0.85, 0.85, 1.0))
+	lbl.custom_minimum_size = Vector2(500, 0)
+	panel.add_child(lbl)
+	
+	# Fade in
+	panel.modulate.a = 0.0
+	var tween = create_tween()
+	tween.tween_property(panel, "modulate:a", 1.0, 0.25)
+	tween.tween_interval(duration)
+	tween.tween_property(panel, "modulate:a", 0.0, 0.4)
+	tween.tween_callback(toast_layer.queue_free)
 
 func _change_character_sprite(new_texture: Texture2D):
 	if character_sprite.texture == new_texture:

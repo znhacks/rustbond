@@ -6,17 +6,17 @@
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Yes, sacrifice is the core of love.",
+        "teks": "Of course. I don't mind giving up everything just to remain yours.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Only if they deserve it.",
+        "teks": "As long as the sacrifice is worth what I am getting.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "No, love shouldn't hurt.",
+        "teks": "No, true love shouldn't involve hurting each other.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
@@ -24,22 +24,22 @@
   },
   {
     "id": 2,
-    "pertanyaan": "If the person you loved turned into a monster... would you run away, or let them devour you?",
+    "pertanyaan": "If I lose control and start hurting you... is it my fault for being a monster, or your fault for being too fragile?",
     "is_krusial": true,
-    "peringatan_krusial": "Ashy's eyes lock onto your neck... Choose carefully.",
+    "peringatan_krusial": "Ashy's gaze sharpens, waiting for your defense...",
     "pilihan": [
       {
-        "teks": "I would stay by their side, no matter what.",
+        "teks": "It's my fault for being too fragile. I need to be stronger for you.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "I would try to cure them.",
+        "teks": "It's just an accident, we can get through it together.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "I would run to save myself.",
+        "teks": "It's your fault. You need to learn to control your monstrous instincts.",
         "is_benar": false,
         "efek": "INSTANT_RAGE"
       }
@@ -47,22 +47,22 @@
   },
   {
     "id": 3,
-    "pertanyaan": "Why do humans always abandon the things they don't understand?",
+    "pertanyaan": "The world outside hates me. If they come here to destroy me, what will you do?",
     "is_krusial": false,
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Fear of the unknown.",
+        "teks": "Destroy them first before they even dare to touch you.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Because they are cautious.",
+        "teks": "Take you and hide somewhere safe until they're gone.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Because humans are selfish.",
+        "teks": "Try to negotiate and prove to them that you are harmless.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
@@ -70,91 +70,91 @@
   },
   {
     "id": 4,
-    "pertanyaan": "Is it possible to love someone while simultaneously hating everything they have done?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Yes, emotions are complex and contradictory.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Maybe, but it's toxic.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "No, hate destroys love.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "pertanyaan": "If I told you I enjoyed the screams of those scientists... would you judge me?",
+    "pertanyaan": "Sometimes I feel like you'll leave me when you realize how terrifying I truly am. How will you prove otherwise?",
     "is_krusial": true,
-    "peringatan_krusial": "A sinister smile creeps on Ashy's face. She is testing your loyalty.",
+    "peringatan_krusial": "Something slowly wrap around your legs... Be careful.",
     "pilihan": [
       {
-        "teks": "They deserved it for what they did to you.",
+        "teks": "You can lock me up in here. I don't need the outside world, only you.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "I'd prefer not to answer.",
+        "teks": "I promise I will never leave your side.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Yes, murder is wrong.",
+        "teks": "You're just being paranoid. Stop doubting me.",
         "is_benar": false,
         "efek": "INSTANT_RAGE"
       }
     ]
   },
   {
-    "id": 6,
-    "pertanyaan": "Have you ever felt so lonely that you'd accept comfort even from a parasite?",
+    "id": 5,
+    "pertanyaan": "They say parasites like me only use their hosts. Who do you think is actually using who here?",
     "is_krusial": false,
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "Yes... loneliness makes you desperate.",
+        "teks": "We use each other. We are bound, and I enjoy this pain.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "I've never been that lonely.",
+        "teks": "Nobody is using anyone. This is our shared destiny.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "No, I value my dignity.",
+        "teks": "Of course you're the one using me to survive.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
     ]
   },
   {
-    "id": 7,
-    "pertanyaan": "What matters more in a relationship? Truth... or comforting lies?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
+    "id": 6,
+    "pertanyaan": "If one day I asked you to kill someone to protect me... would your hands tremble?",
+    "is_krusial": true,
+    "peringatan_krusial": "A test of absolute loyalty. Choose with cold blood.",
     "pilihan": [
       {
-        "teks": "The truth, no matter how much it hurts.",
+        "teks": "My hands wouldn't tremble in the slightest to ensure you're safe.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "A balance of both.",
+        "teks": "I might hesitate, but I would still do it.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Comforting lies.",
+        "teks": "I am not a murderer! I would never go that far.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "pertanyaan": "What do you hate the most about me?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "I hate how you've made it impossible for me to imagine life without you.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Your nature that can sometimes be too possessive and scary.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "The fact that you are a disaster-bringing parasite.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }
@@ -162,528 +162,68 @@
   },
   {
     "id": 8,
-    "pertanyaan": "If I could make you immortal, but you'd have to feel my pain forever... would you accept?",
-    "is_krusial": true,
-    "peringatan_krusial": "She steps closer. Her presence feels suffocating. Do not reject her.",
+    "pertanyaan": "Freedom is an illusion. Isn't it better to be bound by someone who truly understands you?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "I'd gladly share your pain.",
+        "teks": "Yes. Please bind me, control me. I am entirely yours.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "Only if the pain eventually stops.",
+        "teks": "Sometimes a little bit of freedom is still needed.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "No, immortality is a curse.",
+        "teks": "Nonsense. Freedom is the most fundamental human right.",
         "is_benar": false,
-        "efek": "INSTANT_RAGE"
+        "efek": "NORMAL_WRONG"
       }
     ]
   },
   {
     "id": 9,
-    "pertanyaan": "Do you think monsters are born, or made by human cruelty?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
+    "pertanyaan": "If I could take over your memories... which memory would you want to keep hidden from my grasp?",
+    "is_krusial": true,
+    "peringatan_krusial": "She wants to know if you're hiding something from her.",
     "pilihan": [
       {
-        "teks": "Cruelty breeds monsters.",
+        "teks": "Take them all. I have no secrets to hide from you.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "It depends on the person.",
+        "teks": "I'd only want to keep the memory of our first meeting.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "Monsters are born that way.",
+        "teks": "The memories of my past before you ruined it.",
         "is_benar": false,
-        "efek": "NORMAL_WRONG"
+        "efek": "INSTANT_RAGE"
       }
     ]
   },
   {
     "id": 10,
-    "pertanyaan": "Am I beautiful to you... even with the blood on my hands?",
-    "is_krusial": true,
-    "peringatan_krusial": "Her tone drops. A wrong answer here might be your last.",
-    "pilihan": [
-      {
-        "teks": "Your true beauty lies in your strength.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Blood washes off.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "You are terrifying, not beautiful.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 11,
-    "pertanyaan": "If society condemned me as a villain... would you stand beside me or join the crowd?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy tilts her head, scrutinizing your every movement.",
-    "pilihan": [
-      {
-        "teks": "I'd stand beside you against the entire world.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I'd stay silent and watch.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "I would side with society.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 12,
-    "pertanyaan": "When you look into my eyes, what do you see first?",
+    "pertanyaan": "A sane person would run in terror seeing my current appearance. What makes you stay seated right there?",
     "is_krusial": false,
     "peringatan_krusial": "",
     "pilihan": [
       {
-        "teks": "A soul crying out for understanding.",
+        "teks": "Because my sanity was lost a long time ago, right when I chose you.",
         "is_benar": true,
         "efek": "NORMAL_CORRECT"
       },
       {
-        "teks": "A mysterious darkness.",
+        "teks": "Because I believe there's still goodness inside of you.",
         "is_benar": false,
         "efek": "NORMAL_HALF"
       },
       {
-        "teks": "A cold-blooded killer.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 13,
-    "pertanyaan": "Do you think revenge brings peace to those who suffered?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Yes, justice must be served no matter what.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "It brings temporary relief.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "No, revenge only causes more misery.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 14,
-    "pertanyaan": "If I lost control and hurt you right now... would you forgive me?",
-    "is_krusial": true,
-    "peringatan_krusial": "Her veins pulse with infected black blood. Answer with extreme caution.",
-    "pilihan": [
-      {
-        "teks": "I know you wouldn't mean to hurt me.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I'd try to calm you down first.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Never. Violence is unforgivable.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 15,
-    "pertanyaan": "What is worse... dying alone, or living trapped with someone who scares you?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Dying alone... isolation is true torture.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Both sound horrible.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Living trapped with a nightmare.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 16,
-    "pertanyaan": "Do you believe humanity deserves a second chance after ruining everything?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Only a select few deserve redemption.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Maybe, if they truly change.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Yes, everyone deserves forgiveness.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 17,
-    "pertanyaan": "If we were the last two survivors on earth... what would you do with me?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy steps closer, staring deeply into your eyes...",
-    "pilihan": [
-      {
-        "teks": "I'd spend every remaining day making you happy.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "We would look for other survivors.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "I'd lock myself away from you.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 18,
-    "pertanyaan": "Do memories define who we are, or can we erase our dark past?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "We can build a new future together.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Past memories never fade completely.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "The past defines us forever.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 19,
-    "pertanyaan": "Would you drink my blood if it meant we would be bonded forever?",
-    "is_krusial": true,
-    "peringatan_krusial": "Her voice whispers right beside your ear...",
-    "pilihan": [
-      {
-        "teks": "I'd gladly drink it to be with you.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Is there any other way?",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Gross! Get away from me!",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 20,
-    "pertanyaan": "If this whole night was just a nightmare... would you want to wake up?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Not if it means losing you.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I'm not sure anymore.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Yes, I want to wake up right now!",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 21,
-    "pertanyaan": "If I'm having a quiet day and don't want to talk, how would you react?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "I'd sit quietly beside you so you know you're not alone.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I'd ask you what's wrong repeatedly.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "I'd leave you alone and ignore you.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 22,
-    "pertanyaan": "If I showed you my deepest, darkest insecurity... would you comfort me or use it against me?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy looks at you with trembling eyes... Answer gently.",
-    "pilihan": [
-      {
-        "teks": "I'd hold you close and shield you from your fears.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I'd listen, but I might not understand.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Everyone has weaknesses, get over it.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 23,
-    "pertanyaan": "What do you do when you notice your partner is hiding her pain behind a fake smile?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Gently hold her hand and tell her it's okay to cry.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Pretend not to notice to avoid awkwardness.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Tell her her fake smile looks ridiculous.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 24,
-    "pertanyaan": "When I vent about my past trauma, what do I need most from you?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Your undivided attention and a warm embrace.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Practical advice on how to move on.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "To tell me that other people have it worse.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 25,
-    "pertanyaan": "If everyone in the room accused me of being dangerous, who would you believe?",
-    "is_krusial": true,
-    "peringatan_krusial": "Her grip on your arm tightens... Choose wisely.",
-    "pilihan": [
-      {
-        "teks": "I trust your heart more than their words.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I'd ask for proof first.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "I'd trust the majority.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 26,
-    "pertanyaan": "What matters more to someone who is hurting: grand promises or small consistent acts of kindness?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Small acts of kindness every single day.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Grand promises for the future.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Neither, words and actions mean nothing.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 27,
-    "pertanyaan": "If I need space to breathe, does that mean I don't love you?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "No, personal space is essential for a healthy bond.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Maybe, but it would make me anxious.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Yes, true love means never leaving my sight.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 28,
-    "pertanyaan": "If the infection takes over my mind completely... will you stay with me until the very end?",
-    "is_krusial": true,
-    "peringatan_krusial": "Ashy's breath turns cold and rapid... Answer from your heart.",
-    "pilihan": [
-      {
-        "teks": "I will hold your hand until my last breath.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "I will try to find a cure before it's too late.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "I will lock you away and run.",
-        "is_benar": false,
-        "efek": "INSTANT_RAGE"
-      }
-    ]
-  },
-  {
-    "id": 29,
-    "pertanyaan": "When your partner feels insecure about her appearance, how should you respond?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Remind her that she is uniquely beautiful to you every day.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Tell her she looks fine.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Agree with her flaws.",
-        "is_benar": false,
-        "efek": "NORMAL_WRONG"
-      }
-    ]
-  },
-  {
-    "id": 30,
-    "pertanyaan": "When two people make mistakes in a relationship, what is the key to surviving together?",
-    "is_krusial": false,
-    "peringatan_krusial": "",
-    "pilihan": [
-      {
-        "teks": "Patience, honest communication, and mutual forgiveness.",
-        "is_benar": true,
-        "efek": "NORMAL_CORRECT"
-      },
-      {
-        "teks": "Ignoring the past and moving on quickly.",
-        "is_benar": false,
-        "efek": "NORMAL_HALF"
-      },
-      {
-        "teks": "Keeping score of each other's mistakes.",
+        "teks": "Because I have no other choice and am trapped here.",
         "is_benar": false,
         "efek": "NORMAL_WRONG"
       }

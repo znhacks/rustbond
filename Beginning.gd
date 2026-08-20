@@ -48,6 +48,7 @@ var last_visible_characters = 0
 var tv_done_waiting = false
 var post_tv_phase = 0
 var choice_container : Control
+var is_vision_playing = false
 
 var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
 
@@ -87,7 +88,7 @@ Be aware of your surroundings, stay safe, and pray. Hopefully, we all make it th
 	broadcast_label.text = ""
 	dialogue_label.text = ""
 	tv_bg.color.a = 0.0
-	dialogue_box.hide()
+	_hide_dialogue_box()
 	character_sprite.hide()
 	
 	# Local SkipIndicator hidden in favor of global SkipOverlay
@@ -169,7 +170,7 @@ func _process(delta):
 			last_visible_characters = current_visible
 
 func _start_dialogue():
-	dialogue_box.show()
+	_show_dialogue_box()
 	_show_next_dialogue()
 
 func _show_next_dialogue():
@@ -239,7 +240,7 @@ func _unhandled_input(event):
 				_show_next_dialogue()
 
 func _transition_to_tv():
-	dialogue_box.hide()
+	_hide_dialogue_box()
 	is_tv_mode = true
 	
 	var fade = create_tween()
@@ -286,12 +287,12 @@ func _type_next_char():
 func _start_post_tv():
 	tv_bg.hide()
 	broadcast_label.hide()
-	dialogue_box.show()
+	_show_dialogue_box()
 	post_tv_phase = 1
 	_play_dialogue_line("Me", _t("Ugh, I had a bad feeling about this.", "Ugh, aku punya firasat buruk tentang ini."))
 
 func _play_dialogue_line(speaker: String, text: String):
-	name_tag.text = speaker
+	name_tag.text = "" if speaker == "System" else speaker
 	dialogue_label.text = text
 	dialogue_label.visible_characters = 0
 	last_visible_characters = 0
@@ -311,6 +312,8 @@ func _play_dialogue_line(speaker: String, text: String):
 	dialogue_tween.finished.connect(func(): is_typing_dialogue = false)
 
 func _advance_post_tv():
+	if is_vision_playing:
+		return # Sedang memainkan vision/cutscene Mimi
 	if choice_container and choice_container.is_inside_tree():
 		return # Menunggu player milih
 		
@@ -318,12 +321,73 @@ func _advance_post_tv():
 		_play_dialogue_line("Me", _t("It was just in the other city yesterday, how did it spread here so fast...", "Kemarin baru saja ada di kota sebelah, bagaimana bisa menyebar ke sini secepat ini..."))
 		post_tv_phase = 2
 	elif post_tv_phase == 2:
-		background.texture = preload("res://assets/UI/front_door.jpg")
-		_play_dialogue_line("???", "* KNOCK KNOCK *")
+		_play_dialogue_line("System", _t("* Calling Mimi... *", "* Menelepon Mimi... *"))
 		post_tv_phase = 3
 	elif post_tv_phase == 3:
-		dialogue_box.hide()
+		_play_dialogue_line("Me", _t("Why isn't she picking up my calls...", "Kenapa dia gak angkat telefonku."))
+		post_tv_phase = 4
+	elif post_tv_phase == 4:
+		_play_dialogue_line("Me", _t("Could it be... no.", "Apa jangan jangan..."))
+		post_tv_phase = 5
+	elif post_tv_phase == 5:
+		# Tampilkan bayangan/imaginasi Mimi di dalam lab (unskippable cinematic)
+		is_vision_playing = true
+		_hide_dialogue_box()
+		
+		# Buat overlay hitam baru khusus (bukan tv_bg, agar tidak bentrok dengan flicker TV)
+		var black = ColorRect.new()
+		black.color = Color(0, 0, 0, 0)
+		black.set_anchors_preset(Control.PRESET_FULL_RECT)
+		black.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		black.z_index = 200
+		$CanvasLayer.add_child(black)
+		
+		# Fade ke hitam
+		var fade_in = create_tween()
+		fade_in.tween_property(black, "color:a", 1.0, 0.6)
+		await fade_in.finished
+		
+		# Ganti background ke Mimi lab
+		background.texture = preload("res://assets/UI/mimi_lab.jpg")
+		
+		# Fade masuk dari hitam
+		var fade_show = create_tween()
+		fade_show.tween_property(black, "color:a", 0.0, 0.8)
+		await fade_show.finished
+		
+		# Tahan 3 detik
+		await get_tree().create_timer(3.0).timeout
+		
+		# Fade ke hitam lagi
+		var fade_out = create_tween()
+		fade_out.tween_property(black, "color:a", 1.0, 0.8)
+		await fade_out.finished
+		
+		# Kembali ke background rumah
+		background.texture = preload("res://assets/UI/playerhome.jpg")
+		_show_dialogue_box()
+		
+		# Fade balik dari hitam
+		var fade_back = create_tween()
+		fade_back.tween_property(black, "color:a", 0.0, 0.6)
+		await fade_back.finished
+		
+		# Hapus overlay, sudah tidak diperlukan
+		black.queue_free()
+		
+		is_vision_playing = false
+		_play_dialogue_line("Me", "...")
+		post_tv_phase = 6
+	elif post_tv_phase == 6:
+		background.texture = preload("res://assets/UI/front_door.jpg")
+		_play_dialogue_line("???", "* KNOCK KNOCK *")
+		post_tv_phase = 7
+	elif post_tv_phase == 7:
+		_hide_dialogue_box()
 		_show_choice([_t("Check the door", "Periksa pintu"), _t("Ignore", "Abaikan")], _on_choice_1)
+	elif post_tv_phase == 8:
+		_play_dialogue_line("???", _t("Oh, so there is someone here.", "Oh, jadi ada orang di sini."))
+		post_tv_phase = 9
 	elif post_tv_phase == 9:
 		_play_dialogue_line("Me", _t("(Huh? How did she know I was here without me telling her...)", "(Loh? Bagaimana dia tahu aku di sini padahal aku belum memberitahunya...)"))
 		post_tv_phase = 10
@@ -394,7 +458,7 @@ func _advance_post_tv():
 		_play_dialogue_line("System", _t("I finally went to the kitchen, made some warm chocolate milk, and got some bread.", "Aku akhirnya pergi ke dapur, membuat susu cokelat hangat, dan mengambil roti."))
 		post_tv_phase = 44
 	elif post_tv_phase == 44:
-		dialogue_box.hide()
+		_hide_dialogue_box()
 		post_tv_phase = 445 # Cegah klik spasi memunculkan minigame berkali-kali
 		var minigame = preload("res://CookingMinigame.gd").new()
 		add_child(minigame)
@@ -406,7 +470,7 @@ func _advance_post_tv():
 		_play_dialogue_line("Me", _t("Then...", "Lalu..."))
 		post_tv_phase = 47
 	elif post_tv_phase == 47:
-		dialogue_box.hide()
+		_hide_dialogue_box()
 		_show_choice([_t("(Ah, maybe it's just my imagination)", "(Ah, mungkin hanya imajinasiku)"), _t("(Is she a ghost? An alien? A monster? A robot?)", "(Apakah dia hantu? Alien? Monster? Robot?)")], _on_choice_3)
 	elif post_tv_phase == 50:
 		_play_dialogue_line("???", _t("Seems like no one is home...", "Sepertinya tidak ada orang di rumah..."))
@@ -415,7 +479,7 @@ func _advance_post_tv():
 		_play_dialogue_line("???", _t("Hello?", "Halo?"))
 		post_tv_phase = 52
 	elif post_tv_phase == 52:
-		dialogue_box.hide()
+		_hide_dialogue_box()
 		_show_choice([_t("Check from the curtains", "Periksa dari tirai"), _t("Stay silent", "Tetap diam")], _on_choice_2)
 	elif post_tv_phase == 53:
 		post_tv_phase = 9999 # Handled by epilogue
@@ -433,7 +497,7 @@ func _advance_post_tv():
 
 func _play_safe_ending_epilogue():
 	SaveManager.unlock_ending("safe_ending")
-	dialogue_box.hide()
+	_hide_dialogue_box()
 	
 	# Fullscreen black screen overlay
 	var black_overlay = ColorRect.new()
@@ -530,11 +594,15 @@ func apply_gray_choice_button_style(btn: Button):
 
 func _show_choice(choices: Array, callback: Callable):
 	if choice_container:
-		choice_container.queue_free()
+		_close_choice_container()
 	
 	choice_container = CenterContainer.new()
 	choice_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	choice_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+	choice_container.modulate.a = 0.0
+	
+	var tween = create_tween()
+	tween.tween_property(choice_container, "modulate:a", 1.0, 0.3)
 	
 	var vbox = VBoxContainer.new()
 	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -553,18 +621,18 @@ func _show_choice(choices: Array, callback: Callable):
 	add_child(choice_container)
 
 func _on_choice_1(idx: int):
-	choice_container.queue_free()
-	dialogue_box.show()
+	_close_choice_container()
+	_show_dialogue_box()
 	if idx == 0:
-		_play_dialogue_line("???", _t("Oh, so there is someone here.", "Oh, jadi ada orang di sini."))
-		post_tv_phase = 9  # Sisipkan fase untuk "Me"
+		_play_dialogue_line("Me", _t("Who's there?", "Siapa disana?"))
+		post_tv_phase = 8
 	else:
 		_play_dialogue_line("???", "...")
 		post_tv_phase = 50
 
 func _on_choice_2(idx: int):
-	choice_container.queue_free()
-	dialogue_box.show()
+	_close_choice_container()
+	_show_dialogue_box()
 	if idx == 0:
 		_play_dialogue_line("???", _t("Oh, so there is someone here.", "Oh, jadi ada orang di sini."))
 		post_tv_phase = 9
@@ -573,7 +641,7 @@ func _on_choice_2(idx: int):
 		post_tv_phase = 53
 
 func _on_choice_3(idx: int):
-	choice_container.queue_free()
+	_close_choice_container()
 	
 	# Kembali ke ruang tamu
 	background.texture = preload("res://assets/UI/playerhome.jpg")
@@ -582,7 +650,7 @@ func _on_choice_3(idx: int):
 	rage_container.show()
 	_change_character_sprite(tex_ashy)
 	
-	dialogue_box.show()
+	_show_dialogue_box()
 	if idx == 0:
 		_play_dialogue_line("Me", _t("(Whatever, the important thing is she eats first.)", "(Sudahlah, yang penting dia makan dulu.)"))
 		post_tv_phase = 99
@@ -596,7 +664,7 @@ func _on_minigame_finished():
 	love_container.show()
 	rage_container.show()
 	
-	dialogue_box.show()
+	_show_dialogue_box()
 	_play_dialogue_line("Me", "...")
 	post_tv_phase = 45
 
@@ -636,3 +704,23 @@ func _generate_8bit_blip() -> AudioStreamWAV:
 		
 	wav.data = data
 	return wav
+
+func _show_dialogue_box():
+	if dialogue_box.visible and dialogue_box.modulate.a >= 1.0: return
+	dialogue_box.show()
+	var tw = create_tween()
+	tw.tween_property(dialogue_box, "modulate:a", 1.0, 0.25)
+
+func _hide_dialogue_box():
+	if not dialogue_box.visible: return
+	var tw = create_tween()
+	tw.tween_property(dialogue_box, "modulate:a", 0.0, 0.25)
+	tw.tween_callback(dialogue_box.hide)
+
+func _close_choice_container():
+	if choice_container and is_instance_valid(choice_container):
+		var target = choice_container
+		choice_container = null # prevent double queue_free
+		var tw = create_tween()
+		tw.tween_property(target, "modulate:a", 0.0, 0.2)
+		tw.tween_callback(target.queue_free)

@@ -112,7 +112,7 @@ func _start_ending_sequence():
 			{"name": "Ashy", "text": "No need to lie, I won't hurt you."}
 		]
 		
-	dialogue_box.show()
+	_show_dialogue_box()
 	_show_next_line()
 
 func _show_next_line():
@@ -168,7 +168,11 @@ func apply_gray_choice_button_style(btn: Button):
 
 func _show_choices():
 	phase = 1
-	dialogue_box.hide()
+	_hide_dialogue_box()
+	
+	choice_container.modulate.a = 0.0
+	var tw = create_tween()
+	tw.tween_property(choice_container, "modulate:a", 1.0, 0.3)
 	
 	var vbox = VBoxContainer.new()
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -206,10 +210,14 @@ func _type_response(speaker: String, text: String):
 	await dialogue_tween.finished
 
 func _on_human_chosen():
-	for c in choice_container.get_children():
-		c.queue_free()
+	var tw = create_tween()
+	tw.tween_property(choice_container, "modulate:a", 0.0, 0.2)
+	tw.tween_callback(func():
+		for c in choice_container.get_children():
+			c.queue_free()
+	)
 	
-	dialogue_box.show()
+	_show_dialogue_box()
 	phase = 2
 	
 	var resp = "Baiklah, jika itu keinginanmu." if SaveManager.get_language() == "id" else "Very well, if that is your wish."
@@ -218,10 +226,14 @@ func _on_human_chosen():
 	_start_epilogue("human")
 
 func _on_parasite_chosen():
-	for c in choice_container.get_children():
-		c.queue_free()
+	var tw = create_tween()
+	tw.tween_property(choice_container, "modulate:a", 0.0, 0.2)
+	tw.tween_callback(func():
+		for c in choice_container.get_children():
+			c.queue_free()
+	)
 	
-	dialogue_box.show()
+	_show_dialogue_box()
 	phase = 2
 	
 	var resp = "Kamu sungguh setia, ya." if SaveManager.get_language() == "id" else "You truly are loyal, aren't you."
@@ -230,7 +242,7 @@ func _on_parasite_chosen():
 	_start_epilogue("parasite")
 
 func _start_epilogue(type: String):
-	dialogue_box.hide()
+	_hide_dialogue_box()
 	
 	black_screen.modulate.a = 0.0
 	black_screen.show()
@@ -300,3 +312,15 @@ func _generate_8bit_blip() -> AudioStreamWAV:
 		
 	wav.data = data
 	return wav
+
+func _show_dialogue_box():
+	if dialogue_box.visible and dialogue_box.modulate.a >= 1.0: return
+	dialogue_box.show()
+	var tw = create_tween()
+	tw.tween_property(dialogue_box, "modulate:a", 1.0, 0.25)
+
+func _hide_dialogue_box():
+	if not dialogue_box.visible: return
+	var tw = create_tween()
+	tw.tween_property(dialogue_box, "modulate:a", 0.0, 0.25)
+	tw.tween_callback(dialogue_box.hide)
