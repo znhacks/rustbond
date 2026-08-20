@@ -458,5 +458,235 @@
         "efek": "NORMAL_WRONG"
       }
     ]
+  },
+  {
+    "id": 21,
+    "pertanyaan": "If I'm having a quiet day and don't want to talk, how would you react?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "I'd sit quietly beside you so you know you're not alone.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'd ask you what's wrong repeatedly.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "I'd leave you alone and ignore you.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "pertanyaan": "If I showed you my deepest, darkest insecurity... would you comfort me or use it against me?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ashy looks at you with trembling eyes... Answer gently.",
+    "pilihan": [
+      {
+        "teks": "I'd hold you close and shield you from your fears.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'd listen, but I might not understand.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Everyone has weaknesses, get over it.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "pertanyaan": "What do you do when you notice your partner is hiding her pain behind a fake smile?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Gently hold her hand and tell her it's okay to cry.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Pretend not to notice to avoid awkwardness.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Tell her her fake smile looks ridiculous.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "pertanyaan": "When I vent about my past trauma, what do I need most from you?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Your undivided attention and a warm embrace.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Practical advice on how to move on.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "To tell me that other people have it worse.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "pertanyaan": "If everyone in the room accused me of being dangerous, who would you believe?",
+    "is_krusial": true,
+    "peringatan_krusial": "Her grip on your arm tightens... Choose wisely.",
+    "pilihan": [
+      {
+        "teks": "I trust your heart more than their words.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I'd ask for proof first.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "I'd trust the majority.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "pertanyaan": "What matters more to someone who is hurting: grand promises or small consistent acts of kindness?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Small acts of kindness every single day.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Grand promises for the future.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Neither, words and actions mean nothing.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "pertanyaan": "If I need space to breathe, does that mean I don't love you?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "No, personal space is essential for a healthy bond.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Maybe, but it would make me anxious.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Yes, true love means never leaving my sight.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "pertanyaan": "If the infection takes over my mind completely... will you stay with me until the very end?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ashy's breath turns cold and rapid... Answer from your heart.",
+    "pilihan": [
+      {
+        "teks": "I will hold your hand until my last breath.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "I will try to find a cure before it's too late.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "I will lock you away and run.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "pertanyaan": "When your partner feels insecure about her appearance, how should you respond?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Remind her that she is uniquely beautiful to you every day.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Tell her she looks fine.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Agree with her flaws.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "pertanyaan": "When two people make mistakes in a relationship, what is the key to surviving together?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Patience, honest communication, and mutual forgiveness.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Ignoring the past and moving on quickly.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Keeping score of each other's mistakes.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
   }
 ]

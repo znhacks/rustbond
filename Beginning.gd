@@ -192,7 +192,7 @@ func _show_next_dialogue():
 	else:
 		_transition_to_tv()
 
-func _input(event):
+func _unhandled_input(event):
 	var is_advance_action = false
 	
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -533,9 +533,11 @@ func _show_choice(choices: Array, callback: Callable):
 		choice_container.queue_free()
 	
 	choice_container = CenterContainer.new()
+	choice_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	choice_container.set_anchors_preset(Control.PRESET_FULL_RECT)
 	
 	var vbox = VBoxContainer.new()
+	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	vbox.add_theme_constant_override("separation", 20)
 	

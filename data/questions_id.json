@@ -458,5 +458,235 @@
         "efek": "NORMAL_WRONG"
       }
     ]
+  },
+  {
+    "id": 21,
+    "pertanyaan": "Jika hari ini aku sedang pendiam dan tidak ingin bicara, bagaimana reaksimu?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Aku akan duduk tenang di sisimu agar kamu tahu kamu tidak sendirian.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Aku akan terus bertanya ada apa padamu.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Aku akan meninggalkanmu dan mengabaikanmu.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "pertanyaan": "Jika aku memperlihatkan rasa takutan terbawah dan tergelapku... apakah kamu akan menenanginkanku atau memanfaatkannya?",
+    "is_krusial": true,
+    "peringatan_krusial": "Ashy menatapmu dengan mata gemetar... Jawablah dengan lembut.",
+    "pilihan": [
+      {
+        "teks": "Aku akan memelukmu erat dan melindungimu dari ketakutanmu.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Aku akan mendengarkan, tapi mungkin tidak paham.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Semua orang punya kelemahan, atasi saja sendiri.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "pertanyaan": "Apa yang kamu lakukan ketika menyadari pasanganmu menyembunyikan rasa sakit di balik senyum palsu?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Pegang tangannya dengan lembut dan katakan tidak apa-apa untuk menangis.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Pura-pura tidak tahu agar tidak canggung.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Katakan padanya senyum palsunya terlihat konyol.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "pertanyaan": "Saat aku menceritakan trauma masa laluku, apa yang paling aku butuhkan darimu?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Perhatian penuhmu dan pelukan yang hangat.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Nasihat praktis tentang cara move on.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Memberitahuku bahwa orang lain punya nasib lebih buruk.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "pertanyaan": "Jika semua orang di ruangan menuduhku berbahaya, siapa yang akan kamu percayai?",
+    "is_krusial": true,
+    "peringatan_krusial": "Cengkeramannya di lenganmu mengencang... Pilihlah dengan bijak.",
+    "pilihan": [
+      {
+        "teks": "Aku lebih percaya hatimu daripada kata-kata mereka.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Aku akan minta bukti dulu.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Aku akan percaya pada orang banyak.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "pertanyaan": "Mana yang lebih berarti bagi seseorang yang sedang terluka: janji besar atau kebaikan kecil yang konsisten?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Tindakan kebaikan kecil setiap hari.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Janji-janji besar untuk masa depan.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Tidak keduanya, kata-kata dan tindakan tidak ada artinya.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "pertanyaan": "Jika aku butuh ruang untuk bernapas, apakah itu artinya aku tidak mencintaimu?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Tidak, ruang pribadi itu penting untuk hubungan yang sehat.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Mungkin, tapi itu membuatku cemas.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Ya, cinta sejati artinya tidak boleh lepas dari pandanganku.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "pertanyaan": "Jika infeksi ini menguasai pikiranku sepenuhnya... akankah kamu tetap bersamaku hingga akhir?",
+    "is_krusial": true,
+    "peringatan_krusial": "Napas Ashy menjadi dingin dan cepat... Jawablah dari hatimu.",
+    "pilihan": [
+      {
+        "teks": "Aku akan memegang tanganmu hingga hembusan napas terakhirku.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Aku akan berusaha mencari obat sebelum terlambat.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Aku akan menguncimu dan berlari.",
+        "is_benar": false,
+        "efek": "INSTANT_RAGE"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "pertanyaan": "Ketika pasanganmu merasa minder dengan penampilannya, bagaimana seharusnya kamu merespons?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Ingatkan dia bahwa dia sangat cantik dan unik bagimu setiap hari.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Katakan dia terlihat biasa saja.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Setuju dengan kekurangan yang dia sebutkan.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "pertanyaan": "Ketika dua orang melakukan kesalahan dalam hubungan, apa kunci untuk bertahan bersama?",
+    "is_krusial": false,
+    "peringatan_krusial": "",
+    "pilihan": [
+      {
+        "teks": "Kesabaran, komunikasi jujur, dan saling memaafkan.",
+        "is_benar": true,
+        "efek": "NORMAL_CORRECT"
+      },
+      {
+        "teks": "Mengabaikan masa lalu dan move on dengan cepat.",
+        "is_benar": false,
+        "efek": "NORMAL_HALF"
+      },
+      {
+        "teks": "Mencatat dan menghitung kesalahan masing-masing.",
+        "is_benar": false,
+        "efek": "NORMAL_WRONG"
+      }
+    ]
   }
 ]

@@ -69,7 +69,7 @@ func _process(_delta):
 					blip_player.play()
 			last_narration_characters = current_visible
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_advance_dialogue()
 	elif event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
