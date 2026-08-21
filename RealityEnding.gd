@@ -9,20 +9,20 @@ extends Control
 @onready var background = $TextureRect2
 @onready var character_photo = $TextureRect
 
-var phase = -1
-var current_line = 0
-var dialogue_lines = []
+var phase: int = -1
+var current_line: int = 0
+var dialogue_lines: Array = []
 
 var blip_player: AudioStreamPlayer
-var is_typing = false
-var is_typing_narration = false
+var is_typing: bool = false
+var is_typing_narration: bool = false
 var dialogue_tween: Tween
-var last_visible_characters = 0
-var last_narration_characters = 0
+var last_visible_characters: int = 0
+var last_narration_characters: int = 0
 
-var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
+var font_vt323: Font = preload("res://assets/Fonts/VT323-Regular.ttf")
 
-func _ready():
+func _ready() -> void:
 	blip_player = AudioStreamPlayer.new()
 	blip_player.stream = _generate_8bit_blip()
 	blip_player.volume_db = -10.0
@@ -39,7 +39,7 @@ func _ready():
 	character_photo.show()
 	_start_ending_sequence()
 
-func _process(_delta):
+func _process(_delta: float) -> void:
 	if is_typing and dialogue_box.visible:
 		var current_visible = dialogue_text.visible_characters
 		if current_visible > last_visible_characters:
@@ -60,13 +60,13 @@ func _process(_delta):
 					blip_player.play()
 			last_narration_characters = current_visible
 
-func _unhandled_input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_advance_dialogue()
 	elif event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
 		_advance_dialogue()
 
-func _advance_dialogue():
+func _advance_dialogue() -> void:
 	if phase != 0: return
 	
 	if is_typing:
@@ -82,7 +82,7 @@ func _advance_dialogue():
 	else:
 		_start_epilogue()
 
-func _start_ending_sequence():
+func _start_ending_sequence() -> void:
 	SaveManager.unlock_ending("reality_ending")
 	phase = 0
 	current_line = 0
@@ -117,7 +117,7 @@ func _start_ending_sequence():
 	_show_dialogue_box()
 	_show_next_line()
 
-func _show_next_line():
+func _show_next_line() -> void:
 	var line = dialogue_lines[current_line]
 	name_tag.text = line["name"]
 	dialogue_text.text = line["text"]
@@ -131,7 +131,7 @@ func _show_next_line():
 	dialogue_tween.tween_property(dialogue_text, "visible_characters", line["text"].length(), line["text"].length() * 0.05)
 	dialogue_tween.finished.connect(func(): is_typing = false)
 
-func _start_epilogue():
+func _start_epilogue() -> void:
 	phase = 1
 	_hide_dialogue_box()
 	
@@ -162,7 +162,7 @@ func _start_epilogue():
 	
 	TransitionManager.transition_to_scene("res://MainMenu.tscn")
 
-func _play_narration(text: String):
+func _play_narration(text: String) -> void:
 	narration_label.text = text
 	narration_label.modulate.a = 1.0
 	narration_label.visible_characters = 0
@@ -202,13 +202,13 @@ func _generate_8bit_blip() -> AudioStreamWAV:
 	wav.data = data
 	return wav
 
-func _show_dialogue_box():
+func _show_dialogue_box() -> void:
 	if dialogue_box.visible and dialogue_box.modulate.a >= 1.0: return
 	dialogue_box.show()
 	var tw = create_tween()
 	tw.tween_property(dialogue_box, "modulate:a", 1.0, 0.25)
 
-func _hide_dialogue_box():
+func _hide_dialogue_box() -> void:
 	if not dialogue_box.visible: return
 	var tw = create_tween()
 	tw.tween_property(dialogue_box, "modulate:a", 0.0, 0.25)

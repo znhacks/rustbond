@@ -8,11 +8,11 @@ extends Control
 @onready var warning_text = $CanvasLayer/WarningContainer/PanelContainer/VBoxContainer/WarningText
 @onready var proceed_button = $CanvasLayer/WarningContainer/PanelContainer/VBoxContainer/ProceedButton
 
-var font_title = preload("res://assets/Fonts/Martyric_PersonalUse.ttf")
-var font_helpme = preload("res://assets/Fonts/HelpMe.ttf")
-var font_vt323 = preload("res://assets/Fonts/VT323-Regular.ttf")
+var font_title: Font = preload("res://assets/Fonts/Martyric_PersonalUse.ttf")
+var font_helpme: Font = preload("res://assets/Fonts/HelpMe.ttf")
+var font_vt323: Font = preload("res://assets/Fonts/VT323-Regular.ttf")
 
-func _ready():
+func _ready() -> void:
 	# Hide all elements initially
 	icon_texture.modulate.a = 0.0
 	title_label.modulate.a = 0.0
@@ -61,7 +61,7 @@ func _ready():
 	
 	_run_splash_sequence()
 
-func _apply_proceed_button_style(btn: Button):
+func _apply_proceed_button_style(btn: Button) -> void:
 	btn.add_theme_font_override("font", font_vt323)
 	btn.add_theme_font_size_override("font_size", 32)
 	btn.add_theme_color_override("font_color", Color(0.95, 0.25, 0.25, 1.0))
@@ -89,7 +89,7 @@ func _apply_proceed_button_style(btn: Button):
 	sb_hover.border_color = Color(0.95, 0.25, 0.25, 1.0)
 	btn.add_theme_stylebox_override("hover", sb_hover)
 
-func _run_splash_sequence():
+func _run_splash_sequence() -> void:
 	await get_tree().create_timer(0.3).timeout
 	
 	# --- SLIDE 1: ICON ---
@@ -109,12 +109,12 @@ func _run_splash_sequence():
 	tw.tween_property(warning_container, "modulate:a", 1.0, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tw.finished
 
-func _on_proceed_pressed():
+func _on_proceed_pressed() -> void:
 	proceed_button.disabled = true
 	TransitionManager.play_splash()
 	TransitionManager.transition_to_scene("res://MainMenu.tscn")
 
-func _fade_in_and_out(target_node: Control, hold_time: float, fade_in_time: float, fade_out_time: float):
+func _fade_in_and_out(target_node: Control, hold_time: float, fade_in_time: float, fade_out_time: float) -> void:
 	# Fade In
 	var tw_in = create_tween()
 	tw_in.tween_property(target_node, "modulate:a", 1.0, fade_in_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
