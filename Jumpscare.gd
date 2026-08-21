@@ -313,7 +313,7 @@ func _apply_vignette_blur():
 	cr.material = mat
 	add_child(cr)
 
-func _process(delta):
+func _process(_delta):
 	var base_pos = (get_viewport_rect().size / 2.0 - ashy_sprite.size / 2.0) + Vector2(0, target_y_offset)
 	if shake_intensity > 0:
 		var offset_x = randf_range(-shake_intensity, shake_intensity)

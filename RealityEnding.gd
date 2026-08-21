@@ -44,8 +44,8 @@ func _process(_delta: float) -> void:
 		var current_visible = dialogue_text.visible_characters
 		if current_visible > last_visible_characters:
 			if current_visible <= dialogue_text.text.length() and current_visible > 0:
-				var char = dialogue_text.text[current_visible - 1]
-				if char != " " and char != "\n":
+				var c = dialogue_text.text[current_visible - 1]
+				if c != " " and c != "\n":
 					blip_player.pitch_scale = 0.65
 					blip_player.play()
 			last_visible_characters = current_visible
@@ -54,8 +54,8 @@ func _process(_delta: float) -> void:
 		var current_visible = narration_label.visible_characters
 		if current_visible > last_narration_characters:
 			if current_visible <= narration_label.text.length() and current_visible > 0:
-				var char = narration_label.text[current_visible - 1]
-				if char != " " and char != "\n":
+				var c = narration_label.text[current_visible - 1]
+				if c != " " and c != "\n":
 					blip_player.pitch_scale = 0.4
 					blip_player.play()
 			last_narration_characters = current_visible

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bdqrlrrtamc4"]
+
+[ext_resource type="Texture2D" path="res://assets/UI/tilemap_white.png" id="1_jtml2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlnmn"]
+atlas = ExtResource("1_jtml2")
+region = Rect2(51, 289, 16, 16)
+
+[node name="InputIcon" type="TextureRect" unique_id=911312714]
+texture_filter = 1
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_nlnmn")

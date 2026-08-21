@@ -269,7 +269,7 @@ func _setup_dev_tools():
 	love_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	var spin_love = SpinBox.new()
 	spin_love.max_value = 100
-	spin_love.value = love_bar.value if love_bar else 0
+	spin_love.value = love_bar.value if love_bar else 0.0
 	var btn_love = Button.new()
 	btn_love.text = "Set Love"
 	btn_love.focus_mode = Control.FOCUS_NONE
@@ -287,7 +287,7 @@ func _setup_dev_tools():
 	rage_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	var spin_rage = SpinBox.new()
 	spin_rage.max_value = 100
-	spin_rage.value = rage_bar.value if rage_bar else 0
+	spin_rage.value = rage_bar.value if rage_bar else 0.0
 	var btn_rage = Button.new()
 	btn_rage.text = "Set Rage"
 	btn_rage.focus_mode = Control.FOCUS_NONE
@@ -349,13 +349,13 @@ func _load_questions():
 		else:
 			print("JSON Parse Error: ", json.get_error_message())
 
-func _process(delta):
+func _process(_delta):
 	if is_typing_dialogue and dialogue_box.visible:
 		var current_visible = dialogue_label.visible_characters
 		if current_visible > last_visible_characters:
 			if current_visible <= dialogue_label.text.length() and current_visible > 0:
-				var char = dialogue_label.text[current_visible - 1]
-				if char != " " and char != "\n":
+				var c = dialogue_label.text[current_visible - 1]
+				if c != " " and c != "\n":
 					blip_player.play()
 			last_visible_characters = current_visible
 

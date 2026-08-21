@@ -159,13 +159,13 @@ Be aware of your surroundings, stay safe, and pray. Hopefully, we all make it th
 	await get_tree().create_timer(1.0).timeout
 	_start_dialogue()
 
-func _process(delta):
+func _process(_delta):
 	if is_typing_dialogue and dialogue_box.visible:
 		var current_visible = dialogue_label.visible_characters
 		if current_visible > last_visible_characters:
 			if current_visible <= dialogue_label.text.length() and current_visible > 0:
-				var char = dialogue_label.text[current_visible - 1]
-				if char != " " and char != "\n":
+				var c = dialogue_label.text[current_visible - 1]
+				if c != " " and c != "\n":
 					blip_player.play()
 			last_visible_characters = current_visible
 
@@ -269,14 +269,14 @@ func _type_next_char():
 		broadcast_label.text += full_text[current_char]
 		current_char += 1
 		
-		var char = full_text[current_char - 1]
+		var c = full_text[current_char - 1]
 		
 		# Putar suara jika bukan spasi atau baris baru
-		if char != " " and char != "\n":
+		if c != " " and c != "\n":
 			blip_player.pitch_scale = 1.0
 			blip_player.play()
 			
-		if char == '.' or char == ',' or char == '\n':
+		if c == '.' or c == ',' or c == '\n':
 			type_timer.start(0.4)
 		else:
 			type_timer.start(type_speed)
