@@ -389,7 +389,7 @@ func _advance_post_tv():
 		_play_dialogue_line("???", _t("Oh, so there is someone here.", "Oh, jadi ada orang di sini."))
 		post_tv_phase = 9
 	elif post_tv_phase == 9:
-		_play_dialogue_line("Me", _t("(Huh? How did she know I was here without me telling her...)", "(Loh? Bagaimana dia tahu aku di sini padahal aku belum memberitahunya...)"))
+		_play_dialogue_line("Me", _t("(I think this is a bad idea)", "(Aku rasa ini ide buruk)"))
 		post_tv_phase = 10
 	elif post_tv_phase == 10:
 		_play_dialogue_line("???", _t("I can hear your thoughts.", "Aku bisa mendengar pikiranmu."))
